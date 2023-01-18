@@ -1,17 +1,18 @@
-//--------------------------------------------------------------------------------------//
-// _________   ___   ____    ____ _____  _____ _____      ______       _      ______    //
-//|  _   _  |.'   `.|_   \  /   _|_   _||_   _|_   _|   .' ___  |     / \    |_   _ `.  //
-//|_/ | | \_/  .-.  \ |   \/   |   | |    | |   | |    / .'   \_|    / _ \     | | `. \ //
-//    | |   | |   | | | |\  /| |   | '    ' |   | |   _| |   ____   / ___ \    | |  | | //
-//   _| |_  \  `-'  /_| |_\/_| |_   \ \__/ /   _| |__/ \ `.___]  |_/ /   \ \_ _| |_.' / //
-//  |_____|  `.___.'|_____||_____|   `.__.'   |________|`._____.'|____| |____|______.'  //
-//                                                                                      //
-//--------------------------------------------------------------------------------------//
-// A software project by: Pablo Martinez Ruiz del Árbol                                 //
-//--------------------------------------------------------------------------------------//
+//------------------------------------------------------------//
+// |__   __/ __ \|  \/  | |  | | |    / ____|   /\   |  __ \  //
+//    | | | |  | | \  / | |  | | |   | |  __   /  \  | |  | | //
+//    | | | |  | | |\/| | |  | | |   | | |_ | / /\ \ | |  | | //
+//    | | | |__| | |  | | |__| | |___| |__| |/ ____ \| |__| | //
+//    |_|  \____/|_|  |_|\____/|______\_____/_/    \_\_____/  //
+//------------------------------------------------------------//
+// ConfigurationGeometry class:                               //                                                           
+//                                                            //
+// Parses json files with the configuration of the detectors. //
+//                                                            //
+//------------------------------------------------------------//
+
 #ifndef ConfigurationGeometry_h
 #define ConfigurationGeometry_h 1
-
 
 #include <vector>
 #include <iostream>
@@ -26,6 +27,8 @@
 #include "assert.h"
 
 #include "Detector.hh"
+#include "Layer.hh"
+#include "Sensor.hh"
 
 
 class ConfigurationGeometry {
@@ -33,32 +36,26 @@ class ConfigurationGeometry {
 public:
 
     ConfigurationGeometry(G4String);
+    
     bool isGood();
+
+    // Information about the GEANT4 universe 
     G4double getSizeX();
     G4double getSizeY();
     G4double getSizeZ();
     G4double getZOffsetCRY();
     G4double getSizeBoxCRY();
-
-    G4double getSizeXLayer();
-    G4double getSizeYLayer();
-    G4double getSizeZLayer();
-    G4double getXOffsetLayer();
-    G4double getYOffsetLayer();
-    G4double getZOffsetLayer();
-
-    Detector *getDetector1();
-    Detector *getDetector2();
+   
+    // Detector information
+    Detector *getDetector(G4int);
+    G4int getNDetectors();
 
     void Print();
 
 private:
-
     G4double uniSizeX, uniSizeY, uniSizeZ;
     G4double zOffsetCRY, sizeBoxCRY;
-    G4double xSizeLayer, ySizeLayer, zSizeLayer, xOffsetLayer, yOffsetLayer, zOffsetLayer;
-
-    Detector *detector1, *detector2;
+    std::vector <Detector *> detectors;
     bool goodGeometry;
 
 };

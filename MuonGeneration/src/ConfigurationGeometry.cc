@@ -1,33 +1,26 @@
-//--------------------------------------------------------------------------------------//
-// _________   ___   ____    ____ _____  _____ _____      ______       _      ______    //
-//|  _   _  |.'   `.|_   \  /   _|_   _||_   _|_   _|   .' ___  |     / \    |_   _ `.  //
-//|_/ | | \_/  .-.  \ |   \/   |   | |    | |   | |    / .'   \_|    / _ \     | | `. \ //
-//    | |   | |   | | | |\  /| |   | '    ' |   | |   _| |   ____   / ___ \    | |  | | //
-//   _| |_  \  `-'  /_| |_\/_| |_   \ \__/ /   _| |__/ \ `.___]  |_/ /   \ \_ _| |_.' / //
-//  |_____|  `.___.'|_____||_____|   `.__.'   |________|`._____.'|____| |____|______.'  //
-//                                                                                      //
-//--------------------------------------------------------------------------------------//
-// A software project by: Pablo Martinez Ruiz del Árbol                                 //
-//--------------------------------------------------------------------------------------//
+//------------------------------------------------------------//
+// |__   __/ __ \|  \/  | |  | | |    / ____|   /\   |  __ \  //
+//    | | | |  | | \  / | |  | | |   | |  __   /  \  | |  | | //
+//    | | | |  | | |\/| | |  | | |   | | |_ | / /\ \ | |  | | //
+//    | | | |__| | |  | | |__| | |___| |__| |/ ____ \| |__| | //
+//    |_|  \____/|_|  |_|\____/|______\_____/_/    \_\_____/  //
+//------------------------------------------------------------//
+// ConfigurationGeometry class:                               //                                                           
+//                                                            //
+// Parses json files with the configuration of the detectors. //
+//                                                            //
+//------------------------------------------------------------//
 
 #include "ConfigurationGeometry.hh"
 #include <json/json.h>
 #include <json/value.h>
-//#include "jsoncpp.cpp"
 
 
 
-//--------------------------------------------------------------------------------------//
-// Constructor                                                                          //
-//--------------------------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+// Constructor                                                          //
+//----------------------------------------------------------------------//
 ConfigurationGeometry::ConfigurationGeometry(G4String file) {
-
-    xSizeLayer = 0;
-    ySizeLayer = 0;
-    zSizeLayer = 0;
-    xOffsetLayer = 0;
-    yOffsetLayer = 0;
-    zOffsetLayer = 0;
 
     Json::Value root;
     Json::Reader reader;
@@ -61,6 +54,7 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
 
     if( root.size() > 0 ) {
 
+        //Definition of the Universe ----------------------------------------------
         G4double xSize = atof(root["TheWorld"]["xSizeWorld"].asString().c_str());
         G4double ySize = atof(root["TheWorld"]["ySizeWorld"].asString().c_str());
         G4double zSize = atof(root["TheWorld"]["zSizeWorld"].asString().c_str());
@@ -91,88 +85,66 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
         zOffsetCRY = zOffsetCRY_ * CLHEP::cm;
         sizeBoxCRY = sizeBoxCRY_ * CLHEP::cm;
 
-        G4double xPos1 = atof(root["Detector1"]["xPosDetector"].asString().c_str()) * CLHEP::cm;
-        G4double yPos1 = atof(root["Detector1"]["yPosDetector"].asString().c_str()) * CLHEP::cm;
-        G4double zPos1 = atof(root["Detector1"]["zPosDetector"].asString().c_str()) * CLHEP::cm;
-        G4double xDir1 = atof(root["Detector1"]["xDirDetector"].asString().c_str()) * CLHEP::degree;
-        G4double yDir1 = atof(root["Detector1"]["yDirDetector"].asString().c_str()) * CLHEP::degree;
-        G4double zDir1 = atof(root["Detector1"]["zDirDetector"].asString().c_str()) * CLHEP::degree;
-        G4double xSize1 = atof(root["Detector1"]["xSizeDetector"].asString().c_str()) * CLHEP::cm;
-        G4double ySize1 = atof(root["Detector1"]["ySizeDetector"].asString().c_str()) * CLHEP::cm;
-        G4double zSize1 = atof(root["Detector1"]["zSizeDetector"].asString().c_str()) * CLHEP::cm;
-
-        detector1 = new Detector(xPos1, yPos1, zPos1, xDir1, yDir1, zDir1, xSize1, ySize1, zSize1);
-
-        const Json::Value Layer1 = root["Detector1"]["layers"];
-        for(G4int icoll = 0; icoll < Layer1.size(); ++icoll) {
-            G4double xPosLayer = atof(root["Detector1"]["layers"][icoll]["xPosLayer"].asString().c_str()) * CLHEP::cm;
-            G4double yPosLayer = atof(root["Detector1"]["layers"][icoll]["yPosLayer"].asString().c_str()) * CLHEP::cm;
-            G4double zPosLayer = atof(root["Detector1"]["layers"][icoll]["zPosLayer"].asString().c_str()) * CLHEP::cm;
-            G4double xDirLayer = atof(root["Detector1"]["layers"][icoll]["xDirLayer"].asString().c_str()) * CLHEP::degree;
-            G4double yDirLayer = atof(root["Detector1"]["layers"][icoll]["yDirLayer"].asString().c_str()) * CLHEP::degree;
-            G4double zDirLayer = atof(root["Detector1"]["layers"][icoll]["zDirLayer"].asString().c_str()) * CLHEP::degree;
-            G4double xSizeLayer_ = atof(root["Detector1"]["layers"][icoll]["xSizeLayer"].asString().c_str()) * CLHEP::cm;
-            G4double ySizeLayer_ = atof(root["Detector1"]["layers"][icoll]["ySizeLayer"].asString().c_str()) * CLHEP::cm;
-            G4double zSizeLayer_ = atof(root["Detector1"]["layers"][icoll]["zSizeLayer"].asString().c_str()) * CLHEP::cm;
-            G4int npixelX = atoi(root["Detector1"]["layers"][icoll]["npixelX"].asString().c_str())
-            G4int npixelY = atoi(root["Detector1"]["layers"][icoll]["npixelY"].asString().c_str())
-            G4double borderSizeX = atof(root["Detector1"]["layers"][icoll]["borderSizeX"].asString().c_str()) * CLHEP::cm;
-            G4double borderSizeY = atof(root["Detector1"]["layers"][icoll]["borderSizeY"].asString().c_str()) * CLHEP::cm;
-            G4double pixelSizeX = atof(root["Detector1"]["layers"][icoll]["pixelSizeX"].asString().c_str()) * CLHEP::cm;
-            G4double pixelSizeY = atof(root["Detector1"]["layers"][icoll]["pixelSizeY"].asString().c_str()) * CLHEP::cm;
-            G4double efficiency = atof(root["Detector1"]["layers"][icoll]["efficiency"].asString().c_str()) * CLHEP::cm;
-            G4double tResolution = atof(root["Detector1"]["layers"][icoll]["tResolution"].asString().c_str()) * CLHEP::ps;
-            if(efficiency < 0 || efficiency > 1) {
-                G4cerr << "\033[1;31m" << "Chamber 1 efficiency is not in the range [0, 1]" << "\033[0m" << G4endl;
+        //Definition of the Detectors ----------------------------------------------
+        const Json::Value Detectors = root["Detectors"];
+	for(G4int idet = 0; idet < Detectors.size(); ++idet) {
+	    G4double xPos = atof(root["Detectors"][idet]["xPosDetector"].asString().c_str()) * CLHEP::cm;
+            G4double yPos = atof(root["Detectors"][idet]["yPosDetector"].asString().c_str()) * CLHEP::cm;
+            G4double zPos = atof(root["Detectors"][idet]["zPosDetector"].asString().c_str()) * CLHEP::cm;
+            G4double xDir = atof(root["Detectors"][idet]["xDirDetector"].asString().c_str()) * CLHEP::degree;
+            G4double yDir = atof(root["Detectors"][idet]["yDirDetector"].asString().c_str()) * CLHEP::degree;
+            G4double zDir = atof(root["Detectors"][idet]["zDirDetector"].asString().c_str()) * CLHEP::degree;
+            G4double xSize = atof(root["Detectors"][idet]["xSizeDetector"].asString().c_str()) * CLHEP::cm;
+            G4double ySize = atof(root["Detectors"][idet]["ySizeDetector"].asString().c_str()) * CLHEP::cm;
+            G4double zSize = atof(root["Detectors"][idet]["zSizeDetector"].asString().c_str()) * CLHEP::cm;
+            if(xPos - xSize/2.0 < - uniSizeX/2.0 || yPos - ySize/2.0 < -uniSizeY/2.0 || zPos - zSize/2.0 < -uniSizeZ/2.0) {
+                G4cerr << "\033[1;31m" << "Chamber " << idet << " is not contained in the world" << "\033[0m" << G4endl;
                 goodGeometry = false;
                 return;
             }
-            detector1->AddLayer(xPosLayer, yPosLayer, zPosLayer, xDirLayer, yDirLayer, zDirLayer, xSizeLayer_, ySizeLayer_, zSizeLayer_,
-                                npixelX, npixelY, borderSizeX, borderSizeY, pixelSizeX, pixelSizeY, efficiency, tResolution);
+            Detector *detector = new Detector(xPos, yPos, zPos, xDir, yDir, zDir, xSize, ySize, zSize);
+            //Layers inside a detector ----------------------------------------------
+	    const Json::Value jLayer = root[idet]["Layers"];
+            for(G4int icoll = 0; icoll < jLayer.size(); ++icoll) {
+                G4double xPosLayer = atof(root["Detectors"][idet]["Layers"][icoll]["xPosLayer"].asString().c_str()) * CLHEP::cm;
+                G4double yPosLayer = atof(root["Detectors"][idet]["Layers"][icoll]["yPosLayer"].asString().c_str()) * CLHEP::cm;
+                G4double zPosLayer = atof(root["Detectors"][idet]["Layers"][icoll]["zPosLayer"].asString().c_str()) * CLHEP::cm;
+                G4double xDirLayer = atof(root["Detectors"][idet]["Layers"][icoll]["xDirLayer"].asString().c_str()) * CLHEP::degree;
+                G4double yDirLayer = atof(root["Detectors"][idet]["Layers"][icoll]["yDirLayer"].asString().c_str()) * CLHEP::degree;
+                G4double zDirLayer = atof(root["Detectors"][idet]["Layers"][icoll]["zDirLayer"].asString().c_str()) * CLHEP::degree;
+                G4double xSizeLayer_ = atof(root["Detectors"][idet]["Layers"][icoll]["xSizeLayer"].asString().c_str()) * CLHEP::cm;
+                G4double ySizeLayer_ = atof(root["Detectors"][idet]["Layers"][icoll]["ySizeLayer"].asString().c_str()) * CLHEP::cm;
+                G4double zSizeLayer_ = atof(root["Detectors"][idet]["Layers"][icoll]["zSizeLayer"].asString().c_str()) * CLHEP::cm;
+		Layer *layer = new Layer(xPosLayer, yPosLayer, zPosLayer, xDirLayer, yDirLayer, zDirLayer, xSizeLayer_, ySizeLayer_, zSizeLayer_);
+                //Sensors inside a layer ----------------------------------------------
+	        const Json::Value Sensors = root["Detectors"][idet]["Layers"][icoll]["Sensors"];
+                for(G4int isens = 0; isens < Sensors.size(); ++isens) {
+                    G4double xSensPos = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["xPosSensor"].asString().c_str()) * CLHEP::cm;
+                    G4double ySensPos = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["yPosSensor"].asString().c_str()) * CLHEP::cm;
+                    G4double zSensPos = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["zPosSensor"].asString().c_str()) * CLHEP::cm;
+                    G4double xSensDir = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["xDirSensor"].asString().c_str()) * CLHEP::degree;
+                    G4double ySensDir = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["yDirSensor"].asString().c_str()) * CLHEP::degree;
+                    G4double zSensDir = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["zDirSensor"].asString().c_str()) * CLHEP::degree;
+                    G4double xSensSize = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["xSizeSensor"].asString().c_str()) * CLHEP::cm;
+                    G4double ySensSize = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["ySizeSensor"].asString().c_str()) * CLHEP::cm;
+                    G4double zSensSize = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["zSizeSensor"].asString().c_str()) * CLHEP::cm;
+                    G4double interPadx = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["interPadx"].asString().c_str()) * CLHEP::cm;
+                    G4double interPady = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["interPady"].asString().c_str()) * CLHEP::cm;
+                    G4double xborder = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["xborder"].asString().c_str()) * CLHEP::cm;
+                    G4double yborder = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["yborder"].asString().c_str()) * CLHEP::cm;
+                    G4int nPadx = atoi(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["nPadx"].asString().c_str());
+                    G4int nPady = atoi(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["nPady"].asString().c_str());
+                    G4double chargeThreshold = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["chargeThreshold"].asString().c_str()) * CLHEP::cm;
+                    G4double noise = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["noise"].asString().c_str()) * CLHEP::cm;
+                    G4double tdcSigma = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["tdcSigma"].asString().c_str()) * CLHEP::cm;
+                    Sensor *sensor = new Sensor(xSensPos, ySensPos, zSensPos, xSensDir, ySensDir, zSensDir, xSensSize, ySensSize, zSensSize, nPadx, nPady, interPadx, interPady, xborder, yborder, chargeThreshold, noise, tdcSigma);
+                    layer->AddSensor(sensor);
+		}   
+                detector->AddLayer(layer);
+	    }
+            detectors.push_back(detector);	    
         }
-
-
-        G4double xPos2 = atof(root["Detector2"]["xPosDetector"].asString().c_str()) * CLHEP::cm;
-        G4double yPos2 = atof(root["Detector2"]["yPosDetector"].asString().c_str()) * CLHEP::cm;
-        G4double zPos2 = atof(root["Detector2"]["zPosDetector"].asString().c_str()) * CLHEP::cm;
-        G4double xDir2 = atof(root["Detector2"]["xDirDetector"].asString().c_str()) * CLHEP::degree;
-        G4double yDir2 = atof(root["Detector2"]["yDirDetector"].asString().c_str()) * CLHEP::degree;
-        G4double zDir2 = atof(root["Detector2"]["zDirDetector"].asString().c_str()) * CLHEP::degree;
-        G4double xSize2 = atof(root["Detector2"]["xSizeDetector"].asString().c_str()) * CLHEP::cm;
-        G4double ySize2 = atof(root["Detector2"]["ySizeDetector"].asString().c_str()) * CLHEP::cm;
-        G4double zSize2 = atof(root["Detector2"]["zSizeDetector"].asString().c_str()) * CLHEP::cm;
-        
-        detector2 = new Detector(xPos2, yPos2, zPos2, xDir2, yDir2, zDir2, xSize2, ySize2, zSize2);
-        
-        const Json::Value Layer2 = root["Detector2"]["layers"];
-        for(G4int icoll = 0; icoll < Layer2.size(); ++icoll) {
-            G4double xPosLayer = atof(root["Detector2"]["layers"][icoll]["xPosLayer"].asString().c_str()) * CLHEP::cm;
-            G4double yPosLayer = atof(root["Detector2"]["layers"][icoll]["yPosLayer"].asString().c_str()) * CLHEP::cm;
-            G4double zPosLayer = atof(root["Detector2"]["layers"][icoll]["zPosLayer"].asString().c_str()) * CLHEP::cm;
-            G4double xDirLayer = atof(root["Detector2"]["layers"][icoll]["xDirLayer"].asString().c_str()) * CLHEP::degree;
-            G4double yDirLayer = atof(root["Detector2"]["layers"][icoll]["yDirLayer"].asString().c_str()) * CLHEP::degree;
-            G4double zDirLayer = atof(root["Detector2"]["layers"][icoll]["zDirLayer"].asString().c_str()) * CLHEP::degree;
-            G4double xSizeLayer_ = atof(root["Detector2"]["layers"][icoll]["xSizeLayer"].asString().c_str()) * CLHEP::cm;
-            G4double ySizeLayer_ = atof(root["Detector2"]["layers"][icoll]["ySizeLayer"].asString().c_str()) * CLHEP::cm;
-            G4double zSizeLayer_ = atof(root["Detector2"]["layers"][icoll]["zSizeLayer"].asString().c_str()) * CLHEP::cm;
-            G4int npixelX = atoi(root["Detector2"]["layers"][icoll]["npixelX"].asString().c_str())
-            G4int npixelY = atoi(root["Detector2"]["layers"][icoll]["npixelY"].asString().c_str())
-            G4double borderSizeX = atof(root["Detector2"]["layers"][icoll]["borderSizeX"].asString().c_str()) * CLHEP::cm;
-            G4double borderSizeY = atof(root["Detector2"]["layers"][icoll]["borderSizeY"].asString().c_str()) * CLHEP::cm;
-            G4double pixelSizeX = atof(root["Detector2"]["layers"][icoll]["pixelSizeX"].asString().c_str()) * CLHEP::cm;
-            G4double pixelSizeY = atof(root["Detector2"]["layers"][icoll]["pixelSizeY"].asString().c_str()) * CLHEP::cm;
-            G4double efficiency = atof(root["Detector2"]["layers"][icoll]["efficiency"].asString().c_str()) * CLHEP::cm;
-            G4double tResolution = atof(root["Detector2"]["layers"][icoll]["tResolution"].asString().c_str()) * CLHEP::ps;
-            if(efficiency < 0 || efficiency > 1) {
-                G4cerr << "\033[1;31m" << "Chamber 2 efficiency is not in the range [0, 1]" << "\033[0m" << G4endl;
-                goodGeometry = false;
-                return;
-            }
-            detector2->AddLayer(xPosLayer, yPosLayer, zPosLayer, xDirLayer, yDirLayer, zDirLayer, xSizeLayer_, ySizeLayer_, zSizeLayer_, 
-                                npixelX, npixelY, borderSizeX, borderSizeY, pixelSizeX, pixelSizeY, efficiency, tResolution);
-        }
-
-    }
+    }    
     goodGeometry = true;
     return;
 
@@ -244,8 +216,8 @@ G4double ConfigurationGeometry::getSizeBoxCRY() {
 //----------------------------------------------------------------------//
 // Accesor to class information                                         //
 //----------------------------------------------------------------------//
-Detector * ConfigurationGeometry::getDetector1() {
-    return detector1;
+Detector * ConfigurationGeometry::getDetector(G4int a) {
+    return detectors.at(a);
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
@@ -254,8 +226,8 @@ Detector * ConfigurationGeometry::getDetector1() {
 //----------------------------------------------------------------------//
 // Accesor to class information                                         //
 //----------------------------------------------------------------------//
-Detector * ConfigurationGeometry::getDetector2() {
-    return detector2;
+G4int ConfigurationGeometry::getNDetectors() {
+    return detectors.size();
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
@@ -269,12 +241,10 @@ void ConfigurationGeometry::Print() {
     G4cout << "\033[1;34m" << "---------------------------------------Geometry information-----------------------------------" << "\033[0m" << G4endl;
     G4cout << "\033[1;34m" << "The loaded geometry is as follows: " << G4endl;
     G4cout << "\033[1;34m" << "The world is contained in [" << -uniSizeX/2.0 << ", " << uniSizeX/2.0 << "]x[" << -uniSizeY/2.0 << ", " << uniSizeY/2.0 << "]x[" << -uniSizeZ/2.0 << ", " << uniSizeZ/2.0 << "]" << G4endl;
-    G4cout << "\033[1;34m" << "Detector 1 located" << G4endl;
-    detector1->Print();
-    G4cout << "\033[1;34m" << "Detector 2 located" << G4endl;
-    detector2->Print();
+    for(G4int i = 0; i < getNDetectors(); i++) {
+        detectors.at(i)->Print();
+    }
     G4cout << "\033[0m" << G4endl;
-
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//

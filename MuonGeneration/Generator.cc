@@ -1,20 +1,12 @@
-//--------------------------------------------------------------------------------------//
-// _________   ___   ____    ____ _____  _____ _____      ______       _      ______    //
-//|  _   _  |.'   `.|_   \  /   _|_   _||_   _|_   _|   .' ___  |     / \    |_   _ `.  //
-//|_/ | | \_/  .-.  \ |   \/   |   | |    | |   | |    / .'   \_|    / _ \     | | `. \ //
-//    | |   | |   | | | |\  /| |   | '    ' |   | |   _| |   ____   / ___ \    | |  | | //
-//   _| |_  \  `-'  /_| |_\/_| |_   \ \__/ /   _| |__/ \ `.___]  |_/ /   \ \_ _| |_.' / //
-//  |_____|  `.___.'|_____||_____|   `.__.'   |________|`._____.'|____| |____|______.'  //
-//                                                                                      //
-//--------------------------------------------------------------------------------------//
-// A software project by: Pablo Martinez Ruiz del Árbol                                 //
-//--------------------------------------------------------------------------------------//
-
-
+//----------------------------------------------------------//
+//____  _____  __  __  __  __  __    ___    __    ____      //
+//(_  _)(  _  )(  \/  )(  )(  )(  )  / __)  /__\  (  _ \    //
+//  )(   )(_)(  )    (  )(__)(  )(__( (_-. /(__)\  )(_) )   //
+// (__) (_____)(_/\/\_)(______)(____)\___/(__)(__)(____/    //
+//                                                          //
+//----------------------------------------------------------//
 #include "G4RunManager.hh"
 #include "G4UImanager.hh"
-#include "G4VisExecutive.hh"
-#include "G4UIExecutive.hh"
 
 #include "RunAction.hh"
 #include "EventAction.hh"
@@ -33,28 +25,26 @@
 #include <linux/kd.h>
 
 
-//--------------------------------------------------------------------------------------//
-// Methods defined in this file                                                         //
-//--------------------------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+// Methods defined in this file                                         //
+//----------------------------------------------------------------------//
 
 //Get options from the command line
-bool getOptions(int , char **, G4String &, G4String &, G4String &, G4int &, G4long &, G4double &, G4String &);
+bool getOptions(int , char **, G4String &, G4String &, G4String &, G4int &, G4long &, G4double &);
 
 //Simply shows a cool propaganda banner
 void showBanner();
 
-//--------------------------------------------------------------------------------------//
-//--------------------------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
 
 
 
 
+//----------------------------------------------------------------------//
+// Start of the program                                                 //
+//----------------------------------------------------------------------//
 
-
-
-//--------------------------------------------------------------------------------------//
-// Start of the program                                                                 //
-//--------------------------------------------------------------------------------------//
 int main(int argc,char** argv) {
 
     showBanner();
@@ -64,11 +54,10 @@ int main(int argc,char** argv) {
     G4String nameOfCRYFile;
     G4int    numberOfEvents;
     G4long   randomSeed = 0;
-    G4double pt = 0;
-    G4String visual="";
-        
-    if(!getOptions(argc, argv, nameOfInputFile, nameOfOutputFile, nameOfCRYFile, numberOfEvents, randomSeed, pt, visual)) {
-        G4cerr << "\033[1;31m" << "Usage: ./Generator --input NameOfGeometry.json --cry cryfile.txt --output outputfile --number numberOfEvents --seed seed --pt pt --vis visualManager"  << "\033[0m" << G4endl;
+	G4double pt = 0;
+    //Options all right?
+    if(!getOptions(argc, argv, nameOfInputFile, nameOfOutputFile, nameOfCRYFile, numberOfEvents, randomSeed, pt)) {
+        G4cerr << "\033[1;31m" << "Usage: ./Generator --input NameOfGeometry.json --cry cryfile.txt --output outputfile --number numberOfEvents --seed seed --pt pt"  << "\033[0m" << G4endl;
         return -1;
     }
 
@@ -83,11 +72,11 @@ int main(int argc,char** argv) {
         G4cerr << "\033[1;31m" << "Problems in the configuration geometry file" << "\033[0m" << G4endl;
         return -1;
     }
-
+    /*
     //Initializing runManager
     G4RunManager* runManager = new G4RunManager;
 
-    runManager->SetVerboseLevel(4);   
+    runManager->SetVerboseLevel(2);
 
     DetectorConstruction *myDetector = new DetectorConstruction(geomConf);
     if(myDetector == NULL) {
@@ -124,7 +113,6 @@ int main(int argc,char** argv) {
     runManager->SetUserAction(myRunAction);
 
     EventAction *myEventAction = new EventAction(geomConf);
-    myEventAction->SetNumberOfEvents(numberOfEvents);
     if(myEventAction == NULL) {
         G4cerr << "\033[1;31m" << "Problems in EventAction" << "\033[0m" << G4endl;
         return -1;
@@ -132,75 +120,24 @@ int main(int argc,char** argv) {
 
     runManager->SetUserAction(myEventAction);
 
-
-    #ifdef G4VIS_USE
-    G4VisManager* visManager = new G4VisExecutive;
-    visManager->Initialize();
-    //visManager->RegisterGraphicsSystem (new G4HepRep);
-    #endif
-
-    if(visual == "heprep"){
-
-        G4UImanager* UI = G4UImanager::GetUIpointer();
-        UI->ApplyCommand("/run/verbose 2");
-        UI->ApplyCommand("/vis/scene/create A01Output.heprep");
-        UI->ApplyCommand("/vis/open HepRepXML");
-        UI->ApplyCommand("/vis/drawVolume world");
-        UI->ApplyCommand("/vis/scene/add/volume");
-        //UI->ApplyCommand("");
-        //UI->ApplyCommand("");
-        UI->ApplyCommand("/vis/viewer/flush");
-        //UI->ApplyCommand("/vis/verbose");
-        //UI->ApplyCommand("/vis/heprep/setFileName archivo.hep");
-    
-        //   runManager->BeamOn(numberOfEvents);
-    
-    } else if(visual == "opengl") {
-        G4UImanager* UI = G4UImanager::GetUIpointer();
-        G4UIExecutive* ui_e = new G4UIExecutive(argc, argv);
-    
-        UI->ApplyCommand("/run/verbose 2");
-        UI->ApplyCommand("/vis/scene/create A01Output.heprep");
-
-
-        UI->ApplyCommand("/vis/open OGL 600x600-0+0");
-
-        UI->ApplyCommand("/vis/drawVolume world");
-
-        UI->ApplyCommand("/vis/scene/add/volume");
-        UI->ApplyCommand("/vis/scene/add/trajectories");
-        UI->ApplyCommand("/vis/scene/endOfEventAction accumulate");
-        //UI->ApplyCommand("");
-        UI->ApplyCommand("/vis/viewer/flush");
-        UI->ApplyCommand("/vis/viewer/set/style surface");
-
-        
-        ui_e->SessionStart();
-        delete ui_e;
-    }
-
-    
     runManager->BeamOn(numberOfEvents);
-
-
-    #ifdef G4VIS_USE
-    delete visManager;
-    #endif
 
     delete runManager;
     delete geomConf;
     G4cout << "The program finished successfully" << std::endl;
+    
+    */
     return 0;
-
 }
-//--------------------------------------------------------------------------------------//
-//--------------------------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
 
 
-//--------------------------------------------------------------------------------------//
-// This method will put the command line input in the variables                         //
-//--------------------------------------------------------------------------------------//
-bool getOptions(int argc, char **argv, G4String &nameOfInputFile, G4String &nameOfOutputFile, G4String &nameOfCRYFile, G4int &numberOfEvents, G4long &randomSeed, G4double &pt, G4String &visual) {
+
+//----------------------------------------------------------------------//
+// This method will put the command line input in the variables.        //
+//----------------------------------------------------------------------//
+bool getOptions(int argc, char **argv, G4String &nameOfInputFile, G4String &nameOfOutputFile, G4String &nameOfCRYFile, G4int &numberOfEvents, G4long &randomSeed, G4double &pt) {
 
     int option_iterator;
     int option_counter = 0;
@@ -215,7 +152,6 @@ bool getOptions(int argc, char **argv, G4String &nameOfInputFile, G4String &name
             {"number",    required_argument, 0, 'n'},
             {"cry",    required_argument, 0, 'c'},
             {"pt",    required_argument, 0, 'p'},
-            {"vis",    required_argument, 0, 'v'},
             {0, 0, 0, 0}
         };
         int option_index = 0;
@@ -240,16 +176,13 @@ bool getOptions(int argc, char **argv, G4String &nameOfInputFile, G4String &name
                 numberOfEvents = (G4int) atoi(optarg);
                 break;
             case 'c':
-                nameOfCRYFile = (G4String) atoi(optarg);
+                nameOfCRYFile = (G4String) optarg;
                 break;
             case 's':
                 randomSeed = (G4long) atoi(optarg);
                 break;
             case 'p':
                 pt = (G4double) atof(optarg);
-                break;
-            case 'v':
-                visual = (G4String) optarg;
                 break;
             case '?':
                 return false;
@@ -266,27 +199,25 @@ bool getOptions(int argc, char **argv, G4String &nameOfInputFile, G4String &name
     return true;
 
 }
-//--------------------------------------------------------------------------------------//
-//--------------------------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
 
 
 
-//--------------------------------------------------------------------------------------//
-// Just showing the banner                                                              //
-//--------------------------------------------------------------------------------------//
+
+//----------------------------------------------------------------------//
+// Just showing the banner.                                             //
+//----------------------------------------------------------------------//
+
 void showBanner() {
 
-    G4cout << "\033[1;34m "
-           << " _________   ___   ____    ____ _____  _____ _____      ______       _      ______    "        <<  G4endl
-           << "|  _   _  |.'   `.|_   \\  /   _|_   _||_   _|_   _|   .' ___  |     / \\    |_   _ `.  "      <<  G4endl
-           << "|_/ | | \\_/  .-.  \\ |   \\/   |   | |    | |   | |    / .'   \\_|    / _ \\     | | `. \\ "  <<  G4endl
-           << "    | |   | |   | | | |\\  /| |   | '    ' |   | |   _| |   ____   / ___ \\    | |  | | "      <<  G4endl
-           << "   _| |_  \\  `-'  /_| |_\\/_| |_   \\ \\__/ /   _| |__/ \\ `.___]  |_/ /   \\ \\_ _| |_.' / " <<  G4endl
-           << "  |_____|  `.___.'|_____||_____|   `.__.'   |________|`._____.'|____| |____|______.'  "        <<  G4endl
-           << "                                                                                      "        <<  G4endl
-           << "\033[0m"                                                                                       << G4endl;
-
+    G4cout << "\033[1;34m"
+	   << " ____  _____  __  __  __  __  __    ___    __    ____     ___  ____  __  __  __  __  __      __   ____  _____  ____   " << G4endl 
+	   << "(_  _)(  _  )(  \\/  )(  )(  )(  )  / __)  /__\\  (  _ \\   / __)(_  _)(  \\/  )(  )(  )(  )    /__\\ (_  _)(  _  )(  _ \\  " << G4endl
+	   << "  )(   )(_)(  )    (  )(__)(  )(__( (_-. /(__)\\  )(_) )  \\__ \\ _)(_  )    (  )(__)(  )(__  /(__)\\  )(   )(_)(  )   /  " << G4endl
+	   << " (__) (_____)(_/\\/\\_)(______)(____)\\___/(__)(__)(____/   (___/(____)(_/\\/\\_)(______)(____)(__)(__)(__) (_____)(_)\\_)  " << G4endl
+           << "\033[0m"                                                  << G4endl;
 }
-//--------------------------------------------------------------------------------------//
-//--------------------------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
 

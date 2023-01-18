@@ -1,21 +1,3 @@
-//----------------------------------------------------------------------//
-// ___  ___                    _____           _                        //
-// |  \/  |                   /  ___|         | |                       //
-// | .  . |_   _  ___  _ __   \ `--. _   _ ___| |_ ___ _ __ ___  ___    //
-// | |\/| | | | |/ _ \| '_ \   `--. \ | | / __| __/ _ \ '_ ` _ \/ __|   //
-// | |  | | |_| | (_) | | | | /\__/ / |_| \__ \ ||  __/ | | | | \__ \   //
-// \_|  |_/\__,_|\___/|_| |_| \____/ \__, |___/\__\___|_| |_| |_|___/   //
-//                                    __/ |                             //
-//----------------------------------------------------------------------//
-// A project by: C. Diez, P. Gomez and P. Martinez                      //
-//----------------------------------------------------------------------//
-//----------------------------------------------------------------------//
-// PrimaryGenerationAction.cc                                           //
-//----------------------------------------------------------------------//
-// This class handles the generation of events by calling CRY.          //
-//----------------------------------------------------------------------//
-//----------------------------------------------------------------------//
-
 #include <iomanip>
 #include "PrimaryGeneratorAction.hh"
 #include <sstream>
@@ -97,7 +79,6 @@ void PrimaryGeneratorAction::UpdateCRY(std::string* MessInput) {
         if(t1<0) t1=t1*(-1);
         seedValue=(long) t1;
     }
-    
 
     CLHEP::HepRandomEngine* MyRndEngine = CLHEP::HepRandom::getTheEngine();
     MyRndEngine->setSeed(seedValue,1);
@@ -159,13 +140,10 @@ void PrimaryGeneratorAction::CRYFromFile(G4String newValue) {
         double t1=tim.tv_sec+(tim.tv_usec)*100000;
         if(t1<0) t1=t1*(-1);
         seedValue=(long) t1;
-        randomSeed = seedValue;
     }
-    
-        
     // set random number generator
     CLHEP::HepRandomEngine* MyRndEngine = CLHEP::HepRandom::getTheEngine();
-    MyRndEngine->setSeed(seedValue,1);
+    MyRndEngine->setSeed(randomSeed,1);
     RNGWrapper<CLHEP::HepRandomEngine>::set(MyRndEngine,&CLHEP::HepRandomEngine::flat);
     setup->setRandomFunction(RNGWrapper<CLHEP::HepRandomEngine>::rng);
 

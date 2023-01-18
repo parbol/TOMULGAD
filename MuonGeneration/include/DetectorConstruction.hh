@@ -1,15 +1,3 @@
-//--------------------------------------------------------------------------------------//
-// _________   ___   ____    ____ _____  _____ _____      ______       _      ______    //
-//|  _   _  |.'   `.|_   \  /   _|_   _||_   _|_   _|   .' ___  |     / \    |_   _ `.  //
-//|_/ | | \_/  .-.  \ |   \/   |   | |    | |   | |    / .'   \_|    / _ \     | | `. \ //
-//    | |   | |   | | | |\  /| |   | '    ' |   | |   _| |   ____   / ___ \    | |  | | //
-//   _| |_  \  `-'  /_| |_\/_| |_   \ \__/ /   _| |__/ \ `.___]  |_/ /   \ \_ _| |_.' / //
-//  |_____|  `.___.'|_____||_____|   `.__.'   |________|`._____.'|____| |____|______.'  //
-//                                                                                      //
-//--------------------------------------------------------------------------------------//
-// A software project by: Pablo Martinez Ruiz del Árbol                                 //
-//--------------------------------------------------------------------------------------//
-
 #ifndef DetectorConstruction_h
 #define DetectorConstruction_h 1
 
@@ -22,7 +10,6 @@
 #include "G4LogicalVolume.hh"
 #include "G4VPhysicalVolume.hh"
 #include "G4Box.hh"
-#include "G4SDManager.hh"
 
 
 class G4VPhysicalVolume;
@@ -44,17 +31,14 @@ private:
     void ConstructMaterials();
     void DestroyMaterials();
     void DumpGeometricalTree(G4VPhysicalVolume*, G4int);
-    G4LogicalVolume* getPhysicalChamber(G4String , Detector * , G4int, G4SDManager* );
-    G4ThreeVector getMaterialColor(G4String);
-    
+
 private:
     DetectorConstMessenger* messenger;
 
     ConfigurationGeometry *myConf;
+
     //In the future we will move this to a map
     std::map<G4String, G4Material*> materials;
-
-
 
 };
 
