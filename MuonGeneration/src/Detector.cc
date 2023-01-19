@@ -6,7 +6,7 @@
 //----------------------------------------------------------------------//
 // Constructor                                                          //
 //----------------------------------------------------------------------//
-Detector::Detector(G4double xPos, G4double yPos, G4double zPos, G4double xRot, G4double yRot, G4double zRot, G4double xSize, G4double ySize, G4double zSize) : GeomDet(xPos, yPos, zPos, xRot, yRot, zRot, xSize, ySize, zSize) {};
+Detector::Detector(G4double xPos, G4double yPos, G4double zPos, G4double xRot, G4double yRot, G4double zRot, G4double xSize, G4double ySize, G4double zSize) : GeomObject(xPos, yPos, zPos, xRot, yRot, zRot, xSize, ySize, zSize) {};
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
 
@@ -50,8 +50,8 @@ void Detector::Print() {
     G4cout << "\033[1;34m" << "Location x: " << pos.x() << ", y: " << pos.y() << ", z: " << pos.z() << G4endl;
     G4cout << "\033[1;34m" << "Rotation x: " << rots.x() << ", y: " << rots.y() << ", z: " << rots.z() << G4endl;
     G4cout << "\033[1;34m" << "Sizes x: " << sizes.x() << ", y: " << sizes.y() << ", z: " << sizes.z() << G4endl;
-    G4cout << "\033[1;34m" << "Number of layers " << getNLayers() << G4endl;
-    for(G4int i = 0; i < getNLayers(); i++) {
+    G4cout << "\033[1;34m" << "Number of layers " << GetNLayers() << G4endl;
+    for(G4int i = 0; i < GetNLayers(); i++) {
         layers.at(i)->Print();
     }
     G4cout << "\033[0m" << G4endl;

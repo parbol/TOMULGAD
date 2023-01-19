@@ -24,7 +24,6 @@ public:
     void              setVolume(G4VPhysicalVolume *);
     void              Print();
 
-private:
     G4RotationMatrix rot, invrot;
     G4ThreeVector pos;
     G4ThreeVector sizes;
@@ -32,6 +31,8 @@ private:
     G4ErrorMatrix *superMatrix;
     G4ErrorMatrix *superVector;
     G4VPhysicalVolume * volume;
+
+private:
 
 };
 

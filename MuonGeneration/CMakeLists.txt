@@ -37,10 +37,8 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 #set(CRY_LIB "/home/pablom/Documents/geant4/work/MTP/cry/cry_v1.7/lib/libCRY.a")
 #"/home/carlos/geant4/MPWork/MTP/cry/cry_v1.7/lib/libCRY.a"
 #set(CRY_LIB $ENV{G4CRYLIBDIR})
-set(CRY_LIB "$ENV{G4WORKDIR}/MTP/cry/cry_v1.7/lib/libCRY.a")
+set(CRY_LIB "$ENV{G4WORKDIR}/cry/cry_v1.7/lib/libCRY.a")
 find_library(CRY_LIB CRY $ENV{CRY_LIB_PATH})
-include_directories("$ENV{G4WORKDIR}/MTP/cry/cry_v1.7/src")
-
 
 #Leibniz
 #include_directories("/home/mpablo/Documents/jsoncpp/include/")
@@ -48,16 +46,11 @@ include_directories("$ENV{G4WORKDIR}/MTP/cry/cry_v1.7/src")
 #include_directories("/home/pablom/Documents/geant4/work/MTP/cry/cry_v1.7/src/")
 
 #server
-#include_directories("/home/pablom/Documentos/work/jsoncpp/include/")
-#set(JSONCPP_LIB "/home/pablom/Documentos/work/jsoncpp/lib/libjsoncpp.a")
-#find_library(JSONCPP_LIB JSONCPPY $ENV{JSONCPP_LIB_PATH})
-#include_directories("/home/pablom/Documentos/work/MTP/cry/cry_v1.7/src/")
-include_directories("/home/carlos/geant4/jsoncpp/include/")
-set(JSONCPP_LIB "/home/carlos/geant4/jsoncpp/lib/libjsoncpp.a")
+include_directories("/home/pablo/Documentos/jsoncpp/include/")
+set(JSONCPP_LIB "/home/pablo/Documentos/jsoncpp-build/lib/libjsoncpp.a")
 find_library(JSONCPP_LIB JSONCPPY $ENV{JSONCPP_LIB_PATH})
+include_directories("/home/pablo/Documentos/TOMULGAD/cry/cry_v1.7/src/")
 
-# CADMesh
-find_package(cadmesh)
 
 # Find JSONCPP library on local system.
 #find_package(JSONCPP)
@@ -72,12 +65,7 @@ find_package(cadmesh)
 add_executable(Generator Generator.cc ${sources} ${headers})
 #target_link_libraries(Generator ${Geant4_LIBRARIES} ${CRY_LIB})
 #target_link_libraries(Generator ${Geant4_LIBRARIES} jsoncpp ${CRY_LIB})
-#target_link_libraries(Generator ${Geant4_LIBRARIES} ${JSONCPP_LIB} ${CRY_LIB})
-#CAD
-target_link_libraries(Generator ${Geant4_LIBRARIES} ${JSONCPP_LIB} ${CRY_LIB} ${cadmesh_LIBRARIES})
-
-
-
+target_link_libraries(Generator ${Geant4_LIBRARIES} ${JSONCPP_LIB} ${CRY_LIB})
 #----------------------------------------------------------------------------
 # Copy all scripts to the build directory, i.e. the directory in which we
 # build B1. This is so that we can run the executable directly because it
