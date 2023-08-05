@@ -102,17 +102,28 @@ cd jsoncpp-build
 
 cmake -DJSONCPP_WITH_PKGCONFIG_SUPPORT=OFF -DJSONCPP_WITH_TESTS=OFF ../jsoncpp/
 
-mkdir ../jsoncpp/lib/
-
-cp src/lib_json/libjsoncpp.a ../jsoncpp/lib/
-
-cd ..
-
 More instructions can be found at:
 
 http://tudat.tudelft.nl/projects/tudat/wiki/JSONCPP
 
 You also need to have installed geant4 and ROOT.
+
+
+-------------------------------------------------------------
+4.- Install TOMULGAD
+-------------------------------------------------------------
+
+TOMULGAD can be obtained from github:
+
+git clone https://github.com/parbol/TOMULGAD.git
+
+Take into account that TOMULGAD comes with a version of the CRY generator that has to be compiled
+indepedently from the GEANT4 TOMULGAD program.
+
+4.1 Compile CRY libraries
+
+
+4.2 Compile TOMULGAD
 
 
 
