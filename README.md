@@ -26,14 +26,23 @@ wget https://gitlab.cern.ch/geant4/geant4/-/archive/v11.1.2/geant4-v11.1.2.tar.g
 1.3 Setup installation and compile
 
 cd $HOME
+
 wget https://gitlab.cern.ch/geant4/geant4/-/archive/v11.1.2/geant4-v11.1.2.tar.gz
+
 gunzip geant4-v11.1.2.tar.gz
+
 tar -xvf geant4-v11.1.2.tar
+
 rm geant4-v11.1.2.tar
+
 mkdir geant4-v11.1.2-build
+
 cd geant4-v11.1.2-build
+
 cmake -DCMAKE_INSTALL_PREFIX=../geant4-v11.1.2-install -DGEANT4_INSTALL_DATA=ON -DGEANT4_USE_SYSTEM_EXPAT=OFF ../geant4-v11.1.2
+
 make -j8
+
 make install
 
 
@@ -56,14 +65,23 @@ wget https://root.cern/download/root_v6.28.04.source.tar.gz
 2.3 Setup installation and compile 
 
 cd $HOME
+
 wget https://root.cern/download/root_v6.28.04.source.tar.gz
+
 gunzip root_v6.28.04.source.tar.gz
+
 tar -xvf root_v6.28.04.source.tar
+
 rm root_v6.28.04.source.tar
+
 mkdir root_v6.28.04-build root_v6.28.04-install
+
 cd root_v6.28.04-build
+
 cmake -DCMAKE_INSTALL_PREFIX=../root_v6.28.04-install ../root-6.28.04
+
 cmake --build . --target install
+
 echo "source $HOME/root_v6.28.04-install/bin/thisroot.sh" >> $HOME/.bashrc
 
 
@@ -75,12 +93,19 @@ You can do this by just copy-pasting these lines:
 
 #Make sure you are outside of MTP release area
 cd $HOME/
+
 git clone https://github.com/open-source-parsers/jsoncpp jsoncpp
+
 mkdir jsoncpp-build
+
 cd jsoncpp-build
+
 cmake -DJSONCPP_WITH_PKGCONFIG_SUPPORT=OFF -DJSONCPP_WITH_TESTS=OFF ../jsoncpp/
+
 mkdir ../jsoncpp/lib/
+
 cp src/lib_json/libjsoncpp.a ../jsoncpp/lib/
+
 cd ..
 
 More instructions can be found at:
@@ -89,9 +114,7 @@ http://tudat.tudelft.nl/projects/tudat/wiki/JSONCPP
 
 You also need to have installed geant4 and ROOT.
 
-And the finally install the software:
 
-git clone git@github.com:parbol/MTP.git -b JBWhiteLabel
 
 
 
