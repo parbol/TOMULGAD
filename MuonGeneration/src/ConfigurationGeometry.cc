@@ -87,13 +87,12 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
 
         //Definition of the Detectors ----------------------------------------------
         const Json::Value Detectors = root["Detectors"];
-	for(G4int idet = 0; idet < Detectors.size(); ++idet) {
-	    G4double xPos = atof(root["Detectors"][idet]["xPosDetector"].asString().c_str()) * CLHEP::cm;
+	    for(G4int idet = 0; idet < Detectors.size(); ++idet) {
+	        G4double xPos = atof(root["Detectors"][idet]["xPosDetector"].asString().c_str()) * CLHEP::cm;
             G4double yPos = atof(root["Detectors"][idet]["yPosDetector"].asString().c_str()) * CLHEP::cm;
             G4double zPos = atof(root["Detectors"][idet]["zPosDetector"].asString().c_str()) * CLHEP::cm;
             G4double xDir = atof(root["Detectors"][idet]["xDirDetector"].asString().c_str()) * CLHEP::degree;
-            G4double yDir = atof(root["Detectors"][idet]["yDirDetector"].asString().c_str()) * CLHEP::degree;
-            G4double zDir = atof(root["Detectors"][idet]["zDirDetector"].asString().c_str()) * CLHEP::degree;
+            G4double yDir = atof(root["Detectors"][idet]["yDirDetector"].asString().c_str()) * CLHEP::degree;            G4double zDir = atof(root["Detectors"][idet]["zDirDetector"].asString().c_str()) * CLHEP::degree;
             G4double xSize = atof(root["Detectors"][idet]["xSizeDetector"].asString().c_str()) * CLHEP::cm;
             G4double ySize = atof(root["Detectors"][idet]["ySizeDetector"].asString().c_str()) * CLHEP::cm;
             G4double zSize = atof(root["Detectors"][idet]["zSizeDetector"].asString().c_str()) * CLHEP::cm;
@@ -104,7 +103,7 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
             }
             Detector *detector = new Detector(xPos, yPos, zPos, xDir, yDir, zDir, xSize, ySize, zSize);
             //Layers inside a detector ----------------------------------------------
-	    const Json::Value jLayer = root[idet]["Layers"];
+	        const Json::Value jLayer = root[idet]["Layers"];
             for(G4int icoll = 0; icoll < jLayer.size(); ++icoll) {
                 G4double xPosLayer = atof(root["Detectors"][idet]["Layers"][icoll]["xPosLayer"].asString().c_str()) * CLHEP::cm;
                 G4double yPosLayer = atof(root["Detectors"][idet]["Layers"][icoll]["yPosLayer"].asString().c_str()) * CLHEP::cm;
@@ -115,9 +114,9 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
                 G4double xSizeLayer_ = atof(root["Detectors"][idet]["Layers"][icoll]["xSizeLayer"].asString().c_str()) * CLHEP::cm;
                 G4double ySizeLayer_ = atof(root["Detectors"][idet]["Layers"][icoll]["ySizeLayer"].asString().c_str()) * CLHEP::cm;
                 G4double zSizeLayer_ = atof(root["Detectors"][idet]["Layers"][icoll]["zSizeLayer"].asString().c_str()) * CLHEP::cm;
-		Layer *layer = new Layer(xPosLayer, yPosLayer, zPosLayer, xDirLayer, yDirLayer, zDirLayer, xSizeLayer_, ySizeLayer_, zSizeLayer_);
+		        Layer *layer = new Layer(xPosLayer, yPosLayer, zPosLayer, xDirLayer, yDirLayer, zDirLayer, xSizeLayer_, ySizeLayer_, zSizeLayer_);
                 //Sensors inside a layer ----------------------------------------------
-	        const Json::Value Sensors = root["Detectors"][idet]["Layers"][icoll]["Sensors"];
+	            const Json::Value Sensors = root["Detectors"][idet]["Layers"][icoll]["Sensors"];
                 for(G4int isens = 0; isens < Sensors.size(); ++isens) {
                     G4double xSensPos = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["xPosSensor"].asString().c_str()) * CLHEP::cm;
                     G4double ySensPos = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["yPosSensor"].asString().c_str()) * CLHEP::cm;
@@ -139,9 +138,9 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
                     G4double tdcSigma = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["tdcSigma"].asString().c_str()) * CLHEP::cm;
                     Sensor *sensor = new Sensor(xSensPos, ySensPos, zSensPos, xSensDir, ySensDir, zSensDir, xSensSize, ySensSize, zSensSize, nPadx, nPady, interPadx, interPady, xborder, yborder, chargeThreshold, noise, tdcSigma);
                     layer->AddSensor(sensor);
-		}   
+		        }   
                 detector->AddLayer(layer);
-	    }
+	        }
             detectors.push_back(detector);	    
         }
     }    

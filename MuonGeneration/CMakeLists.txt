@@ -33,33 +33,14 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the Geant4 libraries
 #
-#set(CRY_LIB "/home/pablom/Documents/cry/cry_v1.7/lib/libCRY.a")
-#set(CRY_LIB "/home/pablom/Documents/geant4/work/MTP/cry/cry_v1.7/lib/libCRY.a")
-#"/home/carlos/geant4/MPWork/MTP/cry/cry_v1.7/lib/libCRY.a"
-#set(CRY_LIB $ENV{G4CRYLIBDIR})
 set(CRY_LIB "$ENV{G4WORKDIR}/cry/cry_v1.7/lib/libCRY.a")
 find_library(CRY_LIB CRY $ENV{CRY_LIB_PATH})
-
-#Leibniz
-#include_directories("/home/mpablo/Documents/jsoncpp/include/")
-#set(JSONCPP_LIB "/home/mpablo/Documents/jsoncpp/lib/libjsoncpp.a")
-#include_directories("/home/pablom/Documents/geant4/work/MTP/cry/cry_v1.7/src/")
-
-#server
-include_directories("/home/pablo/Documentos/jsoncpp/include/")
-set(JSONCPP_LIB "/home/pablo/Documentos/jsoncpp-build/lib/libjsoncpp.a")
+include_directories("$ENV{JSONCPPDIR}/include/")
+set(JSONCPP_LIB "$ENV{JSONCPPDIR}/lib/libjsoncpp.a")
 find_library(JSONCPP_LIB JSONCPPY $ENV{JSONCPP_LIB_PATH})
-include_directories("/home/pablo/Documentos/TOMULGAD/cry/cry_v1.7/src/")
+include_directories("$ENV{G4WORKDIR}/cry/cry_v1.7/src/")
 
 
-# Find JSONCPP library on local system.
-#find_package(JSONCPP)
-
-#if(NOT APPLE)
-#  include_directories(SYSTEM AFTER "/home/mpablo/Documents/jsoncpp/include/")
-#else( )
-#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem \"/home/mpablo/Documents/jsoncpp/include/\"")
-#endif( )
 ##############ADDED FOR JSONCPP#######################
 
 add_executable(Generator Generator.cc ${sources} ${headers})

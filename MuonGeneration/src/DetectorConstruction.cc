@@ -1,5 +1,4 @@
 #include "DetectorConstruction.hh"
-#include "DriftChamberLayer.hh"
 
 #include "G4FieldManager.hh"
 #include "G4TransportationManager.hh"
@@ -78,7 +77,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     G4VSolid* worldSolid = new G4Box("worldBox", myConf->getSizeX()/2.0 , myConf->getSizeY()/2.0 , myConf->getSizeZ()/2.0 );
     G4LogicalVolume* worldLogical = new G4LogicalVolume(worldSolid, materials["air"], "worldLogical",0,0,0);
     G4VPhysicalVolume* worldPhysical = new G4PVPlacement(0, G4ThreeVector(0, 0, 0), worldLogical, "worldPhysical", worldLogicalPrim, false, 0);
-
+    /*
     G4VSolid *lgadSensor = new G4Box("lgadSensor", 25.0*CLHEP::cm, 25.0*CLHEP::cm, 0.05*CLHEP::cm);
     G4LogicalVolume *lgadSensorLogical = new G4LogicalVolume(lgadSensor, materials["silicon"], "lgadSensor", 0, 0, 0);
 
@@ -99,7 +98,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     lgadSensorLogical->SetSensitiveDetector(lgad);
  
     DumpGeometricalTree(worldPhysicalPrim, 3);
-
+    */
     return worldPhysicalPrim;
 
 }

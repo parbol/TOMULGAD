@@ -16,7 +16,7 @@
 #include "G4UImanager.hh"
 #include "G4ios.hh"
 
-#include "DriftChamberLayerHit.hh"
+#include "LGADSensorHit.hh"
 
 #include "ConfigurationGeometry.hh"
 
@@ -74,16 +74,16 @@ void EventAction::EndOfEventAction(const G4Event* evt) {
 
     auto man = G4AnalysisManager::Instance();
     G4HCofThisEvent * HCE = evt->GetHCofThisEvent();
-    std::vector<DriftChamberLayerHitsCollection* > DHC1;
-    std::vector<DriftChamberLayerHitsCollection* > DHC2;
+    std::vector<LGADSensorHitsCollection* > DHC1;
+    std::vector<LGADSensorHitsCollection* > DHC2;
     //G4SDManager* SDman = G4SDManager::GetSDMpointer();
 
     if(HCE) {
-        DriftChamberLayerHitsCollection *a = 0;
-        a = (DriftChamberLayerHitsCollection*)(HCE->GetHC(DHCID.at(0)));
+        LGADSensorHitsCollection *a = 0;
+        a = (LGADSensorHitsCollection*)(HCE->GetHC(DHCID.at(0)));
         DHC1.push_back(a);
-        DriftChamberLayerHitsCollection *b = 0;
-        b = (DriftChamberLayerHitsCollection*)(HCE->GetHC(DHCID.at(1)));
+        LGADSensorHitsCollection *b = 0;
+        b = (LGADSensorHitsCollection*)(HCE->GetHC(DHCID.at(1)));
         DHC2.push_back(b);
     }
 
@@ -97,7 +97,7 @@ void EventAction::EndOfEventAction(const G4Event* evt) {
             //if(n_hit < geom->getDetector1()->getNLayers()/2.0) return;
             if(n_hit == 0) return;
             for(G4int hit = 0; hit < n_hit; hit++) {
-                DriftChamberLayerHit* aHit = (*(DHC1.at(0)))[hit];
+                LGADSensorHit* aHit = (*(DHC1.at(0)))[hit];
                 G4ThreeVector pos = aHit->GetLocalPos();
                 G4ThreeVector meas = aHit->GetLocalMeas();
                 G4ThreeVector errormeas = aHit->GetLocalMeasError();
@@ -117,7 +117,7 @@ void EventAction::EndOfEventAction(const G4Event* evt) {
         if(DHC2.at(0)) {
             G4int n_hit = DHC2.at(0)->entries();
             for(G4int hit = 0; hit < n_hit; hit++) {
-                DriftChamberLayerHit* aHit = (*(DHC2.at(0)))[hit];
+                LGADSensorHit* aHit = (*(DHC2.at(0)))[hit];
                 G4ThreeVector pos = aHit->GetLocalPos();
                 G4ThreeVector meas = aHit->GetLocalMeas();
                 G4ThreeVector errormeas = aHit->GetLocalMeasError();

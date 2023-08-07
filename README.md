@@ -45,6 +45,9 @@ make -j8
 
 make install
 
+1.4 Add information to setup.sh
+
+Write the path to the install version of geant4 in setup.sh
 
 -------------------------------------------------------------
 2.- Install ROOT from source and compile
@@ -102,6 +105,12 @@ cd jsoncpp-build
 
 cmake -DJSONCPP_WITH_PKGCONFIG_SUPPORT=OFF -DJSONCPP_WITH_TESTS=OFF ../jsoncpp/
 
+cd $HOME/
+
+mkdir jsoncpp/lib/
+
+cp jsoncpp-build/lib/libjsoncpp.a jsoncpp/lib/
+
 More instructions can be found at:
 
 http://tudat.tudelft.nl/projects/tudat/wiki/JSONCPP
@@ -113,17 +122,54 @@ You also need to have installed geant4 and ROOT.
 4.- Install TOMULGAD
 -------------------------------------------------------------
 
+4.1 Get TOMULGAD
+
 TOMULGAD can be obtained from github:
 
 git clone https://github.com/parbol/TOMULGAD.git
 
+Adapt the setup.sh file to point to the path in which you have installed TOMULGAD.
+
+source setup.sh
+
 Take into account that TOMULGAD comes with a version of the CRY generator that has to be compiled
 indepedently from the GEANT4 TOMULGAD program.
 
-4.1 Compile CRY libraries
+4.2 Compile CRY libraries
 
+source setup.sh
 
-4.2 Compile TOMULGAD
+cd $G4WORKDIR/cry/cry_v1.7/
+
+source setup.sh
+
+make
+
+cd $G4WORKDIR
+
+-------------------------------------------------------------
+5.- Setup MuonGeneration software (telescope simulator)
+-------------------------------------------------------------
+
+5.1 Setup the Makefile
+
+This step only needs to be done once and it will produce the Makefile for the project. Unless
+there are changes in the libraries this process should not be repeated.
+
+cd $G4WORKDIR
+
+source setup.sh
+
+mkdir MuonGeneration-build
+
+cd MuonGeneration-build
+
+cmake -DGeant4_DIR=$G4INSTALLDIR ../MuonGeneration/
+
+5.2 Compile program
+
+In MuonGeneration-build simply type "make"
+
 
 
 
