@@ -77,8 +77,28 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     G4VSolid* worldSolid = new G4Box("worldBox", myConf->getSizeX()/2.0 , myConf->getSizeY()/2.0 , myConf->getSizeZ()/2.0 );
     G4LogicalVolume* worldLogical = new G4LogicalVolume(worldSolid, materials["air"], "worldLogical",0,0,0);
     G4VPhysicalVolume* worldPhysical = new G4PVPlacement(0, G4ThreeVector(0, 0, 0), worldLogical, "worldPhysical", worldLogicalPrim, false, 0);
-    /*
-    G4VSolid *lgadSensor = new G4Box("lgadSensor", 25.0*CLHEP::cm, 25.0*CLHEP::cm, 0.05*CLHEP::cm);
+    
+    //we start by creating solids for the different components
+    G4VSolid *detector = new G4Box("detector", geom->getDetector(0)->getSizes()[0]*CLHEP::cm, 
+                                               geom->getDetector(0)->getSizes()[1]*CLHEP::cm,
+                                               geom->getDetector(0)->getSizes()[2]*CLHEP::cm);
+    G4LogicalVolume *detectorLogical = new G4LogicalVolume(detector, materials["air"], "detector", 0, 0, 0);
+    
+    G4VSolid *layer = new G4Box("layer", geom->getDetector(0)->getLayer(0)->getSizes()[0]*CLHEP::cm, 
+                                         geom->getDetector(0)->getLayer(0)->getSizes()[1]*CLHEP::cm,
+                                         geom->getDetector(0)->getLayer(0)->getSizes()[2]*CLHEP::cm);
+    G4LogicalVolume *layerLogical = new G4LogicalVolume(detector, materials["air"], "layer", 0, 0, 0);
+
+
+    G4VSolid *lgadSensor = new G4Box("lgadSensor", geom->getDetector(0)->getLayer(0)->getSensor(0)->getSizes()[0]*CLHEP::cm, 
+                                                   geom->getDetector(0)->getLayer(0)->getSensor(0)->getSizes()[1]*CLHEP::cm, 
+                                                   geom->getDetector(0)->getLayer(0)->getSensor(0)->getSizes()[2]*CLHEP::cm);
+    G4LogicalVolume *lgadSensorLogical = new G4LogicalVolume(lgadSensor, materials["silicon"], "lgadSensor", 0, 0, 0);
+
+    G4VSolid *lgadSupportingPlate = new G4Box("lgadSupportingPlate", geom->getDetector(0)->getSizes()[0]*CLHEP::cm, 
+                                                   geom->getDetector(0)->getSizes()[1]*CLHEP::cm, 
+                                                   geom->getDetector(0)->getSizes()[2]*CLHEP::cm);
+
     G4LogicalVolume *lgadSensorLogical = new G4LogicalVolume(lgadSensor, materials["silicon"], "lgadSensor", 0, 0, 0);
 
     G4VSolid *lgadUnit = new G4Box("lgadUnit", 30.0*CLHEP::cm, 30.0*CLHEP::cm, 1.0*CLHEP::cm);
