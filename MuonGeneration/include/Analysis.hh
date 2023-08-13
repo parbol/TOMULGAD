@@ -5,7 +5,7 @@
 
 
 //using namespace G4Csv;
-//using namespace G4Root;
+using namespace G4Root;
 //using namespace G4Xml;
 
 #endif

@@ -15,8 +15,6 @@ if __name__=='__main__':
     if opts.name == '':
         print('Please specify a name for the output configuration file')
         sys.exit()
-
-    
     
     nDetectors = 2
     nLayers = 3
@@ -46,13 +44,13 @@ if __name__=='__main__':
         detectors.append(detector)
     data['Detectors'] = detectors
 
- 
+    #This must be configured for every setup 
     detectorXPosition = [0, 0]
     detectorYPosition = [0, 0]
     detectorZPosition = [25, -25]
-    detectorXSize = [7, 7, 7]
-    detectorYSize = [7, 7, 7]
-    detectorZSize = [30, 30, 30]
+    detectorXSize = [7, 7]
+    detectorYSize = [7, 7]
+    detectorZSize = [30, 30]
     layerXPosition = [0, 0, 0]
     layerYPosition = [0, 0, 0]
     layerZPosition = [10, 0, -10]
@@ -70,6 +68,33 @@ if __name__=='__main__':
     sensorSizeZ = 0.05
     sensorZSize = [sensorSizeZ, sensorSizeZ, sensorSizeZ, sensorSizeZ]
 
+    for i, det in enumerate(data['Detectors']):
+        det['xPosDetector'] = detectorXPosition[i]  
+        det['yPosDetector'] = detectorYPosition[i]        
+        det['zPosDetector'] = detectorZPosition[i]
+        det['xSizeDetector'] = detectorXSize[i]
+        det['ySizeDetector'] = detectorYSize[i]
+        det['zSizeDetector'] = detectorZSize[i]
+        for j, layer in enumerate(det['Layers']):
+            layer['xPosLayer'] = layerXPosition[j]
+            layer['yPosLayer'] = layerYPosition[j]
+            layer['zPosLayer'] = layerZPosition[j]
+            layer['xSizeLayer'] = layerXSize[j]
+            layer['ySizeLayer'] = layerYSize[j]
+            layer['zSizeLayer'] = layerZSize[j]
+            for k, sensor in enumerate(layer['Sensors']):
+                sensor['xPosSensor'] = sensorXPosition[k]
+                sensor['yPosSensor'] = sensorYPosition[k]
+                sensor['zPosSensor'] = sensorZPosition[k]
+                sensor['xSizeSensor'] = sensorXSize[k]
+                sensor['ySizeSensor'] = sensorYSize[k]
+                sensor['zSizeSensor'] = sensorZSize[k]
 
+
+    # Serializing json
+    json_object = json.dumps(data, indent=4)
+    # Writing to sample.json
+    with open(opts.name, "w") as outfile:
+        outfile.write(json_object)
 
 

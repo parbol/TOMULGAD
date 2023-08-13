@@ -53,7 +53,6 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
     }
 
     if( root.size() > 0 ) {
-
         //Definition of the Universe ----------------------------------------------
         G4double xSize = atof(root["TheWorld"]["xSizeWorld"].asString().c_str());
         G4double ySize = atof(root["TheWorld"]["ySizeWorld"].asString().c_str());
@@ -92,7 +91,8 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
             G4double yPos = atof(root["Detectors"][idet]["yPosDetector"].asString().c_str()) * CLHEP::cm;
             G4double zPos = atof(root["Detectors"][idet]["zPosDetector"].asString().c_str()) * CLHEP::cm;
             G4double xDir = atof(root["Detectors"][idet]["xDirDetector"].asString().c_str()) * CLHEP::degree;
-            G4double yDir = atof(root["Detectors"][idet]["yDirDetector"].asString().c_str()) * CLHEP::degree;            G4double zDir = atof(root["Detectors"][idet]["zDirDetector"].asString().c_str()) * CLHEP::degree;
+            G4double yDir = atof(root["Detectors"][idet]["yDirDetector"].asString().c_str()) * CLHEP::degree;
+            G4double zDir = atof(root["Detectors"][idet]["zDirDetector"].asString().c_str()) * CLHEP::degree;
             G4double xSize = atof(root["Detectors"][idet]["xSizeDetector"].asString().c_str()) * CLHEP::cm;
             G4double ySize = atof(root["Detectors"][idet]["ySizeDetector"].asString().c_str()) * CLHEP::cm;
             G4double zSize = atof(root["Detectors"][idet]["zSizeDetector"].asString().c_str()) * CLHEP::cm;
@@ -146,7 +146,6 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
     }    
     goodGeometry = true;
     return;
-
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//

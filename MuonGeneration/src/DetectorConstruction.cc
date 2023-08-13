@@ -5,7 +5,7 @@
 #include "G4Mag_UsualEqRhs.hh"
 
 #include "G4Material.hh"
-#include "G4Element.hh"
+#i1nclude "G4Element.hh"
 #include "G4MaterialTable.hh"
 #include "G4NistManager.hh"
 
