@@ -21,6 +21,8 @@ public:
     Layer *GetSensor(G4int);
     
     G4int GetNSensors();
+
+     void createG4Objects(G4String, G4LogicalVolume *);
     
     void Print();
 

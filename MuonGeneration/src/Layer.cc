@@ -40,6 +40,28 @@ G4int Layer::GetNSensors() {
 
 
 //----------------------------------------------------------------------//
+// createG4Objects                                              //
+//----------------------------------------------------------------------//
+void Detector::createG4Objects(G4String name, G4LogicalVolume *mother) {
+
+    G4String layerName = G4String("layer_") + name;  
+    solidVolume = new G4Box(layerName, sizes[0], sizes[1], sizes[2]);
+    logicalVolume = new G4LogicalVolume(solidVolume, materials["air"]), layerName, 0., 0., 0.);
+    for(int i = 0; i < sensors.size(); i++) {
+        G4String sensorName = name + G4String("_") + G4String(to_string(i)); 
+        sensors[i].createG4Objects(sensorName);
+    }     
+    G4String layerPhysicalName = G4String("layerPhys_") + name;
+    physicalVolume = new G4PVPlacement((pos[0], pos[1], pos[2]),
+                                       (dir[0], dir[1], dir[2]),
+                                       logicalVolume, detPhysicalName,
+                                       mother, false);
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
+
+//----------------------------------------------------------------------//
 // Print                                                                //
 //----------------------------------------------------------------------//
 void Layer::Print() {

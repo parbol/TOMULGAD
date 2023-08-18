@@ -22,6 +22,8 @@ public:
     
     G4int GetNLayers();
     
+    void createG4Objects(G4String, G4LogicalVolume *);
+
     void Print();
 
 private:

@@ -3,10 +3,12 @@
 
 #include "G4RotationMatrix.hh"
 #include "G4ThreeVector.hh"
+#include "G4VSolid.hh"
+#include "G4LogicalVolume.hh"
 #include "G4VPhysicalVolume.hh"
 #include "G4ErrorMatrix.hh"
-
-
+#include "G4Box.hh"
+#include "G4PVPlacement.hh"
 
 class GeomObject {
 
@@ -20,8 +22,10 @@ public:
     G4ThreeVector     toLocal(G4ThreeVector);
     G4ErrorMatrix     toGlobalStateVector(G4ErrorMatrix);
     G4ErrorMatrix     toGlobalStateCov(G4ErrorMatrix);
-    G4VPhysicalVolume *getVolume();
-    void              setVolume(G4VPhysicalVolume *);
+    G4VSolid          *getSolidVolume();
+    G4LogicalVolume   *getLogicalVolume();
+    G4VPhysicalVolume *getPhysicalVolume();
+    void              setPhysicalVolume(G4VPhysicalVolume *);
     void              Print();
 
     G4RotationMatrix rot, invrot;
@@ -30,7 +34,10 @@ public:
     G4ThreeVector rots;
     G4ErrorMatrix *superMatrix;
     G4ErrorMatrix *superVector;
-    G4VPhysicalVolume * volume;
+    G4VSolid* solidVolume;
+    G4LogicalVolume *logicVolume;
+    G4VPhysicalVolume *physicalVolume;
+
 
 private:
 

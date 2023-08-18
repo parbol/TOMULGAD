@@ -42,6 +42,27 @@ G4int Detector::GetNLayers() {
 
 
 //----------------------------------------------------------------------//
+// createG4Objects                                              //
+//----------------------------------------------------------------------//
+void Detector::createG4Objects(G4String name, G4LogicalVolume *mother) {
+
+    G4String detName = G4String("detector_") + name;  
+    solidVolume = new G4Box(detName, sizes[0], sizes[1], sizes[2]);
+    logicalVolume = new G4LogicalVolume(solidVolume, materials["air"]), detName, 0., 0., 0.);
+    for(int i = 0; i < layers.size(); i++) {
+        G4String layerName = name + G4String("_") + G4String(to_string(i)); 
+        layers[i].createG4Objects(layerName, logicalVolume);
+    }     
+    G4String detPhysicalName = G4String("detectorPhys_") + name;
+    physicalVolume = new G4PVPlacement((pos[0], pos[1], pos[2]),
+                                       (dir[0], dir[1], dir[2]),
+                                       logicalVolume, detPhysicalName,
+                                       mother, false);
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
+//----------------------------------------------------------------------//
 // Print                                                                //
 //----------------------------------------------------------------------//
 void Detector::Print() {
