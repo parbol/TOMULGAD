@@ -7,7 +7,7 @@
 #include "G4ErrorMatrix.hh"
 
 #include "GeomObject.hh"
-#include "Sensor.hh"
+#include "LGADSensor.hh"
 
 
 class Layer : GeomObject {
@@ -27,7 +27,7 @@ public:
     void Print();
 
 private:
-    std::vector<Sensor *> sensors;
+    std::vector<LGADSensor *> sensors;
 };
 
 
