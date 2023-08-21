@@ -14,11 +14,7 @@
 #ifndef ConfigurationGeometry_h
 #define ConfigurationGeometry_h 1
 
-#include <vector>
 #include <iostream>
-#include <fstream>
-#include "globals.hh"
-
 #include <sstream>
 #include <fstream>
 #include <string>
@@ -26,9 +22,10 @@
 #include <map>
 #include "assert.h"
 
+#include "globals.hh"
 #include "Detector.hh"
 #include "Layer.hh"
-#include "Sensor.hh"
+#include "LGAD.hh"
 
 
 class ConfigurationGeometry {

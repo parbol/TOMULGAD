@@ -1,13 +1,8 @@
 #ifndef Layer_h
 #define Layer_h 1
 
-#include "G4RotationMatrix.hh"
-#include "G4ThreeVector.hh"
-#include "G4VPhysicalVolume.hh"
-#include "G4ErrorMatrix.hh"
-
 #include "GeomObject.hh"
-#include "LGADSensor.hh"
+#include "LGAD.hh"
 
 
 class Layer : GeomObject {
@@ -16,18 +11,18 @@ public:
 
     Layer(G4double, G4double, G4double, G4double, G4double, G4double, G4double, G4double, G4double);
     
-    void AddSensor(Sensor *);
+    void AddSensor(LGAD *);
     
-    Layer *GetSensor(G4int);
+    LGAD *GetSensor(G4int);
     
     G4int GetNSensors();
 
-     void createG4Objects(G4String, G4LogicalVolume *);
+    void createG4Objects(G4String, G4LogicalVolume *, std::map<G4String, G4Material*> &, G4SDManager*);
     
     void Print();
 
 private:
-    std::vector<LGADSensor *> sensors;
+    std::vector<LGAD *> sensors;
 };
 
 

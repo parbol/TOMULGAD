@@ -136,7 +136,7 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
                     G4double chargeThreshold = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["chargeThreshold"].asString().c_str()) * CLHEP::cm;
                     G4double noise = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["noise"].asString().c_str()) * CLHEP::cm;
                     G4double tdcSigma = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["tdcSigma"].asString().c_str()) * CLHEP::cm;
-                    Sensor *sensor = new Sensor(xSensPos, ySensPos, zSensPos, xSensDir, ySensDir, zSensDir, xSensSize, ySensSize, zSensSize, nPadx, nPady, interPadx, interPady, xborder, yborder, chargeThreshold, noise, tdcSigma);
+                    LGAD *sensor = new LGAD(xSensPos, ySensPos, zSensPos, xSensDir, ySensDir, zSensDir, xSensSize, ySensSize, zSensSize, nPadx, nPady, interPadx, interPady, xborder, yborder, chargeThreshold, noise, tdcSigma);
                     layer->AddSensor(sensor);
 		        }   
                 detector->AddLayer(layer);

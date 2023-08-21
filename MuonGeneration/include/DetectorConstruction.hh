@@ -37,7 +37,6 @@ private:
 
     ConfigurationGeometry *myConf;
 
-    //In the future we will move this to a map
     std::map<G4String, G4Material*> materials;
 
 };

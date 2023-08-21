@@ -9,6 +9,9 @@
 #include "G4ErrorMatrix.hh"
 #include "G4Box.hh"
 #include "G4PVPlacement.hh"
+#include "G4Material.hh"
+#include "G4SDManager.hh"
+
 
 class GeomObject {
 
@@ -35,7 +38,7 @@ public:
     G4ErrorMatrix *superMatrix;
     G4ErrorMatrix *superVector;
     G4VSolid* solidVolume;
-    G4LogicalVolume *logicVolume;
+    G4LogicalVolume *logicalVolume;
     G4VPhysicalVolume *physicalVolume;
 
 

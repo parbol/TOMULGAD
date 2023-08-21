@@ -6,10 +6,12 @@
 //----------------------------------------------------------------------//
 // Constructor                                                          //
 //----------------------------------------------------------------------//
-Detector::Detector(G4double xPos, G4double yPos, G4double zPos, G4double xRot, G4double yRot, G4double zRot, G4double xSize, G4double ySize, G4double zSize) : GeomObject(xPos, yPos, zPos, xRot, yRot, zRot, xSize, ySize, zSize) {};
+Detector::Detector(G4double xPos, G4double yPos, G4double zPos, G4double xRot, 
+                   G4double yRot, G4double zRot, G4double xSize, G4double ySize,
+                   G4double zSize) : GeomObject(xPos, yPos, zPos, xRot, yRot,
+                   zRot, xSize, ySize, zSize) {};
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
-
 
 //----------------------------------------------------------------------//
 // Add a layer to the detector                                          //
@@ -44,20 +46,20 @@ G4int Detector::GetNLayers() {
 //----------------------------------------------------------------------//
 // createG4Objects                                              //
 //----------------------------------------------------------------------//
-void Detector::createG4Objects(G4String name, G4LogicalVolume *mother) {
+void Detector::createG4Objects(G4String name, G4LogicalVolume *mother,
+                               std::map<G4String, G4Material*> & materials,
+                               G4SDManager *SDman) {
 
     G4String detName = G4String("detector_") + name;  
     solidVolume = new G4Box(detName, sizes[0], sizes[1], sizes[2]);
-    logicalVolume = new G4LogicalVolume(solidVolume, materials["air"]), detName, 0., 0., 0.);
+    logicalVolume = new G4LogicalVolume(solidVolume, materials["air"], detName);
     for(int i = 0; i < layers.size(); i++) {
-        G4String layerName = name + G4String("_") + G4String(to_string(i)); 
-        layers[i].createG4Objects(layerName, logicalVolume);
+        G4String layerName = name + G4String("_") + G4String(std::to_string(i)); 
+        layers[i]->createG4Objects(layerName, logicalVolume, materials, SDman);
     }     
     G4String detPhysicalName = G4String("detectorPhys_") + name;
-    physicalVolume = new G4PVPlacement((pos[0], pos[1], pos[2]),
-                                       (dir[0], dir[1], dir[2]),
-                                       logicalVolume, detPhysicalName,
-                                       mother, false);
+    physicalVolume = new G4PVPlacement(getRot(), getPos(), logicalVolume, detPhysicalName,
+                                       mother, false, 0, true);
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
