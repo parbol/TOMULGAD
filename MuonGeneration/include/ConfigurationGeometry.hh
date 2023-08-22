@@ -47,6 +47,10 @@ public:
     Detector *getDetector(G4int);
     G4int getNDetectors();
 
+    // Detector collections
+    void registerCollection(G4String);
+    std::vector <G4String> collections;
+    
     void Print();
 
 private:

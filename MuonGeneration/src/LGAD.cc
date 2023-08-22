@@ -6,8 +6,13 @@
 //----------------------------------------------------------------------//
 LGAD::LGAD(G4double xPos, G4double yPos, G4double zPos,
            G4double xRot, G4double yRot, G4double zRot,
-           G4double xSize, G4double ySize, G4double zSize) :
-           GeomObject(xPos, yPos, zPos, xRot, yRot, zRot, xSize, ySize, zSize) {};
+           G4double xSize, G4double ySize, G4double zSize,
+           G4int ndet, G4int nlayer, G4int nsensor) :
+           GeomObject(xPos, yPos, zPos, xRot, yRot, zRot, xSize, ySize, zSize) {
+            ndetId = ndet;
+            nlayerId = nlayer;
+            nsensorId = nsensor;
+           };
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
 
@@ -20,6 +25,34 @@ LGADSensor * LGAD::GetSensor() {
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
+
+//----------------------------------------------------------------------//
+// Return detId                                                         //
+//----------------------------------------------------------------------//
+G4int LGAD::detId() {
+	return ndetId;
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
+//----------------------------------------------------------------------//
+// Return layerId                                                       //
+//----------------------------------------------------------------------//
+G4int LGAD::layerId() {
+	return nlayerId;
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
+//----------------------------------------------------------------------//
+// Return sensorId                                                         //
+//----------------------------------------------------------------------//
+G4int LGAD::sensorId() {
+	return nsensorId;
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
 
 
 //----------------------------------------------------------------------//
@@ -38,10 +71,12 @@ void LGAD::createG4Objects(G4String name, G4LogicalVolume *mother,
                                        mother, false, 0, true);
 
     //We need to make this object sensitive
-    LGADSensor *lgadSensor = new LGADSensor(SDname = "LGADSensor", "HitsCollection");
-    lgadSensor->SetStructure(myConf->getDetector1());
-    SDman->AddNewDetector(lgad);
-    lgadSensorLogical->SetSensitiveDetector(lgad);
+    G4String SDname = LGADName;
+    G4String Collection = G4String("HitsCollection") + G4String(std::to_string(detId()));
+    LGADSensor *lgadSensor = new LGADSensor(SDname = SDname, Collection);
+    lgadSensor->setDet()
+    SDman->AddNewDetector(lgadSensor);
+    logicalVolume->SetSensitiveDetector(lgadSensor);
 
 }
 //----------------------------------------------------------------------//

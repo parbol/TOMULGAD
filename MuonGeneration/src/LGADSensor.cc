@@ -52,14 +52,10 @@ void LGADSensor::Initialize(G4HCofThisEvent*HCE)
 //----------------------------------------------------------------------//
 G4bool LGADSensor::ProcessHits(G4Step*aStep,G4TouchableHistory*  /*ROhist*/) {
 
-    G4double charge = aStep->GetTrack()->GetDefinition()->GetPDGCharge();
-    if(charge==0.) return true;
-    G4int type = abs(aStep->GetTrack()->GetDefinition()->GetPDGEncoding());
-    if(type != 13) return true;
-
 
     G4StepPoint* preStepPoint = aStep->GetPreStepPoint();
     G4TouchableHistory* theTouchable = (G4TouchableHistory*)(preStepPoint->GetTouchable());
+    
     G4VPhysicalVolume* theMotherPhysical = theTouchable->GetVolume(1); // mother
     G4VPhysicalVolume* thePhysical = theTouchable->GetVolume(0); // child
     G4int copyNo = thePhysical->GetCopyNo();
@@ -92,12 +88,20 @@ G4bool LGADSensor::ProcessHits(G4Step*aStep,G4TouchableHistory*  /*ROhist*/) {
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
 
+//----------------------------------------------------------------------//
+// Set lgad                                                             //
+//----------------------------------------------------------------------//
+void LGADSensor::setLGAD(LGAD *a) {
+    lgad = a;
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
 
 //----------------------------------------------------------------------//
-// Setting the structure                                                //
+// Get lgad                                                             //
 //----------------------------------------------------------------------//
-void LGADSensor::SetStructure(Detector *a) {
-    det = a;
+LGAD * LGADSensor::getLGAD() {
+    return lgad;
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//

@@ -9,12 +9,16 @@ class Layer : GeomObject {
 
 public:
 
-    Layer(G4double, G4double, G4double, G4double, G4double, G4double, G4double, G4double, G4double);
+    Layer(G4double, G4double, G4double, G4double, G4double, G4double, G4double, G4double, G4double, G4int, G4int);
     
     void AddSensor(LGAD *);
     
     LGAD *GetSensor(G4int);
     
+    G4int detId();
+
+    G4int layerId();
+
     G4int GetNSensors();
 
     void createG4Objects(G4String, G4LogicalVolume *, std::map<G4String, G4Material*> &, G4SDManager*);
@@ -23,6 +27,7 @@ public:
 
 private:
     std::vector<LGAD *> sensors;
+    G4int ndetId, nlayerId;
 };
 
 
