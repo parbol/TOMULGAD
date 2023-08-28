@@ -138,7 +138,12 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
                     G4double chargeThreshold = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["chargeThreshold"].asString().c_str()) * CLHEP::cm;
                     G4double noise = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["noise"].asString().c_str()) * CLHEP::cm;
                     G4double tdcSigma = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["tdcSigma"].asString().c_str()) * CLHEP::cm;
-                    LGAD *sensor = new LGAD(xSensPos, ySensPos, zSensPos, xSensDir, ySensDir, zSensDir, xSensSize, ySensSize, zSensSize, nPadx, nPady, interPadx, interPady, xborder, yborder, chargeThreshold, noise, tdcSigma, idet, icoll, isens);
+                    LGAD *sensor = new LGAD(xSensPos, ySensPos, zSensPos, 
+                                            xSensDir, ySensDir, zSensDir,
+                                            xSensSize, ySensSize, zSensSize,
+                                            nPadx, nPady, interPadx, interPady,
+                                            xborder, yborder, chargeThreshold,
+                                            noise, tdcSigma, idet, icoll, isens);
                     layer->AddSensor(sensor);
 		        }   
                 detector->AddLayer(layer);
@@ -152,15 +157,6 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
 
-
-//----------------------------------------------------------------------//
-// Accesor to class information                                         //
-//----------------------------------------------------------------------//
-bool ConfigurationGeometry::isGood() {
-    return goodGeometry;
-}
-//----------------------------------------------------------------------//
-//----------------------------------------------------------------------//
 
 //----------------------------------------------------------------------//
 // Accesor to class information                                         //
@@ -242,9 +238,26 @@ G4int ConfigurationGeometry::getNDetectors() {
 //----------------------------------------------------------------------//
 
 //----------------------------------------------------------------------//
+// createG4Objects                                                      //
+//----------------------------------------------------------------------//
+void ConfigurationGeometry::createG4objects(G4LogicalVolume *mother, 
+                                            std::map<G4String, G4Material *> &materials, 
+                                            G4SDManager *SDman) {
+
+    for(int i = 0; i < detectors.size(); i++) {
+        detectors[i]->createG4Objects(G4String(std::to_string(detectors[i]->detId())),
+                                      mother, materials, SDman);
+    }
+
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
+
+//----------------------------------------------------------------------//
 // Accesor to class information                                         //
 //----------------------------------------------------------------------//
-void ConfigurationGeometry::registerCollection(G4string a) {
+void ConfigurationGeometry::registerCollection(G4String a) {
     collections.push_back(a);
 }
 //----------------------------------------------------------------------//

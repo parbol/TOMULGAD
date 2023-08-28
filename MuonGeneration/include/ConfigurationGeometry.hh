@@ -47,6 +47,10 @@ public:
     Detector *getDetector(G4int);
     G4int getNDetectors();
 
+    //Creating the geometry
+    void createG4objects(G4LogicalVolume *, 
+                         std::map<G4String, G4Material*> &,
+                         G4SDManager *);
     // Detector collections
     void registerCollection(G4String);
     std::vector <G4String> collections;

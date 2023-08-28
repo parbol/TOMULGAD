@@ -2,16 +2,17 @@
 #define LGAD_h 1
 
 #include "GeomObject.hh"
-#include "LGADSensor.hh"
-
 
 class LGAD : GeomObject {
 
 public:
 
-    LGAD(G4double, G4double, G4double, G4double, G4double, G4double, G4double, G4double, G4double, G4int, G4int, G4int);
-        
-    LGADSensor *GetSensor();
+    LGAD(G4double, G4double, G4double, 
+         G4double, G4double, G4double, 
+         G4double, G4double, G4double,
+         G4int, G4int, G4double, G4double,
+         G4double, G4double, G4double,
+         G4double, G4double, G4int, G4int, G4int);
 
     G4int detId();
 

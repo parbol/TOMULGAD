@@ -18,15 +18,6 @@ LGAD::LGAD(G4double xPos, G4double yPos, G4double zPos,
 
 
 //----------------------------------------------------------------------//
-// Return LGAD                                                         //
-//----------------------------------------------------------------------//
-LGADSensor * LGAD::GetSensor() {
-	return sensor;
-}
-//----------------------------------------------------------------------//
-//----------------------------------------------------------------------//
-
-//----------------------------------------------------------------------//
 // Return detId                                                         //
 //----------------------------------------------------------------------//
 G4int LGAD::detId() {
@@ -74,7 +65,7 @@ void LGAD::createG4Objects(G4String name, G4LogicalVolume *mother,
     G4String SDname = LGADName;
     G4String Collection = G4String("HitsCollection") + G4String(std::to_string(detId()));
     LGADSensor *lgadSensor = new LGADSensor(SDname = SDname, Collection);
-    lgadSensor->setDet()
+    lgadSensor->setLGAD(this);
     SDman->AddNewDetector(lgadSensor);
     logicalVolume->SetSensitiveDetector(lgadSensor);
 
