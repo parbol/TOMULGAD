@@ -28,6 +28,10 @@ public:
 
 private:
     G4int ndetId, nlayerId, nsensorId;
+    G4int nPadx, nPady;
+    G4double interPadx, interPady, borderPadx, borderPady;
+    G4double chargeThreshold, noiseLevel, tdcSigma;
+    
 
 };
 

@@ -33,24 +33,32 @@ public:
     virtual void Print();
 
 private:
+    G4int eventNumber;
     G4int detectorID;
     G4int layerID;
     G4int lgadID;
     G4double time;
+    G4double toa;
+    G4double tot;
     G4double energy;
+    G4int padx;
+    G4int pady;
     G4ThreeVector localPos;
-    G4ThreeVector worldPos;
-    G4ThreeVector localMeas;
-    G4ThreeVector localMeasError;
-    G4double efficiency;
+    G4ThreeVector globalPos;
+    
 
 public:
- 
-    inline void SetDetectorID(G4int z) {
-        layerID = z;
+    inline void SetEventNumber(G4int z) {
+        eventNumber = z;
     }
-    inline G4int GetLayerID() const {
-        return layerID;
+    inline G4int GetEventNumber() const {
+        return eventNumber;
+    }
+    inline void SetDetectorID(G4int z) {
+        detectorID = z;
+    }
+    inline G4int GetDetectorID() const {
+        return detectorID;
     }
     inline void SetLayerID(G4int z) {
         layerID = z;
@@ -58,10 +66,10 @@ public:
     inline G4int GetLayerID() const {
         return layerID;
     }
-     inline void SetLayerID(G4int z) {
-        layerID = z;
+     inline void SetLGADID(G4int z) {
+        lgadID = z;
     }
-    inline G4int GetLayerID() const {
+    inline G4int GetLGADID() const {
         return layerID;
     }
     inline void SetTime(G4double t) {
@@ -69,6 +77,30 @@ public:
     }
     inline G4double GetTime() const {
         return time;
+    }
+    inline void SetTOA(G4double t) {
+        toa = t;
+    }
+    inline G4double GetTOA() const {
+        return toa;
+    }
+    inline void SetTOT(G4double t) {
+        tot = t;
+    }
+    inline G4double GetTOT() const {
+        return tot;
+    }
+    inline void SetPadx(G4int t) {
+        padx = t;
+    }
+    inline G4int GetPadx() const {
+        return padx;
+    }
+    inline void SetPady(G4int t) {
+        pady = t;
+    }
+    inline G4int GetPady() const {
+        return pady;
     }
     inline void SetEnergy(G4double t) {
         energy = t;
@@ -82,18 +114,13 @@ public:
     inline G4ThreeVector GetLocalPos() const {
         return localPos;
     }
-    inline void SetLocalMeas(G4ThreeVector xyz) {
-        localMeas = xyz;
+    inline void SetGlobalPos(G4ThreeVector xyz) {
+        globalPos = xyz;
     }
-    inline G4ThreeVector GetLocalMeas() const {
-        return localMeas;
+    inline G4ThreeVector GetGlobalPos() const {
+        return globalPos;
     }
-    inline void SetLocalMeasError(G4ThreeVector xyz) {
-        localMeasError = xyz;
-    }
-    inline G4ThreeVector GetLocalMeasError() const {
-        return localMeasError;
-    }
+    
 
 };
 

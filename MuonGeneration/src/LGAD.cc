@@ -7,11 +7,23 @@
 LGAD::LGAD(G4double xPos, G4double yPos, G4double zPos,
            G4double xRot, G4double yRot, G4double zRot,
            G4double xSize, G4double ySize, G4double zSize,
+           G4int nxpad, G4int nypad, G4double interpadx, G4double interpady,
+           G4double borderpadx, G4double borderpady, G4double chargeThres,
+           G4double noise, G4double tdcSigma_,
            G4int ndet, G4int nlayer, G4int nsensor) :
            GeomObject(xPos, yPos, zPos, xRot, yRot, zRot, xSize, ySize, zSize) {
             ndetId = ndet;
             nlayerId = nlayer;
             nsensorId = nsensor;
+            nPadx = nxpad;
+            nPady = nypad;
+            interPadx = interpadx;
+            interPady = interpady;
+            borderPadx = borderpadx;
+            borderPady = borderpady;
+            chargeThreshold = chargeThres;
+            noiseLevel = noise;
+            tdcSigma = tdcSigma_;
            };
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//

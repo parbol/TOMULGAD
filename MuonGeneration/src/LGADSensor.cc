@@ -4,7 +4,9 @@
 #include "G4TouchableHistory.hh"
 #include "G4Track.hh"
 #include "G4Step.hh"
+#include "G4Event.hh"
 #include "G4SDManager.hh"
+#include "G4EventManager.hh"
 #include "G4Navigator.hh"
 #include "G4ios.hh"
 #include "CLHEP/Random/RandGaussQ.h"
@@ -52,7 +54,9 @@ void LGADSensor::Initialize(G4HCofThisEvent*HCE)
 //----------------------------------------------------------------------//
 G4bool LGADSensor::ProcessHits(G4Step*aStep,G4TouchableHistory*  /*ROhist*/) {
 
-
+    G4Event *event = G4EventManager::GetEventManager()->GetEventManager()->GetNonconstCurrentEvent();
+    if(event == NULL) false;
+    G4int enumber = event->GetEventID();
     G4StepPoint* preStepPoint = aStep->GetPreStepPoint();
     G4TouchableHistory* theTouchable = (G4TouchableHistory*)(preStepPoint->GetTouchable());
   
@@ -63,16 +67,23 @@ G4bool LGADSensor::ProcessHits(G4Step*aStep,G4TouchableHistory*  /*ROhist*/) {
     G4int sensor = lgad->sensorId();
     G4int xpad = 0;
     G4int ypad = 0;
-    
+    G4double energy = preStepPoint->GetTotalEnergy();
 
     //Simulating resolution
     LGADSensorHit* aHit = new LGADSensorHit();
-    aHit->SetLocalPos(ChamberPos);
-    aHit->SetLocalMeas(ChamberMeas);
+    aHit->SetEventNumber(enumber);
+    aHit->SetDetectorID(detector);
+    aHit->SetLayerID(layer);
+    aHit->SetLGADID(sensor);
+    aHit->SetLocalPos(localPos);
+    aHit->SetGlobalPos(worldPos);
     aHit->SetTime(preStepPoint->GetGlobalTime());
+    aHit->SetTOA(0);
+    aHit->SetTOT(0);
+    aHit->SetPadx(0);
+    aHit->SetPady(0);
     aHit->SetEnergy(energy);
-    aHit->SetLayerID(copyNo);
-
+    
     hitsCollection->insert(aHit);
 
     return true;

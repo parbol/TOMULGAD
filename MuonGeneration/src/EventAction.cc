@@ -39,7 +39,7 @@ EventAction::EventAction(ConfigurationGeometry *geom_) {
     G4int numberOfDetectors = SDman->GetCollectionCapacity();
     SDman->ListTree();
 
-    for(auto i : geom->collections()) {
+    for(auto i : geom->collections) {
         DHCID.push_back(SDman->GetCollectionID(i));
     }
     messenger = new EventActionMessenger(this);
@@ -85,51 +85,41 @@ void EventAction::EndOfEventAction(const G4Event* evt) {
             a = (LGADSensorHitsCollection*)(HCE->GetHC(i));
             LGADSensorHitsCollections DHCcoll;
             DHCcoll.push_back(a);
-            DHCs.push_back(CHCcoll);
+            DHCs.push_back(DHCcoll);
         }
         for (auto i : DHCs) {
             if(i.at(0)) {
                 G4int n_hit = i.at(0)->entries();
                 for(G4int hit = 0; hit < n_hit; hit++) {
                     LGADSensorHit* aHit = (*(i.at(0)))[hit];
-                    G4ThreeVector pos = aHit->GetLocalPos();
+                    G4ThreeVector localpos = aHit->GetLocalPos();
+                    G4ThreeVector globalpos = aHit->GetGlobalPos();
                     G4double e = aHit->GetEnergy();
+                    G4int detectorID = aHit->GetDetectorID();
                     G4int layerID = aHit->GetLayerID();
-
-
-                man->FillNtupleDColumn(8*layerID + 0, pos.x()/CLHEP::cm);
-                man->FillNtupleDColumn(8*layerID + 1, pos.y()/CLHEP::cm);
-                man->FillNtupleDColumn(8*layerID + 2, pos.z()/CLHEP::cm);
-                man->FillNtupleDColumn(8*layerID + 3, meas.x()/CLHEP::cm);
-                man->FillNtupleDColumn(8*layerID + 4, meas.y()/CLHEP::cm);
-                man->FillNtupleDColumn(8*layerID + 5, meas.z()/CLHEP::cm);
-                man->FillNtupleIColumn(8*layerID + 6, layerID);
-                man->FillNtupleDColumn(8*layerID + 7, e/CLHEP::MeV);
+                    G4int lgadID = aHit->GetLGADID();
+                    
+                    man->FillNtupleIColumn(0, 1, aHit->GetEventNumber());
+                    man->FillNtupleIColumn(1, 1, aHit->GetDetectorID());
+                    man->FillNtupleIColumn(2, 1, aHit->GetLayerID());
+                    man->FillNtupleIColumn(3, 1, aHit->GetLGADID());
+                    man->FillNtupleIColumn(4, 1, aHit->GetPadx());
+                    man->FillNtupleIColumn(5, 1, aHit->GetPady());
+                    man->FillNtupleDColumn(6, 1, aHit->GetTOA()/CLHEP::second);                                        man->FillNtupleDColumn(6, 1, aHit->GetTOA()/CLHEP::second);
+                    man->FillNtupleDColumn(7, 1, aHit->GetTOT()/CLHEP::second);
+                    man->FillNtupleDColumn(8, 1, aHit->GetTime()/CLHEP::second);
+                    man->FillNtupleDColumn(9, 1, aHit->GetEnergy()/CLHEP::eV);
+                    man->FillNtupleDColumn(10, 1, localpos.x()/CLHEP::cm);
+                    man->FillNtupleDColumn(11, 1, localpos.y()/CLHEP::cm);
+                    man->FillNtupleDColumn(12, 1, localpos.z()/CLHEP::cm);
+                    man->FillNtupleDColumn(13, 1, globalpos.x()/CLHEP::cm);
+                    man->FillNtupleDColumn(14, 1, globalpos.y()/CLHEP::cm);
+                    man->FillNtupleDColumn(15, 1, globalpos.z()/CLHEP::cm);
+                }
+                man->AddNtupleRow();    
             }
         }
-
-        if(DHC2.at(0)) {
-            G4int n_hit = DHC2.at(0)->entries();
-            for(G4int hit = 0; hit < n_hit; hit++) {
-                LGADSensorHit* aHit = (*(DHC2.at(0)))[hit];
-                G4ThreeVector pos = aHit->GetLocalPos();
-                G4ThreeVector meas = aHit->GetLocalMeas();
-                G4ThreeVector errormeas = aHit->GetLocalMeasError();
-                G4double e = aHit->GetEnergy();
-                G4int layerID = aHit->GetLayerID();
-                man->FillNtupleDColumn(geom->getDetector1()->getNLayers() * 8 + 8*layerID + 0, pos.x()/CLHEP::cm);
-                man->FillNtupleDColumn(geom->getDetector1()->getNLayers() * 8 + 8*layerID + 1, pos.y()/CLHEP::cm);
-                man->FillNtupleDColumn(geom->getDetector1()->getNLayers() * 8 + 8*layerID + 2, pos.z()/CLHEP::cm);
-                man->FillNtupleDColumn(geom->getDetector1()->getNLayers() * 8 + 8*layerID + 3, meas.x()/CLHEP::cm);
-                man->FillNtupleDColumn(geom->getDetector1()->getNLayers() * 8 + 8*layerID + 4, meas.y()/CLHEP::cm);
-                man->FillNtupleDColumn(geom->getDetector1()->getNLayers() * 8 + 8*layerID + 5, meas.z()/CLHEP::cm);
-                man->FillNtupleIColumn(geom->getDetector1()->getNLayers() * 8 + 8*layerID + 6, layerID);
-                man->FillNtupleDColumn(geom->getDetector1()->getNLayers() * 8 + 8*layerID + 7, e/CLHEP::MeV);
-            }
-        }
-        if(DHC1.at(0)) man->AddNtupleRow();
     }
-
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//

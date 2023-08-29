@@ -23,8 +23,7 @@ G4Allocator<LGADSensorHit> LGADSensorHitAllocator;
 // Constructor without indicating layer ID                              //
 //----------------------------------------------------------------------//
 LGADSensorHit::LGADSensorHit() {
-    layerID = -1;
-    time = 0.;
+    ;
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
@@ -44,11 +43,18 @@ LGADSensorHit::~LGADSensorHit() {
 // Constructor from another hit                                         //
 //----------------------------------------------------------------------//
 LGADSensorHit::LGADSensorHit(const LGADSensorHit &right): G4VHit() {
+    eventNumber = right.eventNumber;
+    detectorID = right.detectorID;
     layerID = right.layerID;
-    localPos = right.localPos;
-    localMeas = right.localMeas;
+    lgadID = right.lgadID;
     time = right.time;
+    toa = right.toa;
+    tot = right.tot;
     energy = right.energy;
+    padx = right.padx;
+    pady = right.pady;
+    localPos = right.localPos;
+    globalPos = right.globalPos;
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
@@ -58,11 +64,18 @@ LGADSensorHit::LGADSensorHit(const LGADSensorHit &right): G4VHit() {
 // Overloading = operator                                               //
 //----------------------------------------------------------------------//
 const LGADSensorHit& LGADSensorHit::operator=(const LGADSensorHit &right) {
+    eventNumber = right.eventNumber;
+    detectorID = right.detectorID;
     layerID = right.layerID;
-    localPos = right.localPos;
-    localMeas = right.localMeas;
+    lgadID = right.lgadID;
     time = right.time;
+    toa = right.toa;
+    tot = right.tot;
     energy = right.energy;
+    padx = right.padx;
+    pady = right.pady;
+    localPos = right.localPos;
+    globalPos = right.globalPos;
     return *this;
 }
 //----------------------------------------------------------------------//
@@ -86,9 +99,6 @@ const std::map<G4String,G4AttDef>* LGADSensorHit::GetAttDefs() const {
     G4bool isNew;
     std::map<G4String,G4AttDef>* store = G4AttDefStore::GetInstance("LGADSensorHit",isNew);
     if (isNew) {
-        G4String HitType("HitType");
-        (*store)[HitType] = G4AttDef(HitType,"Hit Type","Physics","","G4String");
-
         G4String ID("ID");
         (*store)[ID] = G4AttDef(ID,"ID","Physics","","G4int");
 
@@ -126,7 +136,7 @@ std::vector<G4AttValue>* LGADSensorHit::CreateAttValues() const {
     (G4AttValue("Energy",G4BestUnit(energy,"Energy"),""));
 
     values->push_back
-    (G4AttValue("Pos",G4BestUnit(worldPos,"Length"),""));
+    (G4AttValue("Pos",G4BestUnit(globalPos,"Length"),""));
 
     return values;
 }
@@ -141,11 +151,18 @@ void LGADSensorHit::Print()
 {
     G4cout << "\033[1;34m"
            << "*******************************Hit**********************************" << G4endl
+           << "Event number: " << "\033[1;33m" << eventNumber << "\033[1;34m" << G4endl
+           << "Detector: " << "\033[1;33m" << detectorID << "\033[1;34m" << G4endl
            << "Layer: " << "\033[1;33m" << layerID << "\033[1;34m" << G4endl
+           << "LGAD: " << "\033[1;33m" << lgadID << "\033[1;34m" << G4endl
+           << "TOA: " << "\033[1;33m" << toa << "\033[1;34m" << G4endl
+           << "TOT: " << "\033[1;33m" << tot << "\033[1;34m" << G4endl
+           << "padx: " << "\033[1;33m" << padx << "\033[1;34m" << G4endl
+           << "pady: " << "\033[1;33m" << pady << "\033[1;34m" << G4endl
            << "Time: " << "\033[1;33m" << time << "\033[1;34m" << G4endl
            << "Energy: " << "\033[1;33m" << energy/CLHEP::GeV << "\033[1;34m" << G4endl
            << "Local pos: " << "\033[1;33m" << localPos.x()/CLHEP::cm << " " << localPos.y()/CLHEP::cm << " " << localPos.z()/CLHEP::cm << "\033[1;34m" << G4endl
-           << "Local pos: " << "\033[1;33m" << localMeas.x()/CLHEP::cm << " " << localMeas.y()/CLHEP::cm << " " << localMeas.z()/CLHEP::cm << "\033[1;34m" << G4endl
+           << "Local pos: " << "\033[1;33m" << globalPos.x()/CLHEP::cm << " " << globalPos.y()/CLHEP::cm << " " << globalPos.z()/CLHEP::cm << "\033[1;34m" << G4endl
            << "********************************************************************" << "\033[0m" << G4endl;
 }
 //----------------------------------------------------------------------//
