@@ -12,9 +12,8 @@
 //----------------------------------------------------------------------//
 // Constructor                                                          //
 //----------------------------------------------------------------------//
-RunAction::RunAction(std::string name, ConfigurationGeometry *gem_) {
+RunAction::RunAction(std::string name) {
     nameOfOutputFile = name;
-    gem = gem_;
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
@@ -38,59 +37,22 @@ void RunAction::BeginOfRunAction(const G4Run* run) {
 
     // Create ntuple
     man->CreateNtuple("hits", "The hits");
-    for(G4int a = 0; a < gem->getDetector1()->getNLayers(); a++) {
-        char name_posx[20];
-        sprintf(name_posx, "posX_1%d", a);
-        char name_posy[20];
-        sprintf(name_posy, "posY_1%d", a);
-        char name_posz[20];
-        sprintf(name_posz, "posZ_1%d", a);
-        char name_measx[20];
-        sprintf(name_measx, "measX_1%d", a);
-        char name_measy[20];
-        sprintf(name_measy, "measY_1%d", a);
-        char name_measz[20];
-        sprintf(name_measz, "measZ_1%d", a);
-        char name_layerID[20];
-        sprintf(name_layerID, "layerID_1%d", a);
-        char name_e[20];
-        sprintf(name_e, "e_1%d", a);
-        man->CreateNtupleDColumn(name_posx);
-        man->CreateNtupleDColumn(name_posy);
-        man->CreateNtupleDColumn(name_posz);
-        man->CreateNtupleDColumn(name_measx);
-        man->CreateNtupleDColumn(name_measy);
-        man->CreateNtupleDColumn(name_measz);
-        man->CreateNtupleIColumn(name_layerID);
-        man->CreateNtupleDColumn(name_e);
-    }
+    man->CreateNtupleIColumn("eventNumber");
+    man->CreateNtupleIColumn("det");
+    man->CreateNtupleIColumn("layer");
+    man->CreateNtupleIColumn("lgad");
+    man->CreateNtupleIColumn("xpad");
+    man->CreateNtupleIColumn("ypad");
+    man->CreateNtupleDColumn("toa");
+    man->CreateNtupleDcolumn("tot");
+    man->CreateNtupleDcolum("t");
+    man->CreateNtupleDcolumn("xlocal");
+    man->CreateNtupleDcolumn("ylocal");
+    man->CreateNtupleDcolumn("zlocal");
+    man->CreateNtupleDcolumn("xglobal");
+    man->CreateNtupleDcolumn("yglobal");
+    man->CreateNtupleDcolumn("zglobal");
 
-    for(G4int a = 0; a < gem->getDetector2()->getNLayers(); a++) {
-        char name_posx[20];
-        sprintf(name_posx, "posX_2%d", a);
-        char name_posy[20];
-        sprintf(name_posy, "posY_2%d", a);
-        char name_posz[20];
-        sprintf(name_posz, "posZ_2%d", a);
-        char name_measx[20];
-        sprintf(name_measx, "measX_2%d", a);
-        char name_measy[20];
-        sprintf(name_measy, "measY_2%d", a);
-        char name_measz[20];
-        sprintf(name_measz, "measZ_2%d", a);
-        char name_layerID[20];
-        sprintf(name_layerID, "layerID_2%d", a);
-        char name_e[20];
-        sprintf(name_e, "e_2%d", a);
-        man->CreateNtupleDColumn(name_posx);
-        man->CreateNtupleDColumn(name_posy);
-        man->CreateNtupleDColumn(name_posz);
-        man->CreateNtupleDColumn(name_measx);
-        man->CreateNtupleDColumn(name_measy);
-        man->CreateNtupleDColumn(name_measz);
-        man->CreateNtupleIColumn(name_layerID);
-        man->CreateNtupleDColumn(name_e);
-    }
 
     man->FinishNtuple();
 }

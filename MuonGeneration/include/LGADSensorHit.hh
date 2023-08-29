@@ -17,7 +17,6 @@ class LGADSensorHit : public G4VHit
 public:
 
     LGADSensorHit();
-    LGADSensorHit(G4int z);
     virtual ~LGADSensorHit();
     LGADSensorHit(const LGADSensorHit &right);
     const LGADSensorHit& operator=(const LGADSensorHit &right);
@@ -34,7 +33,9 @@ public:
     virtual void Print();
 
 private:
+    G4int detectorID;
     G4int layerID;
+    G4int lgadID;
     G4double time;
     G4double energy;
     G4ThreeVector localPos;
@@ -44,7 +45,20 @@ private:
     G4double efficiency;
 
 public:
+ 
+    inline void SetDetectorID(G4int z) {
+        layerID = z;
+    }
+    inline G4int GetLayerID() const {
+        return layerID;
+    }
     inline void SetLayerID(G4int z) {
+        layerID = z;
+    }
+    inline G4int GetLayerID() const {
+        return layerID;
+    }
+     inline void SetLayerID(G4int z) {
         layerID = z;
     }
     inline G4int GetLayerID() const {

@@ -40,6 +40,7 @@ public:
     inline G4int GetVerbose() const {
         return verboseLevel;
     }
+    typedef std::vector<LGADSensorHitsCollection* > LGADSensorHitsCollections;
 };
 
 

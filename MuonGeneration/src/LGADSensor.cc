@@ -55,26 +55,18 @@ G4bool LGADSensor::ProcessHits(G4Step*aStep,G4TouchableHistory*  /*ROhist*/) {
 
     G4StepPoint* preStepPoint = aStep->GetPreStepPoint();
     G4TouchableHistory* theTouchable = (G4TouchableHistory*)(preStepPoint->GetTouchable());
-    
-    G4VPhysicalVolume* theMotherPhysical = theTouchable->GetVolume(1); // mother
-    G4VPhysicalVolume* thePhysical = theTouchable->GetVolume(0); // child
-    G4int copyNo = thePhysical->GetCopyNo();
-
-    //Simulating efficiency
-    if(CLHEP::RandFlat::shoot(0.0, 1.0) > det->getEffLayer(copyNo)) return false;
-
+  
     G4ThreeVector worldPos = preStepPoint->GetPosition();
-    G4ThreeVector ChamberPos = det->toLocal(worldPos);
-    G4ThreeVector LayerPos = det->toLocal(ChamberPos, copyNo);
-    G4double energy = preStepPoint->GetTotalEnergy();
-
-    std::vector<G4double> pair = getWirePos(LayerPos.x(), copyNo);
-    if(pair[1] < 0) return false;
-    G4ThreeVector LayerMeas(pair[0], 0, 0);
-    G4ThreeVector ChamberMeas = det->toGlobal(LayerMeas, copyNo);
+    G4ThreeVector localPos = theTouchable->GetHistory()->GetTopTransform().TransformPoint(worldPos);
+    G4int detector = lgad->detId();
+    G4int layer = lgad->layerId();
+    G4int sensor = lgad->sensorId();
+    G4int xpad = 0;
+    G4int ypad = 0;
+    
 
     //Simulating resolution
-    LGADSensorHit* aHit = new LGADSensorHit(copyNo);
+    LGADSensorHit* aHit = new LGADSensorHit();
     aHit->SetLocalPos(ChamberPos);
     aHit->SetLocalMeas(ChamberMeas);
     aHit->SetTime(preStepPoint->GetGlobalTime());

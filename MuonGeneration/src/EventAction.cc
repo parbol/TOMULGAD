@@ -38,9 +38,10 @@ EventAction::EventAction(ConfigurationGeometry *geom_) {
     G4SDManager* SDman = G4SDManager::GetSDMpointer();
     G4int numberOfDetectors = SDman->GetCollectionCapacity();
     SDman->ListTree();
-    DHCID.push_back(SDman->GetCollectionID("Chamber1/HitsCollection"));
-    DHCID.push_back(SDman->GetCollectionID("Chamber2/HitsCollection"));
 
+    for(auto i : geom->collections()) {
+        DHCID.push_back(SDman->GetCollectionID(i));
+    }
     messenger = new EventActionMessenger(this);
 
 }
@@ -74,35 +75,28 @@ void EventAction::EndOfEventAction(const G4Event* evt) {
 
     auto man = G4AnalysisManager::Instance();
     G4HCofThisEvent * HCE = evt->GetHCofThisEvent();
-    std::vector<LGADSensorHitsCollection* > DHC1;
-    std::vector<LGADSensorHitsCollection* > DHC2;
+    
+    std::vector<LGADSensorHitsCollections> DHCs;
     //G4SDManager* SDman = G4SDManager::GetSDMpointer();
 
     if(HCE) {
-        LGADSensorHitsCollection *a = 0;
-        a = (LGADSensorHitsCollection*)(HCE->GetHC(DHCID.at(0)));
-        DHC1.push_back(a);
-        LGADSensorHitsCollection *b = 0;
-        b = (LGADSensorHitsCollection*)(HCE->GetHC(DHCID.at(1)));
-        DHC2.push_back(b);
-    }
+        for (auto i : DHCID) {
+            LGADSensorHitsCollection *a = 0;
+            a = (LGADSensorHitsCollection*)(HCE->GetHC(i));
+            LGADSensorHitsCollections DHCcoll;
+            DHCcoll.push_back(a);
+            DHCs.push_back(CHCcoll);
+        }
+        for (auto i : DHCs) {
+            if(i.at(0)) {
+                G4int n_hit = i.at(0)->entries();
+                for(G4int hit = 0; hit < n_hit; hit++) {
+                    LGADSensorHit* aHit = (*(i.at(0)))[hit];
+                    G4ThreeVector pos = aHit->GetLocalPos();
+                    G4double e = aHit->GetEnergy();
+                    G4int layerID = aHit->GetLayerID();
 
-    for(G4int iParticle = 0; iParticle < evt->GetPrimaryVertex(0)->GetNumberOfParticle(); iParticle++) {
 
-        G4PrimaryParticle*   primary = evt->GetPrimaryVertex(0)->GetPrimary(iParticle);
-        if(primary->GetParticleDefinition()->GetParticleName() != "mu-" && primary->GetParticleDefinition()->GetParticleName() != "mu+") continue;
-
-        if(DHC1.at(0)) {
-            G4int n_hit = DHC1.at(0)->entries();
-            //if(n_hit < geom->getDetector1()->getNLayers()/2.0) return;
-            if(n_hit == 0) return;
-            for(G4int hit = 0; hit < n_hit; hit++) {
-                LGADSensorHit* aHit = (*(DHC1.at(0)))[hit];
-                G4ThreeVector pos = aHit->GetLocalPos();
-                G4ThreeVector meas = aHit->GetLocalMeas();
-                G4ThreeVector errormeas = aHit->GetLocalMeasError();
-                G4double e = aHit->GetEnergy();
-                G4int layerID = aHit->GetLayerID();
                 man->FillNtupleDColumn(8*layerID + 0, pos.x()/CLHEP::cm);
                 man->FillNtupleDColumn(8*layerID + 1, pos.y()/CLHEP::cm);
                 man->FillNtupleDColumn(8*layerID + 2, pos.z()/CLHEP::cm);
