@@ -6,6 +6,7 @@
 #include "globals.hh"
 #include <vector>
 
+#include "LGADSensorHit.hh"
 #include "ConfigurationGeometry.hh"
 
 #ifdef G4ANALYSIS_USE
