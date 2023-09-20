@@ -68,28 +68,32 @@ if __name__=='__main__':
     sensorSizeZ = 0.05
     sensorZSize = [sensorSizeZ, sensorSizeZ, sensorSizeZ, sensorSizeZ]
 
-    for i, det in enumerate(data['Detectors']):
-        det['xPosDetector'] = detectorXPosition[i]  
-        det['yPosDetector'] = detectorYPosition[i]        
-        det['zPosDetector'] = detectorZPosition[i]
-        det['xSizeDetector'] = detectorXSize[i]
-        det['ySizeDetector'] = detectorYSize[i]
-        det['zSizeDetector'] = detectorZSize[i]
-        for j, layer in enumerate(det['Layers']):
-            layer['xPosLayer'] = layerXPosition[j]
-            layer['yPosLayer'] = layerYPosition[j]
-            layer['zPosLayer'] = layerZPosition[j]
-            layer['xSizeLayer'] = layerXSize[j]
-            layer['ySizeLayer'] = layerYSize[j]
-            layer['zSizeLayer'] = layerZSize[j]
-            for k, sensor in enumerate(layer['Sensors']):
-                sensor['xPosSensor'] = sensorXPosition[k]
-                sensor['yPosSensor'] = sensorYPosition[k]
-                sensor['zPosSensor'] = sensorZPosition[k]
-                sensor['xSizeSensor'] = sensorXSize[k]
-                sensor['ySizeSensor'] = sensorYSize[k]
-                sensor['zSizeSensor'] = sensorZSize[k]
+    for i, det_ in enumerate(data['Detectors']):
+        det_['xPosDetector'] = detectorXPosition[i]  
+        det_['yPosDetector'] = detectorYPosition[i]        
+        det_['zPosDetector'] = detectorZPosition[i]
+        print(i, detectorZPosition[i], det_['zPosDetector'])
+        det_['xSizeDetector'] = detectorXSize[i]
+        det_['ySizeDetector'] = detectorYSize[i]
+        det_['zSizeDetector'] = detectorZSize[i]
+        for j, layer_ in enumerate(det_['Layers']):
+            layer_['xPosLayer'] = layerXPosition[j]
+            layer_['yPosLayer'] = layerYPosition[j]
+            layer_['zPosLayer'] = layerZPosition[j]
+            print(j, layerZPosition[j])
+            layer_['xSizeLayer'] = layerXSize[j]
+            layer_['ySizeLayer'] = layerYSize[j]
+            layer_['zSizeLayer'] = layerZSize[j]
+            for k, sensor_ in enumerate(layer_['Sensors']):
+                sensor_['xPosSensor'] = sensorXPosition[k]
+                sensor_['yPosSensor'] = sensorYPosition[k]
+                sensor_['zPosSensor'] = sensorZPosition[k]
+                sensor_['xSizeSensor'] = sensorXSize[k]
+                sensor_['ySizeSensor'] = sensorYSize[k]
+                sensor_['zSizeSensor'] = sensorZSize[k]
 
+
+    print(data)
 
     # Serializing json
     json_object = json.dumps(data, indent=4)

@@ -1,5 +1,5 @@
 #include "LGAD.hh"
-
+#include "LGADSensor.hh"
 
 //----------------------------------------------------------------------//
 // Constructor                                                          //
@@ -92,9 +92,13 @@ void LGAD::createG4Objects(G4String name, G4LogicalVolume *mother,
 void LGAD::Print() {
 
     G4cout << "\033[1;34m" << "LGAD" << "\033[0m" << G4endl;
-    G4cout << "\033[1;34m" << "Location x: " << pos.x() << ", y: " << pos.y() << ", z: " << pos.z() << G4endl;
+    G4cout << "\033[1;34m" << "Location x: " << pos.x()/CLHEP::cm << ", y: " << pos.y()/CLHEP::cm << ", z: " << pos.z()/CLHEP::cm << G4endl;
     G4cout << "\033[1;34m" << "Rotation x: " << rots.x() << ", y: " << rots.y() << ", z: " << rots.z() << G4endl;
-    G4cout << "\033[1;34m" << "Sizes x: " << sizes.x() << ", y: " << sizes.y() << ", z: " << sizes.z() << G4endl;
+    G4cout << "\033[1;34m" << "Sizes x: " << sizes.x()/CLHEP::cm << ", y: " << sizes.y()/CLHEP::cm << ", z: " << sizes.z()/CLHEP::cm << G4endl;
+    G4cout << "\033[1;34m" << "N pads x: " << nPadx << " N pads y: " << nPady << G4endl; 
+    G4cout << "\033[1;34m" << "Interpad x: " << interPadx << " Interpad y: " << interPady << G4endl; 
+    G4cout << "\033[1;34m" << "Border x: " << borderPadx << " Border y: " << borderPady << G4endl; 
+    G4cout << "\033[1;34m" << "chargeThreshold: " << chargeThreshold << " noise: " << noiseLevel << " tdcSigma: " << tdcSigma << G4endl; 
     G4cout << "\033[0m" << G4endl;
 }
 //----------------------------------------------------------------------//

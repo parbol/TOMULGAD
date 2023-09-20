@@ -54,11 +54,11 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
 
     if( root.size() > 0 ) {
         //Definition of the Universe ----------------------------------------------
-        G4double xSize = atof(root["TheWorld"]["xSizeWorld"].asString().c_str());
-        G4double ySize = atof(root["TheWorld"]["ySizeWorld"].asString().c_str());
-        G4double zSize = atof(root["TheWorld"]["zSizeWorld"].asString().c_str());
-        G4double zOffsetCRY_ = atof(root["TheWorld"]["zOffsetCRY"].asString().c_str());
-        G4double sizeBoxCRY_ = atof(root["TheWorld"]["sizeBoxCRY"].asString().c_str());
+        G4double xSize = atof(root["theWorld"]["xSizeWorld"].asString().c_str());
+        G4double ySize = atof(root["theWorld"]["ySizeWorld"].asString().c_str());
+        G4double zSize = atof(root["theWorld"]["zSizeWorld"].asString().c_str());
+        G4double zOffsetCRY_ = atof(root["theWorld"]["zOffsetCRY"].asString().c_str());
+        G4double sizeBoxCRY_ = atof(root["theWorld"]["sizeBoxCRY"].asString().c_str());
 
         if(xSize <= 0 || ySize <= 0|| zSize <= 0) {
             G4cerr << "\033[1;31m" << "The size of the Universe has been greater than 0" << "\033[0m" << G4endl;
@@ -86,7 +86,9 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
 
         //Definition of the Detectors ----------------------------------------------
         const Json::Value Detectors = root["Detectors"];
+
 	    for(G4int idet = 0; idet < Detectors.size(); ++idet) {
+
 	        G4double xPos = atof(root["Detectors"][idet]["xPosDetector"].asString().c_str()) * CLHEP::cm;
             G4double yPos = atof(root["Detectors"][idet]["yPosDetector"].asString().c_str()) * CLHEP::cm;
             G4double zPos = atof(root["Detectors"][idet]["zPosDetector"].asString().c_str()) * CLHEP::cm;
@@ -96,6 +98,7 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
             G4double xSize = atof(root["Detectors"][idet]["xSizeDetector"].asString().c_str()) * CLHEP::cm;
             G4double ySize = atof(root["Detectors"][idet]["ySizeDetector"].asString().c_str()) * CLHEP::cm;
             G4double zSize = atof(root["Detectors"][idet]["zSizeDetector"].asString().c_str()) * CLHEP::cm;
+ 
             if(xPos - xSize/2.0 < - uniSizeX/2.0 || yPos - ySize/2.0 < -uniSizeY/2.0 || zPos - zSize/2.0 < -uniSizeZ/2.0) {
                 G4cerr << "\033[1;31m" << "Chamber " << idet << " is not contained in the world" << "\033[0m" << G4endl;
                 goodGeometry = false;
@@ -105,7 +108,8 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
             G4String Coll = G4String("HitCollection") + G4String(std::to_string(idet));
             registerCollection(Coll);
             //Layers inside a detector ----------------------------------------------
-	        const Json::Value jLayer = root[idet]["Layers"];
+	        const Json::Value jLayer = root["Detectors"][idet]["Layers"];
+            
             for(G4int icoll = 0; icoll < jLayer.size(); ++icoll) {
                 G4double xPosLayer = atof(root["Detectors"][idet]["Layers"][icoll]["xPosLayer"].asString().c_str()) * CLHEP::cm;
                 G4double yPosLayer = atof(root["Detectors"][idet]["Layers"][icoll]["yPosLayer"].asString().c_str()) * CLHEP::cm;
@@ -152,6 +156,7 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
         }
     }    
     goodGeometry = true;
+    Print();
     return;
 }
 //----------------------------------------------------------------------//
@@ -271,7 +276,7 @@ void ConfigurationGeometry::Print() {
 
     G4cout << "\033[1;34m" << "---------------------------------------Geometry information-----------------------------------" << "\033[0m" << G4endl;
     G4cout << "\033[1;34m" << "The loaded geometry is as follows: " << G4endl;
-    G4cout << "\033[1;34m" << "The world is contained in [" << -uniSizeX/2.0 << ", " << uniSizeX/2.0 << "]x[" << -uniSizeY/2.0 << ", " << uniSizeY/2.0 << "]x[" << -uniSizeZ/2.0 << ", " << uniSizeZ/2.0 << "]" << G4endl;
+    G4cout << "\033[1;34m" << "The world is contained in [" << -uniSizeX/2.0/CLHEP::cm << ", " << uniSizeX/2.0/CLHEP::cm << "]x[" << -uniSizeY/2.0/CLHEP::cm << ", " << uniSizeY/2.0/CLHEP::cm << "]x[" << -uniSizeZ/2.0/CLHEP::cm << ", " << uniSizeZ/2.0/CLHEP::cm << "]" << G4endl;
     for(G4int i = 0; i < getNDetectors(); i++) {
         detectors.at(i)->Print();
     }

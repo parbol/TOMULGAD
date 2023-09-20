@@ -79,9 +79,9 @@ void Detector::createG4Objects(G4String name, G4LogicalVolume *mother,
 void Detector::Print() {
 
     G4cout << "\033[1;34m" << "Detector" << "\033[0m" << G4endl;
-    G4cout << "\033[1;34m" << "Location x: " << pos.x() << ", y: " << pos.y() << ", z: " << pos.z() << G4endl;
+    G4cout << "\033[1;34m" << "Location x: " << pos.x()/CLHEP::cm << ", y: " << pos.y()/CLHEP::cm << ", z: " << pos.z()/CLHEP::cm << G4endl;
     G4cout << "\033[1;34m" << "Rotation x: " << rots.x() << ", y: " << rots.y() << ", z: " << rots.z() << G4endl;
-    G4cout << "\033[1;34m" << "Sizes x: " << sizes.x() << ", y: " << sizes.y() << ", z: " << sizes.z() << G4endl;
+    G4cout << "\033[1;34m" << "Sizes x: " << sizes.x()/CLHEP::cm << ", y: " << sizes.y()/CLHEP::cm << ", z: " << sizes.z()/CLHEP::cm << G4endl;
     G4cout << "\033[1;34m" << "Number of layers " << GetNLayers() << G4endl;
     for(G4int i = 0; i < GetNLayers(); i++) {
         layers.at(i)->Print();
