@@ -22,28 +22,34 @@ if __name__=='__main__':
  
     #We take the structure from this basic json file and adapt the dictionary
     with open('../data/confExample.json', 'r') as f:
-        data = json.load(f)
+        data_ = json.load(f)
     
-    theWorld = data['theWorld']
-    detector = data['Detectors'][0]
+    theWorld = data_['theWorld']
+    detector = data_['Detectors'][0]
     layer = detector['Layers'][0]
     sensor = layer['Sensors'][0]
- 
+
     sensors = []
     for isensor in range(0, nSensors):
-        sensors.append(sensor)
+        copysens = sensor.copy()
+        sensors.append(copysens)
     layer['Sensors'] = sensors
 
     layers = []
     for ilayer in range(0, nLayers):
-        layers.append(layer)
+        copylayer = layer.copy()
+        layers.append(copylayer)
     detector['Layers'] = layers
 
     detectors = []
     for idetector in range(0, nDetectors):
-        detectors.append(detector)
+        copydetector = detector.copy()
+        detectors.append(copydetector)
+
+    data = {} 
     data['Detectors'] = detectors
 
+    
     #This must be configured for every setup 
     detectorXPosition = [0, 0]
     detectorYPosition = [0, 0]
@@ -72,7 +78,6 @@ if __name__=='__main__':
         det_['xPosDetector'] = detectorXPosition[i]  
         det_['yPosDetector'] = detectorYPosition[i]        
         det_['zPosDetector'] = detectorZPosition[i]
-        print(i, detectorZPosition[i], det_['zPosDetector'])
         det_['xSizeDetector'] = detectorXSize[i]
         det_['ySizeDetector'] = detectorYSize[i]
         det_['zSizeDetector'] = detectorZSize[i]
@@ -80,7 +85,6 @@ if __name__=='__main__':
             layer_['xPosLayer'] = layerXPosition[j]
             layer_['yPosLayer'] = layerYPosition[j]
             layer_['zPosLayer'] = layerZPosition[j]
-            print(j, layerZPosition[j])
             layer_['xSizeLayer'] = layerXSize[j]
             layer_['ySizeLayer'] = layerYSize[j]
             layer_['zSizeLayer'] = layerZSize[j]
@@ -92,8 +96,6 @@ if __name__=='__main__':
                 sensor_['ySizeSensor'] = sensorYSize[k]
                 sensor_['zSizeSensor'] = sensorZSize[k]
 
-
-    print(data)
 
     # Serializing json
     json_object = json.dumps(data, indent=4)
