@@ -72,7 +72,7 @@ int main(int argc,char** argv) {
         G4cerr << "\033[1;31m" << "Problems in the configuration geometry file" << "\033[0m" << G4endl;
         return -1;
     }
-    /*
+    
     //Initializing runManager
     G4RunManager* runManager = new G4RunManager;
 
@@ -85,7 +85,7 @@ int main(int argc,char** argv) {
     }
 
     runManager->SetUserInitialization(myDetector);
-
+    
     PhysicsList *myPhysicsList = new PhysicsList();
     if(myPhysicsList == NULL) {
         G4cerr << "\033[1;31m" << "Problems in the physics list" << "\033[0m" << G4endl;
@@ -104,7 +104,7 @@ int main(int argc,char** argv) {
 
     runManager->SetUserAction(myPrimaryGeneratorAction);
 
-    RunAction *myRunAction = new RunAction(nameOfOutputFile, geomConf);
+    RunAction *myRunAction = new RunAction(nameOfOutputFile);
     if(myRunAction == NULL) {
         G4cerr << "\033[1;31m" << "Problems in RunAction" << "\033[0m" << G4endl;
         return -1;
@@ -117,16 +117,16 @@ int main(int argc,char** argv) {
         G4cerr << "\033[1;31m" << "Problems in EventAction" << "\033[0m" << G4endl;
         return -1;
     }
-
+/*
     runManager->SetUserAction(myEventAction);
-
+    std::cout << "Fuck yeah" << std::endl;
     runManager->BeamOn(numberOfEvents);
 
     delete runManager;
     delete geomConf;
     G4cout << "The program finished successfully" << std::endl;
+  */  
     
-    */
     return 0;
 }
 //----------------------------------------------------------------------//

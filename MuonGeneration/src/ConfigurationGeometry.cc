@@ -105,7 +105,7 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
                 return;
             }
             Detector *detector = new Detector(xPos, yPos, zPos, xDir, yDir, zDir, xSize, ySize, zSize, idet);
-            G4String Coll = G4String("HitCollection") + G4String(std::to_string(idet));
+            G4String Coll = G4String("HitsCollection") + G4String(std::to_string(idet));
             registerCollection(Coll);
             //Layers inside a detector ----------------------------------------------
 	        const Json::Value jLayer = root["Detectors"][idet]["Layers"];

@@ -47,6 +47,7 @@ if __name__=='__main__':
         detectors.append(copydetector)
 
     data = {} 
+    data['theWorld'] = theWorld
     data['Detectors'] = detectors
 
     
