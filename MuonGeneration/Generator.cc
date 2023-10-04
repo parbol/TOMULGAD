@@ -117,7 +117,7 @@ int main(int argc,char** argv) {
         G4cerr << "\033[1;31m" << "Problems in EventAction" << "\033[0m" << G4endl;
         return -1;
     }
-/*
+
     runManager->SetUserAction(myEventAction);
     std::cout << "Fuck yeah" << std::endl;
     runManager->BeamOn(numberOfEvents);
@@ -125,7 +125,7 @@ int main(int argc,char** argv) {
     delete runManager;
     delete geomConf;
     G4cout << "The program finished successfully" << std::endl;
-  */  
+    
     
     return 0;
 }

@@ -75,7 +75,7 @@ void LGAD::createG4Objects(G4String name, G4LogicalVolume *mother,
 
     //We need to make this object sensitive
     G4String SDname = LGADName;
-    G4String Collection = G4String("HitsCollection") + G4String(std::to_string(detId()));
+    G4String Collection = G4String("HitsCollection_") + name;
     LGADSensor *lgadSensor = new LGADSensor(SDname = SDname, Collection);
     lgadSensor->setLGAD(this);
     SDman->AddNewDetector(lgadSensor);

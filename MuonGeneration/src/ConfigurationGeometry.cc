@@ -105,8 +105,7 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
                 return;
             }
             Detector *detector = new Detector(xPos, yPos, zPos, xDir, yDir, zDir, xSize, ySize, zSize, idet);
-            G4String Coll = G4String("HitsCollection") + G4String(std::to_string(idet));
-            registerCollection(Coll);
+            
             //Layers inside a detector ----------------------------------------------
 	        const Json::Value jLayer = root["Detectors"][idet]["Layers"];
             
@@ -149,6 +148,11 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
                                             xborder, yborder, chargeThreshold,
                                             noise, tdcSigma, idet, icoll, isens);
                     layer->AddSensor(sensor);
+                    G4String label = G4String(std::to_string(idet)) + G4String("_") + 
+                                     G4String(std::to_string(icoll)) + G4String("_") + 
+                                     G4String(std::to_string(isens)); 
+                    G4String Coll = G4String("HitsCollection_") + label;
+                    registerCollection(Coll);
 		        }   
                 detector->AddLayer(layer);
 	        }
