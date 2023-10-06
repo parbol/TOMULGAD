@@ -67,15 +67,17 @@ int main(int argc,char** argv) {
         return -1;
     }
 
+    //Initializing runManager
+    G4RunManager* runManager = new G4RunManager;
+
+
     ConfigurationGeometry *geomConf = new ConfigurationGeometry(nameOfInputFile);
     if(!geomConf->isGood()) {
         G4cerr << "\033[1;31m" << "Problems in the configuration geometry file" << "\033[0m" << G4endl;
         return -1;
     }
     
-    //Initializing runManager
-    G4RunManager* runManager = new G4RunManager;
-
+    
     runManager->SetVerboseLevel(2);
 
     DetectorConstruction *myDetector = new DetectorConstruction(geomConf);
@@ -121,10 +123,10 @@ int main(int argc,char** argv) {
     runManager->SetUserAction(myEventAction);
     std::cout << "Fuck yeah" << std::endl;
     runManager->BeamOn(numberOfEvents);
-
-    delete runManager;
     delete geomConf;
-    G4cout << "The program finished successfully" << std::endl;
+    delete runManager;
+    
+    G4cout << "The program finished successfully" << G4endl;
     
     
     return 0;

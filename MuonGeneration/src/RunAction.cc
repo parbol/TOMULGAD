@@ -70,6 +70,7 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
     analysisManager->Write();
     analysisManager->CloseFile();
     delete G4AnalysisManager::Instance();
+    
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//

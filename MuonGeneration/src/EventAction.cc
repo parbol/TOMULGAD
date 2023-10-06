@@ -100,22 +100,24 @@ void EventAction::EndOfEventAction(const G4Event* evt) {
                     G4int layerID = aHit->GetLayerID();
                     G4int lgadID = aHit->GetLGADID();
                     
-                    man->FillNtupleIColumn(0, 0, aHit->GetEventNumber());
-                    man->FillNtupleIColumn(0, 1, aHit->GetDetectorID());
-                    man->FillNtupleIColumn(0, 2, aHit->GetLayerID());
-                    man->FillNtupleIColumn(0, 3, aHit->GetLGADID());
-                    man->FillNtupleIColumn(0, 4, aHit->GetPadx());
-                    man->FillNtupleIColumn(0, 5, aHit->GetPady());
-                    man->FillNtupleDColumn(0, 6, aHit->GetTOA()/CLHEP::second);                                        man->FillNtupleDColumn(6, 1, aHit->GetTOA()/CLHEP::second);
-                    man->FillNtupleDColumn(0, 7, aHit->GetTOT()/CLHEP::second);
-                    man->FillNtupleDColumn(0, 8, aHit->GetTime()/CLHEP::second);
-                    man->FillNtupleDColumn(0, 9, aHit->GetEnergy()/CLHEP::eV);
-                    man->FillNtupleDColumn(0, 10, localpos.x()/CLHEP::cm);
-                    man->FillNtupleDColumn(0, 11, localpos.y()/CLHEP::cm);
-                    man->FillNtupleDColumn(0, 12, localpos.z()/CLHEP::cm);
-                    man->FillNtupleDColumn(0, 13, globalpos.x()/CLHEP::cm);
-                    man->FillNtupleDColumn(0, 14, globalpos.y()/CLHEP::cm);
-                    man->FillNtupleDColumn(0, 15, globalpos.z()/CLHEP::cm);
+                    man->FillNtupleIColumn(0, aHit->GetEventNumber());
+                    man->FillNtupleIColumn(1, aHit->GetDetectorID());
+                    man->FillNtupleIColumn(2, aHit->GetLayerID());
+                    man->FillNtupleIColumn(3, aHit->GetLGADID());
+                    man->FillNtupleIColumn(4, aHit->GetPadx());
+                    man->FillNtupleIColumn(5, aHit->GetPady());
+                    G4cout << "Hasta aqui " << aHit->GetTOA() << G4endl;
+                    man->FillNtupleDColumn(6, 2.1); 
+                    G4cout << "cagose" << G4endl;
+                    man->FillNtupleDColumn(7, aHit->GetTOT()/CLHEP::second);
+                    man->FillNtupleDColumn(8, aHit->GetTime()/CLHEP::second);
+                    man->FillNtupleDColumn(9, aHit->GetEnergy()/CLHEP::eV);
+                    man->FillNtupleDColumn(10, localpos.x()/CLHEP::cm);
+                    man->FillNtupleDColumn(11, localpos.y()/CLHEP::cm);
+                    man->FillNtupleDColumn(12, localpos.z()/CLHEP::cm);
+                    man->FillNtupleDColumn(13, globalpos.x()/CLHEP::cm);
+                    man->FillNtupleDColumn(14, globalpos.y()/CLHEP::cm);
+                    man->FillNtupleDColumn(15, globalpos.z()/CLHEP::cm);
                     man->AddNtupleRow();
                 }
                     
