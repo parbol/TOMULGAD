@@ -34,9 +34,9 @@ void RunAction::BeginOfRunAction(const G4Run* run) {
 
     G4AnalysisManager* man = G4AnalysisManager::Instance();
     man->OpenFile(nameOfOutputFile.c_str());
-
     // Create ntuple
     man->CreateNtuple("hits", "The hits");
+    
     man->CreateNtupleIColumn("eventNumber");
     man->CreateNtupleIColumn("det");
     man->CreateNtupleIColumn("layer");
@@ -53,7 +53,7 @@ void RunAction::BeginOfRunAction(const G4Run* run) {
     man->CreateNtupleDColumn("xglobal");
     man->CreateNtupleDColumn("yglobal");
     man->CreateNtupleDColumn("zglobal");
-
+    
 
     man->FinishNtuple();
 }
@@ -69,7 +69,7 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
     analysisManager->Write();
     analysisManager->CloseFile();
-    delete G4AnalysisManager::Instance();
+    //delete G4AnalysisManager::Instance();
     
 }
 //----------------------------------------------------------------------//

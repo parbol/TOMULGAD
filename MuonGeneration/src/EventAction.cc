@@ -78,7 +78,6 @@ void EventAction::EndOfEventAction(const G4Event* evt) {
     
     std::vector<LGADSensorHitsCollections> DHCs;
     //G4SDManager* SDman = G4SDManager::GetSDMpointer();
-
     if(HCE) {
         for (auto i : DHCID) {
             LGADSensorHitsCollection *a = 0;
@@ -106,9 +105,7 @@ void EventAction::EndOfEventAction(const G4Event* evt) {
                     man->FillNtupleIColumn(3, aHit->GetLGADID());
                     man->FillNtupleIColumn(4, aHit->GetPadx());
                     man->FillNtupleIColumn(5, aHit->GetPady());
-                    G4cout << "Hasta aqui " << aHit->GetTOA() << G4endl;
-                    man->FillNtupleDColumn(6, 2.1); 
-                    G4cout << "cagose" << G4endl;
+                    man->FillNtupleDColumn(6, aHit->GetTOA()/CLHEP::second); 
                     man->FillNtupleDColumn(7, aHit->GetTOT()/CLHEP::second);
                     man->FillNtupleDColumn(8, aHit->GetTime()/CLHEP::second);
                     man->FillNtupleDColumn(9, aHit->GetEnergy()/CLHEP::eV);
