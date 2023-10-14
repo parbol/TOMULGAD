@@ -14,6 +14,10 @@
 #include "PhysicsList.hh"
 #include "PrimaryGeneratorAction.hh"
 #include "ConfigurationGeometry.hh"
+#include "G4VisExecutive.hh"
+#include "G4UIExecutive.hh"
+
+
 
 #include <getopt.h>
 #include <stdio.h>
@@ -30,7 +34,7 @@
 //----------------------------------------------------------------------//
 
 //Get options from the command line
-bool getOptions(int , char **, G4String &, G4String &, G4String &, G4int &, G4long &, G4double &);
+bool getOptions(int , char **, G4String &, G4String &, G4String &, G4String &, G4int &, G4long &, G4double &);
 
 //Simply shows a cool propaganda banner
 void showBanner();
@@ -52,12 +56,13 @@ int main(int argc,char** argv) {
     G4String nameOfInputFile;
     G4String nameOfOutputFile;
     G4String nameOfCRYFile;
+    G4String nameOfGeantFile;
     G4int    numberOfEvents;
     G4long   randomSeed = 0;
 	G4double pt = 0;
     //Options all right?
-    if(!getOptions(argc, argv, nameOfInputFile, nameOfOutputFile, nameOfCRYFile, numberOfEvents, randomSeed, pt)) {
-        G4cerr << "\033[1;31m" << "Usage: ./Generator --input NameOfGeometry.json --cry cryfile.txt --output outputfile --number numberOfEvents --seed seed --pt pt"  << "\033[0m" << G4endl;
+    if(!getOptions(argc, argv, nameOfInputFile, nameOfOutputFile, nameOfCRYFile, nameOfGeantFile, numberOfEvents, randomSeed, pt)) {
+        G4cerr << "\033[1;31m" << "Usage: ./Generator --input NameOfGeometry.json --cry cryfile.txt --geant4 file.g4 --output outputfile --number numberOfEvents --seed seed --pt pt"  << "\033[0m" << G4endl;
         return -1;
     }
 
@@ -66,6 +71,10 @@ int main(int argc,char** argv) {
         G4cerr << "\033[1;31m" << "The number of events must be a positive integer greater than 0" << "\033[0m" << G4endl;
         return -1;
     }
+ 
+    G4UIExecutive *ui = NULL;
+    if(nameOfGeantFile != "") ui = new G4UIExecutive(argc, argv);
+
 
     //Initializing runManager
     G4RunManager* runManager = new G4RunManager;
@@ -121,9 +130,24 @@ int main(int argc,char** argv) {
     }
 
     runManager->SetUserAction(myEventAction);
-    std::cout << "Fuck yeah" << std::endl;
-    runManager->BeamOn(numberOfEvents);
+
+
+    G4VisManager* visManager = new G4VisExecutive;
+    
+    visManager->Initialize();
+    G4UImanager* UImanager = G4UImanager::GetUIpointer();
+
+    // Run or start UI session
+    if ( ! ui ) {
+        runManager->BeamOn(numberOfEvents);
+    } else { 
+        UImanager->ApplyCommand("/control/execute init_vis.mac");
+        ui->SessionStart();
+        delete ui;
+    }
+
     delete geomConf;
+    delete visManager;
     delete runManager;
     
     G4cout << "The program finished successfully" << G4endl;
@@ -139,7 +163,7 @@ int main(int argc,char** argv) {
 //----------------------------------------------------------------------//
 // This method will put the command line input in the variables.        //
 //----------------------------------------------------------------------//
-bool getOptions(int argc, char **argv, G4String &nameOfInputFile, G4String &nameOfOutputFile, G4String &nameOfCRYFile, G4int &numberOfEvents, G4long &randomSeed, G4double &pt) {
+bool getOptions(int argc, char **argv, G4String &nameOfInputFile, G4String &nameOfOutputFile, G4String &nameOfCRYFile, G4String &nameOfGeantFile, G4int &numberOfEvents, G4long &randomSeed, G4double &pt) {
 
     int option_iterator;
     int option_counter = 0;
@@ -153,6 +177,7 @@ bool getOptions(int argc, char **argv, G4String &nameOfInputFile, G4String &name
             {"seed",    required_argument, 0, 's'},
             {"number",    required_argument, 0, 'n'},
             {"cry",    required_argument, 0, 'c'},
+            {"geant",    required_argument, 0, 'g'},            
             {"pt",    required_argument, 0, 'p'},
             {0, 0, 0, 0}
         };
@@ -179,6 +204,9 @@ bool getOptions(int argc, char **argv, G4String &nameOfInputFile, G4String &name
                 break;
             case 'c':
                 nameOfCRYFile = (G4String) optarg;
+                break;
+            case 'g':
+                nameOfGeantFile = (G4String) optarg;
                 break;
             case 's':
                 randomSeed = (G4long) atoi(optarg);
