@@ -54,7 +54,7 @@ void Layer::createG4Objects(G4String name, G4LogicalVolume *mother,
                             G4SDManager *SDman) {
 
     G4String layerName = G4String("layer_") + name;  
-    solidVolume = new G4Box(layerName, sizes[0], sizes[1], sizes[2]);
+    solidVolume = new G4Box(layerName, sizes[0]/2.0, sizes[1]/2.0, sizes[2]/2.0);
     logicalVolume = new G4LogicalVolume(solidVolume, materials["air"], layerName);
     for(int i = 0; i < sensors.size(); i++) {
         G4String sensorName = name + G4String("_") + G4String(std::to_string(i));  

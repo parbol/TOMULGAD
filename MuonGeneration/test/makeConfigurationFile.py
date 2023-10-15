@@ -68,7 +68,7 @@ if __name__=='__main__':
     centralCorridor = 0.4
     posS = (sensorSize+centralCorridor)/2.0
     sensorXPosition = [posS, -posS, posS, -posS]
-    sensorYPosition = [posS, -posS, posS, -posS]
+    sensorYPosition = [posS, -posS, -posS, posS]
     sensorZPosition = [0, 0, 0, 0]
     sensorXSize = [sensorSize, sensorSize, sensorSize, sensorSize]
     sensorYSize = [sensorSize, sensorSize, sensorSize, sensorSize]
