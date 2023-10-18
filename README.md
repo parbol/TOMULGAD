@@ -15,6 +15,16 @@ In any case, check:
 
 https://geant4-userdoc.web.cern.ch/UsersGuides/InstallationGuide/html/gettingstarted.html
 
++ Pre-requesites
+
+sudo apt-get -y install build-essential openssl libssl-dev libssl1.0 libgl1-mesa-dev libqt5x11extras5
+
+sudo apt-get install qtbase5-dev
+
+sudo apt-get install qtdeclarative5-dev
+
+sudo apt-get install -y libxmu-dev
+
 
 1.2 Get the GEANT4 source code 
 

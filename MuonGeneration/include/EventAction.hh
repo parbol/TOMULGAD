@@ -8,6 +8,7 @@
 
 #include "LGADSensorHit.hh"
 #include "ConfigurationGeometry.hh"
+#include "LGADDigi.hh"
 
 #ifdef G4ANALYSIS_USE
 #include "AIDA/AIDA.h"
