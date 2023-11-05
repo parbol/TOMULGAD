@@ -12,6 +12,8 @@
 #include "CLHEP/Random/RandGaussQ.h"
 #include "CLHEP/Random/RandFlat.h"
 
+#include <tuple>
+
 //----------------------------------------------------------------------//
 // Constructor                                                          //
 //----------------------------------------------------------------------//
@@ -65,9 +67,11 @@ G4bool LGADSensor::ProcessHits(G4Step*aStep,G4TouchableHistory*  /*ROhist*/) {
     G4int detector = lgad->detId();
     G4int layer = lgad->layerId();
     G4int sensor = lgad->sensorId();
-    G4int xpad = 0;
-    G4int ypad = 0;
-    G4double energy = preStepPoint->GetTotalEnergy();
+    std::tuple<G4int, G4int, G4double> val = lgad->getPads(localPos);
+    G4int xpad = std::get<0>(val);
+    G4int ypad = std::get<1>(val);
+    G4double g = std::get<2>(val);
+    G4double energy = g * preStepPoint->GetTotalEnergy();
 
     //Simulating resolution
     LGADSensorHit* aHit = new LGADSensorHit();
@@ -80,8 +84,8 @@ G4bool LGADSensor::ProcessHits(G4Step*aStep,G4TouchableHistory*  /*ROhist*/) {
     aHit->SetTime(preStepPoint->GetGlobalTime());
     aHit->SetTOA(0);
     aHit->SetTOT(0);
-    aHit->SetPadx(0);
-    aHit->SetPady(0);
+    aHit->SetPadx(xpad);
+    aHit->SetPady(ypad);
     aHit->SetEnergy(energy);
     
     hitsCollection->insert(aHit);

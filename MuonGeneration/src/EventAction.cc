@@ -23,6 +23,7 @@
 #include <math.h>
 
 #include <iostream>
+#include <map>
 
 #define PI 3.141592653589793238462643383279502884
 
@@ -73,6 +74,8 @@ void EventAction::BeginOfEventAction(const G4Event*) {}
 //----------------------------------------------------------------------//
 void EventAction::EndOfEventAction(const G4Event* evt) {
 
+    std::map<G4int, LGADDigi*> digis;
+
     auto man = G4AnalysisManager::Instance();
     G4HCofThisEvent * HCE = evt->GetHCofThisEvent();
     
@@ -91,34 +94,32 @@ void EventAction::EndOfEventAction(const G4Event* evt) {
                 G4int n_hit = i.at(0)->entries();
                 for(G4int hit = 0; hit < n_hit; hit++) {
                     LGADSensorHit* aHit = (*(i.at(0)))[hit];
-                    aHit->Print();
-                    G4ThreeVector localpos = aHit->GetLocalPos();
-                    G4ThreeVector globalpos = aHit->GetGlobalPos();
-                    G4double e = aHit->GetEnergy();
-                    G4int detectorID = aHit->GetDetectorID();
-                    G4int layerID = aHit->GetLayerID();
-                    G4int lgadID = aHit->GetLGADID();
-                    
-                    man->FillNtupleIColumn(0, aHit->GetEventNumber());
-                    man->FillNtupleIColumn(1, aHit->GetDetectorID());
-                    man->FillNtupleIColumn(2, aHit->GetLayerID());
-                    man->FillNtupleIColumn(3, aHit->GetLGADID());
-                    man->FillNtupleIColumn(4, aHit->GetPadx());
-                    man->FillNtupleIColumn(5, aHit->GetPady());
-                    man->FillNtupleDColumn(6, aHit->GetTOA()/CLHEP::second); 
-                    man->FillNtupleDColumn(7, aHit->GetTOT()/CLHEP::second);
-                    man->FillNtupleDColumn(8, aHit->GetTime()/CLHEP::second);
-                    man->FillNtupleDColumn(9, aHit->GetEnergy()/CLHEP::eV);
-                    man->FillNtupleDColumn(10, localpos.x()/CLHEP::cm);
-                    man->FillNtupleDColumn(11, localpos.y()/CLHEP::cm);
-                    man->FillNtupleDColumn(12, localpos.z()/CLHEP::cm);
-                    man->FillNtupleDColumn(13, globalpos.x()/CLHEP::cm);
-                    man->FillNtupleDColumn(14, globalpos.y()/CLHEP::cm);
-                    man->FillNtupleDColumn(15, globalpos.z()/CLHEP::cm);
-                    man->AddNtupleRow();
+                    LGADDigi *digi = new LGADDigi(aHit);
+                    auto it = digis.find(digi->hitID);
+                    if(it == digis.end()) {
+                        digis.insert(std::make_pair(digi->hitID, digi));
+                    } else {
+                        it->second->charge += digi->charge;
+                        it->second->TOA = (it->second->TOA < digi->TOA) ? it->second->TOA : digi->TOA;
+                    }    
                 }
                     
             }
+        }
+    }
+    
+    for(auto i = digis.begin(); i != digis.end(); ++i) {
+        if(i->second->Digitize()) {     
+            man->FillNtupleIColumn(0, i->second->eventNumber);
+            man->FillNtupleIColumn(1, i->second->GetDet());
+            man->FillNtupleIColumn(2, i->second->GetLayer());
+            man->FillNtupleIColumn(3, i->second->GetLGAD());
+            man->FillNtupleIColumn(4, i->second->GetPadx());
+            man->FillNtupleIColumn(5, i->second->GetPady());
+            man->FillNtupleDColumn(6, i->second->TOA/CLHEP::second);
+            man->FillNtupleDColumn(7, i->second->TOT/CLHEP::second);
+            man->FillNtupleDColumn(8, i->second->charge);
+            man->AddNtupleRow(); 
         }
     }
 }

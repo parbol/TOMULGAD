@@ -199,7 +199,7 @@ void LGAD::Print() {
 //----------------------------------------------------------------------//
 // GetPads                                                              //
 //----------------------------------------------------------------------//
-std::tuple<G4int, G4int, G4double> LGAD::getPads(G4TreeVector p) {
+std::tuple<G4int, G4int, G4double> LGAD::getPads(G4ThreeVector p) {
 
     G4double px = p.x();
     G4double py = p.y();
@@ -207,18 +207,39 @@ std::tuple<G4int, G4int, G4double> LGAD::getPads(G4TreeVector p) {
     G4double sizey = pos.y();
     G4double padSizex = (sizex - 2.0*borderPadx)/nPadx;
     G4double padSizey = (sizey - 2.0*borderPady)/nPady;
-    G4double xref = (px + size2/2.0 - borderPadx)/padSizex;
-    G4double G = gain; 
-    G4int i = floor(xref);
+    G4double G = Gain; 
+    G4double xref = (px + sizex/2.0 - borderPadx)/padSizex;
+    G4double yref = (py + sizey/2.0 - borderPady)/padSizey;
+    
+    //Let's start with the x
+    G4int i = G4int(floor(xref));
     if(xref <= 0) {
         i = 0;
         G = 1.0;
-    } else if (xref >= 1) {
+    } else if (xref >= 1.0) {
         i = nPadx-1;
         G = 1.0;
+    } else {
+        G4double poslocalpad = xref - floor(xref);
+        if(poslocalpad <= interPadx/2.0 || poslocalpad >= 1.0 - interPadx/2.0) {
+            G = 1.0;
+        }
     }
-
-   
+    //Let's start with the x
+    G4int j = G4int(floor(yref));
+    if(yref <= 0) {
+        j = 0;
+        G = 1.0;
+    } else if (yref >= 1.0) {
+        j = nPady-1;
+        G = 1.0;
+    } else {
+        G4double poslocalpad = yref - floor(yref);
+        if(poslocalpad <= interPady/2.0 || poslocalpad >= 1.0 - interPady/2.0) {
+            G = 1.0;
+        }
+    }
+    return {i, j, G};
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//

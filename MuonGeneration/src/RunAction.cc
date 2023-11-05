@@ -45,15 +45,7 @@ void RunAction::BeginOfRunAction(const G4Run* run) {
     man->CreateNtupleIColumn("ypad");
     man->CreateNtupleDColumn("toa");
     man->CreateNtupleDColumn("tot");
-    man->CreateNtupleDColumn("t");
-    man->CreateNtupleDColumn("energy");
-    man->CreateNtupleDColumn("xlocal");
-    man->CreateNtupleDColumn("ylocal");
-    man->CreateNtupleDColumn("zlocal");
-    man->CreateNtupleDColumn("xglobal");
-    man->CreateNtupleDColumn("yglobal");
-    man->CreateNtupleDColumn("zglobal");
-    
+    man->CreateNtupleDColumn("charge");
 
     man->FinishNtuple();
 }

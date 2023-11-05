@@ -2,21 +2,30 @@
 #define LGADDigi_h 1
 
 #include "LGADSensorHit.hh"
-#include "ConfigurationGeometry.hh"
 
 class LGADDigi {
 
 public:
 
-    LGADDigi(LGADSensorHit *, ConfigurationGeometry *);
+    LGADDigi(LGADSensorHit *);
 
-   
-private:
-  
+    G4int GetDet();
+
+    G4int GetLayer();
+
+    G4int GetLGAD();
+
+    G4int GetPadx();
+
+    G4int GetPady();
+
+    G4bool Digitize();
+
+    G4int eventNumber;
     G4int hitID;
-    G4float TOA;
-    G4float TOT;
-    G4float charge;
+    G4double TOA;
+    G4double TOT;
+    G4double charge;
         
 };
 
