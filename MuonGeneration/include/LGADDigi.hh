@@ -12,10 +12,12 @@ public:
 
    
 private:
-    LGADSensorHit *hit;
-    ConfigurationGeometry *geom;
-    G4String name;
-
+  
+    G4int hitID;
+    G4float TOA;
+    G4float TOT;
+    G4float charge;
+        
 };
 
 

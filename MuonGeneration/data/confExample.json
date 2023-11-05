@@ -51,9 +51,9 @@
                             "nPady":16,
                             "chargeThreshold":5,
                             "noise":0.1,
-                            "tdcSigma":0.1
+                            "tdcSigma":0.1,
+                            "gain":10.0
                         }
-
                     ]
                 }
             ]
