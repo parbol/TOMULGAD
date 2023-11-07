@@ -210,7 +210,9 @@ std::tuple<G4int, G4int, G4double> LGAD::getPads(G4ThreeVector p) {
     G4double G = Gain; 
     G4double xref = (px + sizex/2.0 - borderPadx)/padSizex;
     G4double yref = (py + sizey/2.0 - borderPady)/padSizey;
-    
+    G4cout << "Size x " << sizex << " " << sizey << G4endl;
+    G4cout << "Real position " << px << " " << py << G4endl;
+    G4cout << "Ref position" << xref << " " << yref << G4endl;
     //Let's start with the x
     G4int i = G4int(floor(xref));
     if(xref <= 0) {
