@@ -203,22 +203,19 @@ std::tuple<G4int, G4int, G4double> LGAD::getPads(G4ThreeVector p) {
 
     G4double px = p.x();
     G4double py = p.y();
-    G4double sizex = pos.x();
-    G4double sizey = pos.y();
+    G4double sizex = sizes.x();
+    G4double sizey = sizes.y();
     G4double padSizex = (sizex - 2.0*borderPadx)/nPadx;
     G4double padSizey = (sizey - 2.0*borderPady)/nPady;
     G4double G = Gain; 
     G4double xref = (px + sizex/2.0 - borderPadx)/padSizex;
     G4double yref = (py + sizey/2.0 - borderPady)/padSizey;
-    G4cout << "Size x " << sizex << " " << sizey << G4endl;
-    G4cout << "Real position " << px << " " << py << G4endl;
-    G4cout << "Ref position" << xref << " " << yref << G4endl;
     //Let's start with the x
     G4int i = G4int(floor(xref));
     if(xref <= 0) {
         i = 0;
         G = 1.0;
-    } else if (xref >= 1.0) {
+    } else if (xref >= nPadx) {
         i = nPadx-1;
         G = 1.0;
     } else {
@@ -232,7 +229,7 @@ std::tuple<G4int, G4int, G4double> LGAD::getPads(G4ThreeVector p) {
     if(yref <= 0) {
         j = 0;
         G = 1.0;
-    } else if (yref >= 1.0) {
+    } else if (yref >= nPady) {
         j = nPady-1;
         G = 1.0;
     } else {
@@ -241,6 +238,10 @@ std::tuple<G4int, G4int, G4double> LGAD::getPads(G4ThreeVector p) {
             G = 1.0;
         }
     }
+    //G4cout << "Size x " << sizex << " " << sizey << G4endl;
+    //if(G > 1.0) G4cout << "Real position " << px/CLHEP::cm << " " << py/CLHEP::cm << G4endl;
+    //G4cout << "Ref position " << xref << " " << yref << G4endl; 
+    //G4cout << "Pad: " << i << " " << j << " " << G << G4endl;
     return {i, j, G};
 }
 //----------------------------------------------------------------------//

@@ -97,8 +97,10 @@ void EventAction::EndOfEventAction(const G4Event* evt) {
                     LGADDigi *digi = new LGADDigi(aHit);
                     auto it = digis.find(digi->hitID);
                     if(it == digis.end()) {
+                        G4cout << "Inserting hit" << G4endl;
                         digis.insert(std::make_pair(digi->hitID, digi));
                     } else {
+                        G4cout << "Adding up hit" << G4endl;
                         it->second->charge += digi->charge;
                         it->second->TOA = (it->second->TOA < digi->TOA) ? it->second->TOA : digi->TOA;
                     }    
