@@ -2,12 +2,13 @@
 #define LGADDigi_h 1
 
 #include "LGADSensorHit.hh"
+#include "LGADSignalShape.hh"
 
 class LGADDigi {
 
 public:
 
-    LGADDigi(LGADSensorHit *);
+    LGADDigi(LGADSensorHit *, LGADSignalShape *);
 
     G4int GetDet();
 
@@ -26,7 +27,9 @@ public:
     G4double TOA;
     G4double TOT;
     G4double charge;
-        
+
+    LGADSignalShape *signalShape;
+
 };
 
 

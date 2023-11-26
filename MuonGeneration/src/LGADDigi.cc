@@ -3,7 +3,7 @@
 //----------------------------------------------------------------------//
 // Constructor                                                          //
 //----------------------------------------------------------------------//
-LGADDigi::LGADDigi(LGADSensorHit *h) {
+LGADDigi::LGADDigi(LGADSensorHit *h, LGADSignalShape *shape) {
     
     G4int det = h->GetDetectorID();
     G4int layer = h->GetLayerID();
@@ -24,6 +24,7 @@ LGADDigi::LGADDigi(LGADSensorHit *h) {
     TOA = time;
     charge = 1.4 * energy;
     eventNumber = h->GetEventNumber();
+    signalShape = shape;
 
 };
 //----------------------------------------------------------------------//
@@ -89,6 +90,7 @@ G4int LGADDigi::GetPady() {
 // Digitize                                                             //
 //----------------------------------------------------------------------//
 G4bool LGADDigi::Digitize() {
+    
     return true;
 }
 //----------------------------------------------------------------------//
