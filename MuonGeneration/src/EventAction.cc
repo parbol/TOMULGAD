@@ -94,7 +94,8 @@ void EventAction::EndOfEventAction(const G4Event* evt) {
                 G4int n_hit = i.at(0)->entries();
                 for(G4int hit = 0; hit < n_hit; hit++) {
                     LGADSensorHit* aHit = (*(i.at(0)))[hit];
-                    LGADDigi *digi = new LGADDigi(aHit);
+                    LGADDigi *digi = new LGADDigi(aHit,
+                    geom->getDetector(aHit->GetDetectorID())->GetLayer(aHit->GetLayerID())->GetSensor(aHit->GetLGADID)->signalShape());
                     auto it = digis.find(digi->hitID);
                     if(it == digis.end()) {
                         G4cout << "Inserting hit" << G4endl;

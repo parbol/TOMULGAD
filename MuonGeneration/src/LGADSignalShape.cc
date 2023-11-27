@@ -2,8 +2,8 @@
 #include <array>
 
 
-std::pair<double, double> LGADSignalShape::getTimes(double charge, double threshold) {
-    std::pair<double, double> mypair;
+std::pair<G4double, G4double> LGADSignalShape::getTimes(G4double charge, G4double threshold) {
+    std::pair<G4double, G4double> mypair;
     G4int iArrival, iEnd;
     for(G4int i = 0; i < maxN; i++) {
         if(signalShape[i]*charge > threshold) {
@@ -25,9 +25,11 @@ std::pair<double, double> LGADSignalShape::getTimes(double charge, double thresh
     return mypair;
 }
 
-LGADSignalShape::LGADSignalShape() {
+LGADSignalShape::LGADSignalShape(G4double thres) {
 
-    const double signalShape[] = {
+    threshold = thres;
+    
+    const G4double signalShape[] = {
     0,
     0.00869866,
     0.0190753,

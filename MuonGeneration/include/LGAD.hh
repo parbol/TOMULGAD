@@ -3,6 +3,9 @@
 
 #include "GeomObject.hh"
 #include <tuple>
+#include "LGADSignalShape.hh"
+
+
 class LGAD : GeomObject {
 
 public:
@@ -19,6 +22,9 @@ public:
     G4int layerId();
 
     G4int sensorId();
+
+    LGADSignalShape * signalShape();
+
 
     void createG4Objects(G4String, G4LogicalVolume *, 
                          std::map<G4String, G4Material*> &,
@@ -53,7 +59,8 @@ private:
     G4int nPadx, nPady;
     G4double interPadx, interPady, borderPadx, borderPady;
     G4double chargeThreshold, noiseLevel, tdcSigma, Gain;
-    
+
+    LGADSignalShape *signalShape_;    
 
 };
 

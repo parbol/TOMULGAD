@@ -7,13 +7,15 @@ class LGADSignalShape {
 
 public:
 
-    LGADSignalShape();
-    std::pair<double, double> getTimes(double, double);
+    LGADSignalShape(G4double);
+    std::pair<G4double, G4double> getTimes(G4double);
 
 private:
 
-    const static double signalShape[];  
+    const static G4double signalShape[];  
     G4int maxN;
+    G4double threshold;
+
 };
 
 #endif

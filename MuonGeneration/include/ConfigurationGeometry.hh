@@ -62,7 +62,7 @@ private:
     G4double zOffsetCRY, sizeBoxCRY;
     std::vector <Detector *> detectors;
     bool goodGeometry;
-
+    LGADSignalShape *signalShape;
 };
 
 

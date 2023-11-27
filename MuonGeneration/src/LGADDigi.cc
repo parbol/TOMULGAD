@@ -91,6 +91,10 @@ G4int LGADDigi::GetPady() {
 //----------------------------------------------------------------------//
 G4bool LGADDigi::Digitize() {
     
+    std::pair<G4double, G4double> a = signalShape->getTimes(charge);
+    TOA = a.first;
+    TOT = a.second;
+    if (TOA == 0 && TOT == 0) return false;
     return true;
 }
 //----------------------------------------------------------------------//
