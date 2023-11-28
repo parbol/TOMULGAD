@@ -26,7 +26,10 @@ public:
     G4int hitID;
     G4double TOA;
     G4double TOT;
+    G4double genTOA;
+    G4double genTOT;
     G4double charge;
+    G4double genX, genY, genZ;
 
     LGADSignalShape *signalShape;
 

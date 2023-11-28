@@ -47,7 +47,8 @@ LGADSensorHit::LGADSensorHit(const LGADSensorHit &right): G4VHit() {
     detectorID = right.detectorID;
     layerID = right.layerID;
     lgadID = right.lgadID;
-    time = right.time;
+    gentoa = right.gentoa;
+    gentot = right.gentot;
     toa = right.toa;
     tot = right.tot;
     energy = right.energy;
@@ -68,7 +69,8 @@ const LGADSensorHit& LGADSensorHit::operator=(const LGADSensorHit &right) {
     detectorID = right.detectorID;
     layerID = right.layerID;
     lgadID = right.lgadID;
-    time = right.time;
+    gentoa = right.gentoa;
+    gentot = right.gentot;
     toa = right.toa;
     tot = right.tot;
     energy = right.energy;
@@ -130,7 +132,7 @@ std::vector<G4AttValue>* LGADSensorHit::CreateAttValues() const {
     (G4AttValue("ID",G4UIcommand::ConvertToString(layerID),""));
 
     values->push_back
-    (G4AttValue("Time",G4BestUnit(time,"Time"),""));
+    (G4AttValue("Time",G4BestUnit(gentoa,"Time"),""));
 
     values->push_back
     (G4AttValue("Energy",G4BestUnit(energy,"Energy"),""));
@@ -155,11 +157,12 @@ void LGADSensorHit::Print()
            << "Detector: " << "\033[1;33m" << detectorID << "\033[1;34m" << G4endl
            << "Layer: " << "\033[1;33m" << layerID << "\033[1;34m" << G4endl
            << "LGAD: " << "\033[1;33m" << lgadID << "\033[1;34m" << G4endl
-           << "TOA: " << "\033[1;33m" << toa << "\033[1;34m" << G4endl
-           << "TOT: " << "\033[1;33m" << tot << "\033[1;34m" << G4endl
+           << "TOA: " << "\033[1;33m" << toa/CLHEP::ns << "\033[1;34m" << G4endl
+           << "TOT: " << "\033[1;33m" << tot/CLHEP::ns << "\033[1;34m" << G4endl
            << "padx: " << "\033[1;33m" << padx << "\033[1;34m" << G4endl
            << "pady: " << "\033[1;33m" << pady << "\033[1;34m" << G4endl
-           << "Time: " << "\033[1;33m" << time << "\033[1;34m" << G4endl
+           << "genTOA: " << "\033[1;33m" << gentoa/CLHEP::ns << "\033[1;34m" << G4endl
+           << "genTOT: " << "\033[1;33m" << gentot/CLHEP::ns << "\033[1;34m" << G4endl
            << "Energy: " << "\033[1;33m" << energy/CLHEP::GeV << "\033[1;34m" << G4endl
            << "Local pos: " << "\033[1;33m" << localPos.x()/CLHEP::cm << " " << localPos.y()/CLHEP::cm << " " << localPos.z()/CLHEP::cm << "\033[1;34m" << G4endl
            << "Local pos: " << "\033[1;33m" << globalPos.x()/CLHEP::cm << " " << globalPos.y()/CLHEP::cm << " " << globalPos.z()/CLHEP::cm << "\033[1;34m" << G4endl

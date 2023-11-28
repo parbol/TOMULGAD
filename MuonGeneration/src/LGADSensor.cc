@@ -81,7 +81,8 @@ G4bool LGADSensor::ProcessHits(G4Step*aStep,G4TouchableHistory*  /*ROhist*/) {
     aHit->SetLGADID(sensor);
     aHit->SetLocalPos(localPos);
     aHit->SetGlobalPos(worldPos);
-    aHit->SetTime(preStepPoint->GetGlobalTime());
+    aHit->SetGenTOA(preStepPoint->GetGlobalTime());
+    aHit->SetGenTOT(0);
     aHit->SetTOA(0);
     aHit->SetTOT(0);
     aHit->SetPadx(xpad);

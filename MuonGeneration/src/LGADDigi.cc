@@ -11,9 +11,7 @@ LGADDigi::LGADDigi(LGADSensorHit *h, LGADSignalShape *shape) {
      
     G4int padx = h->GetPadx();
     G4int pady = h->GetPady();
-    G4double energy = h->GetEnergy();
-    G4double time = h->GetTime();
-    
+        
     G4int detS = det << 19;
     G4int layerS = layer << 14;
     G4int lgadS = lgad << 8;
@@ -21,8 +19,14 @@ LGADDigi::LGADDigi(LGADSensorHit *h, LGADSignalShape *shape) {
     G4int padyS = pady;
     
     hitID = detS | layerS | lgadS | padxS | padyS;
-    TOA = time;
-    charge = 1.4 * energy;
+    
+    genTOA = h->GetGenTOA();
+    charge = 1.4 * h->GetEnergy();
+ 
+    genX = h->GetLocalPos().x();
+    genY = h->GetLocalPos().y();
+    genZ = h->GetLocalPos().z();
+
     eventNumber = h->GetEventNumber();
     signalShape = shape;
 
@@ -94,7 +98,12 @@ G4bool LGADDigi::Digitize() {
     std::pair<G4double, G4double> a = signalShape->getTimes(charge);
     TOA = a.first;
     TOT = a.second;
+    genTOT = TOT;
     if (TOA == 0 && TOT == 0) return false;
+
+    //Start here with the smearing
+    
+
     return true;
 }
 //----------------------------------------------------------------------//

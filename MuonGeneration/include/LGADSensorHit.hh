@@ -37,7 +37,8 @@ private:
     G4int detectorID;
     G4int layerID;
     G4int lgadID;
-    G4double time;
+    G4double gentoa;
+    G4double gentot;
     G4double toa;
     G4double tot;
     G4double energy;
@@ -72,11 +73,17 @@ public:
     inline G4int GetLGADID() const {
         return layerID;
     }
-    inline void SetTime(G4double t) {
-        time = t;
+    inline void SetGenTOA(G4double t) {
+        gentoa = t;
     }
-    inline G4double GetTime() const {
-        return time;
+    inline G4double GetGenTOA() const {
+        return gentoa;
+    }
+    inline void SetGenTOT(G4double t) {
+        gentot = t;
+    }
+    inline G4double GetGenTOT() const {
+        return gentot;
     }
     inline void SetTOA(G4double t) {
         toa = t;
