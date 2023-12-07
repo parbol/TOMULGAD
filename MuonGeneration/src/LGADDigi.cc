@@ -20,8 +20,9 @@ LGADDigi::LGADDigi(LGADSensorHit *h, LGADSignalShape *shape) {
     
     hitID = detS | layerS | lgadS | padxS | padyS;
     
+
     genTOA = h->GetGenTOA();
-    charge = 1.4 * h->GetEnergy();
+    charge = (h->GetEnergy()/CLHEP::MeV)*MIPperMEV;
  
     genX = h->GetLocalPos().x();
     genY = h->GetLocalPos().y();

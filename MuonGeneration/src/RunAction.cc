@@ -45,7 +45,12 @@ void RunAction::BeginOfRunAction(const G4Run* run) {
     man->CreateNtupleIColumn("ypad");
     man->CreateNtupleDColumn("toa");
     man->CreateNtupleDColumn("tot");
-    man->CreateNtupleDColumn("charge");
+    man->CreateNtupleDColumn("charge"); 
+    man->CreateNtupleDColumn("gentoa");
+    man->CreateNtupleDColumn("gentot");
+    man->CreateNtupleDColumn("genx");
+    man->CreateNtupleDColumn("geny");
+    man->CreateNtupleDColumn("genz");
 
     man->FinishNtuple();
 }

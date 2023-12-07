@@ -94,14 +94,13 @@ void EventAction::EndOfEventAction(const G4Event* evt) {
                 G4int n_hit = i.at(0)->entries();
                 for(G4int hit = 0; hit < n_hit; hit++) {
                     LGADSensorHit* aHit = (*(i.at(0)))[hit];
+                    if(aHit->GetEnergy() == 0) continue;
                     LGADDigi *digi = new LGADDigi(aHit,
                     geom->getDetector(aHit->GetDetectorID())->GetLayer(aHit->GetLayerID())->GetSensor(aHit->GetLGADID())->signalShape());
                     auto it = digis.find(digi->hitID);
                     if(it == digis.end()) {
-                        G4cout << "Inserting hit" << G4endl;
                         digis.insert(std::make_pair(digi->hitID, digi));
                     } else {
-                        G4cout << "Adding up hit" << G4endl;
                         it->second->charge += digi->charge;
                         it->second->TOA = (it->second->TOA < digi->TOA) ? it->second->TOA : digi->TOA;
                     }    
@@ -122,6 +121,11 @@ void EventAction::EndOfEventAction(const G4Event* evt) {
             man->FillNtupleDColumn(6, i->second->TOA/CLHEP::second);
             man->FillNtupleDColumn(7, i->second->TOT/CLHEP::second);
             man->FillNtupleDColumn(8, i->second->charge);
+            man->FillNtupleDColumn(9, i->second->genTOA/CLHEP::second);
+            man->FillNtupleDColumn(10, i->second->genTOT/CLHEP::second);
+            man->FillNtupleDColumn(11, i->second->genX/CLHEP::cm);
+            man->FillNtupleDColumn(12, i->second->genY/CLHEP::cm);
+            man->FillNtupleDColumn(13, i->second->genZ/CLHEP::cm);
             man->AddNtupleRow(); 
         }
     }

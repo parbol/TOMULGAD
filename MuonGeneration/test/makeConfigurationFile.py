@@ -66,6 +66,7 @@ if __name__=='__main__':
     layerZSize = [1, 1, 1]
     sensorSize = 2.2
     centralCorridor = 0.4
+    interpad = 0.05
     posS = (sensorSize+centralCorridor)/2.0
     sensorXPosition = [posS, -posS, posS, -posS]
     sensorYPosition = [posS, -posS, -posS, posS]
@@ -96,6 +97,9 @@ if __name__=='__main__':
                 sensor_['xSizeSensor'] = sensorXSize[k]
                 sensor_['ySizeSensor'] = sensorYSize[k]
                 sensor_['zSizeSensor'] = sensorZSize[k]
+                sensor_['interPadx'] = interpad
+                sensor_['interPady'] = interpad
+                sensor_['gain'] = 10
 
 
     # Serializing json

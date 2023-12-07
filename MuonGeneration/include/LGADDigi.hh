@@ -4,6 +4,9 @@
 #include "LGADSensorHit.hh"
 #include "LGADSignalShape.hh"
 
+#define MIPperMEV 66.667
+
+
 class LGADDigi {
 
 public:
