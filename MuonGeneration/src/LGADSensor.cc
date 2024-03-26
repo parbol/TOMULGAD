@@ -68,6 +68,7 @@ G4bool LGADSensor::ProcessHits(G4Step*aStep,G4TouchableHistory*  /*ROhist*/) {
     G4int layer = lgad->layerId();
     G4int sensor = lgad->sensorId();
     std::tuple<G4int, G4int, G4double> val = lgad->getPads(localPos);
+
     G4int xpad = std::get<0>(val);
     G4int ypad = std::get<1>(val);
     G4double g = std::get<2>(val);

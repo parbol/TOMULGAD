@@ -86,7 +86,6 @@ int main(int argc,char** argv) {
         return -1;
     }
     
-    
     runManager->SetVerboseLevel(2);
 
     DetectorConstruction *myDetector = new DetectorConstruction(geomConf);

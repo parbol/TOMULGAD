@@ -71,7 +71,7 @@ public:
         lgadID = z;
     }
     inline G4int GetLGADID() const {
-        return layerID;
+        return lgadID;
     }
     inline void SetGenTOA(G4double t) {
         gentoa = t;

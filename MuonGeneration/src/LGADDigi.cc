@@ -4,11 +4,11 @@
 // Constructor                                                          //
 //----------------------------------------------------------------------//
 LGADDigi::LGADDigi(LGADSensorHit *h, LGADSignalShape *shape) {
-    
+
     G4int det = h->GetDetectorID();
     G4int layer = h->GetLayerID();
     G4int lgad = h->GetLGADID();
-     
+   
     G4int padx = h->GetPadx();
     G4int pady = h->GetPady();
         

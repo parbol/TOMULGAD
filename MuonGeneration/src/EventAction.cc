@@ -95,15 +95,21 @@ void EventAction::EndOfEventAction(const G4Event* evt) {
                 for(G4int hit = 0; hit < n_hit; hit++) {
                     LGADSensorHit* aHit = (*(i.at(0)))[hit];
                     if(aHit->GetEnergy() == 0) continue;
+                    auto detID = aHit->GetDetectorID();
+                    auto layerID = aHit->GetLayerID();
+                    auto lgadID = aHit->GetLGADID();
+                    auto a = geom->getDetector(detID)->GetLayer(layerID)->GetSensor(lgadID);
+                    auto sh = geom->getDetector(aHit->GetDetectorID())->GetLayer(aHit->GetLayerID())->GetSensor(aHit->GetLGADID())->signalShape();
                     LGADDigi *digi = new LGADDigi(aHit,
                     geom->getDetector(aHit->GetDetectorID())->GetLayer(aHit->GetLayerID())->GetSensor(aHit->GetLGADID())->signalShape());
+
                     auto it = digis.find(digi->hitID);
                     if(it == digis.end()) {
                         digis.insert(std::make_pair(digi->hitID, digi));
                     } else {
                         it->second->charge += digi->charge;
                         it->second->TOA = (it->second->TOA < digi->TOA) ? it->second->TOA : digi->TOA;
-                    }    
+                    }
                 }
                     
             }
