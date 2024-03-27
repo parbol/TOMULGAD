@@ -179,10 +179,8 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
         particleGun->SetParticleMomentumDirection(G4ThreeVector((*vect)[j]->u(), (*vect)[j]->v(), (*vect)[j]->w()));
         particleGun->SetParticleTime((*vect)[j]->t());
         particleGun->GeneratePrimaryVertex(anEvent);
-        //G4cout << particleName << G4endl;
-        //G4cout << "Position " << ((*vect)[j]->x()*CLHEP::m)/CLHEP::cm << " " << ((*vect)[j]->y()*CLHEP::m)/CLHEP::cm << " " <<  (((*vect)[j]->z()+(myGeom->getZOffsetCRY()/CLHEP::cm)/100.0)*CLHEP::m)/CLHEP::cm << G4endl;
-        //G4cout << "Energy "   << (*vect)[j]->ke() << G4endl;
-        //G4cout << "Momentum " << (*vect)[j]->u() << " " << (*vect)[j]->v() << " " <<  (*vect)[j]->w() << G4endl;
+        G4cout << particleName << " " << ((*vect)[j]->x()*CLHEP::m)/CLHEP::cm << " " << ((*vect)[j]->y()*CLHEP::m)/CLHEP::cm << " " <<  (((*vect)[j]->z()+(myGeom->getZOffsetCRY()/CLHEP::cm)/100.0)*CLHEP::m)/CLHEP::cm
+                               << " " << (*vect)[j]->ke()/CLHEP::GeV << " " << (*vect)[j]->u() << " " << (*vect)[j]->v() << " " <<  (*vect)[j]->w() << G4endl;
         delete (*vect)[j];
     }
 }

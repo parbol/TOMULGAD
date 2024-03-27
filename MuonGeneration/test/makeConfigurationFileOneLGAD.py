@@ -60,7 +60,7 @@ if __name__=='__main__':
     detectorZSize = [30, 30]
     layerXPosition = [0, 0]
     layerYPosition = [0, 0]
-    layerZPosition = [10, -10]
+    layerZPosition = [5, -5]
     layerXSize = [3.8, 3.8]
     layerYSize = [3.8, 3.8]
     layerZSize = [1, 1]

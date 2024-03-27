@@ -24,7 +24,8 @@ class Event:
 
 if __name__=='__main__':
 
-    f = r.TFile('output_0.5m.root')
+    f = r.TFile('output_0.5m_short.root')
+    
     
     events = []
     event = -1
@@ -38,12 +39,19 @@ if __name__=='__main__':
             counter = counter + 1
         else:
             events[counter].add(ev.det, ev.layer, ev.lgad, ev.xpad, ev.ypad)
-          
-    for ev in events:
-        if ev.nHits() < 2:
-            continue
-        print(ev.nHits())
-
     f.Close()
+
+    h = r.TH1F("h", "Number of hits", 10, 0, 10)
+
+    for ev in events:
+        h.Fill(ev.nHits())
+
+    hcan = r.TCanvas('hcan')
+    hcan.SetLogy(1)
+    h.GetXaxis().SetTitle('N. hits')
+    h.GetYaxis().SetRangeUser(0.1, 1e5)
+    h.SetStats(0)
+    h.Draw()
+    hcan.SaveAs("Nhits_ShortPlus.png")
 
 
