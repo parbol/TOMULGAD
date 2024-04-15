@@ -59,30 +59,39 @@ DetectorConstruction::~DetectorConstruction() {
 //----------------------------------------------------------------------//
 G4VPhysicalVolume* DetectorConstruction::Construct() {
 
+ // This function defines the command to loads custom B2G4 scenes at runtime
+  
+    b2g4ScenePath = "/home/pablo/Documentos/Pyramid/TOMULGAD/b2g4-loader/scenes/rotation_monkeys_tessellated/scene.json";
+    fMessenger = b2g4::defineB2G4Command((G4VUserDetectorConstruction *)this, b2g4ScenePath);
+    scene.parse(b2g4ScenePath);
+
     //Building the materials
     ConstructMaterials();
 
     //Printing the geometry
-    myConf->Print();
+    //myConf->Print();
 
     //Manager of objects in memory
     G4SDManager* SDman = G4SDManager::GetSDMpointer();
     G4String SDname;
 
-    //Creating the world
-    G4VSolid* worldSolidPrim = new G4Box("worldBoxPrim", 1.1 * myConf->getSizeX()/2.0 , 1.1 * myConf->getSizeY() / 2.0 , 1.1 * myConf->getSizeZ()/2.0 );
-    G4LogicalVolume* worldLogicalPrim = new G4LogicalVolume(worldSolidPrim, materials["air"], "worldLogicalPrim",0,0,0);
-    G4VPhysicalVolume* worldPhysicalPrim = new G4PVPlacement(0, G4ThreeVector(), worldLogicalPrim, "worldPhysicalPrim", 0, 0, 0);
+    G4VPhysicalVolume *worldPhys = scene.getWorldPhysical();
+    G4LogicalVolume* worldLogical = worldPhys->GetLogicalVolume();
 
-    G4VSolid* worldSolid = new G4Box("worldBox", myConf->getSizeX()/2.0 , myConf->getSizeY()/2.0 , myConf->getSizeZ()/2.0 );
-    G4LogicalVolume* worldLogical = new G4LogicalVolume(worldSolid, materials["air"], "worldLogical",0,0,0);
-    G4VPhysicalVolume* worldPhysical = new G4PVPlacement(0, G4ThreeVector(0, 0, 0), worldLogical, "worldPhysical", worldLogicalPrim, false, 0);
+    //Creating the world
+    //G4VSolid* worldSolidPrim = new G4Box("worldBoxPrim", 1.1 * myConf->getSizeX()/2.0 , 1.1 * myConf->getSizeY() / 2.0 , 1.1 * myConf->getSizeZ()/2.0 );
+    //G4LogicalVolume* worldLogicalPrim = new G4LogicalVolume(worldSolidPrim, materials["air"], "worldLogicalPrim",0,0,0);
+    //G4VPhysicalVolume* worldPhysicalPrim = new G4PVPlacement(0, G4ThreeVector(), worldLogicalPrim, "worldPhysicalPrim", 0, 0, 0);
+
+    //G4VSolid* worldSolid = new G4Box("worldBox", myConf->getSizeX()/2.0 , myConf->getSizeY()/2.0 , myConf->getSizeZ()/2.0 );
+    //G4LogicalVolume* worldLogical = new G4LogicalVolume(worldSolid, materials["air"], "worldLogical",0,0,0);
+    //G4VPhysicalVolume* worldPhysical = new G4PVPlacement(0, G4ThreeVector(0, 0, 0), worldLogical, "worldPhysical", worldLogicalPrim, false, 0);
   
     myConf->createG4objects(worldLogical, materials, SDman);
  
-    DumpGeometricalTree(worldPhysicalPrim, 3);
+    DumpGeometricalTree(worldPhys, 3);
     
-    return worldPhysicalPrim;
+    return worldPhys;
 
 }
 //----------------------------------------------------------------------//
