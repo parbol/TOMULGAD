@@ -61,7 +61,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
 
  // This function defines the command to loads custom B2G4 scenes at runtime
   
-    b2g4ScenePath = "/home/pablo/Documentos/Pyramid/TOMULGAD/b2g4-loader/scenes/rotation_monkeys_tessellated/scene.json";
+    //b2g4ScenePath = "/home/pablo/Documentos/Pyramid/TOMULGAD/b2g4-loader/scenes/pyramid/scene.json";
+    //b2g4ScenePath = "/home/pablo/Documentos/Pyramid/TOMULGAD/b2g4-loader/scenes/rotation_monkeys_tessellated/scene.json";
+    b2g4ScenePath = "/home/pablo/Documentos/Pyramid/TOMULGAD/b2g4-loader/scenes/khufu_dense_pyramid/scene.json";
+
     fMessenger = b2g4::defineB2G4Command((G4VUserDetectorConstruction *)this, b2g4ScenePath);
     scene.parse(b2g4ScenePath);
 
@@ -87,9 +90,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     //G4LogicalVolume* worldLogical = new G4LogicalVolume(worldSolid, materials["air"], "worldLogical",0,0,0);
     //G4VPhysicalVolume* worldPhysical = new G4PVPlacement(0, G4ThreeVector(0, 0, 0), worldLogical, "worldPhysical", worldLogicalPrim, false, 0);
   
-    myConf->createG4objects(worldLogical, materials, SDman);
+    //myConf->createG4objects(worldLogical, materials, SDman);
  
-    DumpGeometricalTree(worldPhys, 3);
+    //DumpGeometricalTree(worldPhys, 3);
     
     return worldPhys;
 
