@@ -80,7 +80,14 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
 
     G4VPhysicalVolume *worldPhys = scene.getWorldPhysical();
     G4LogicalVolume* worldLogical = worldPhys->GetLogicalVolume();
-
+    G4Box* worldSolid = (G4Box *) worldLogical->GetSolid();
+    worldSolid->SetXHalfLength(15000.0*CLHEP::cm);
+    worldSolid->SetYHalfLength(15000.0*CLHEP::cm);
+    worldSolid->SetZHalfLength(15000.0*CLHEP::cm);
+    //G4cout << "Solid size: " << worldSolid->GetXHalfLength()/CLHEP::cm << " " 
+    //                         << worldSolid->GetYHalfLength()/CLHEP::cm << " " 
+    //                         << worldSolid->GetZHalfLength()/CLHEP::cm << G4endl;
+     
     //Creating the world
     //G4VSolid* worldSolidPrim = new G4Box("worldBoxPrim", 1.1 * myConf->getSizeX()/2.0 , 1.1 * myConf->getSizeY() / 2.0 , 1.1 * myConf->getSizeZ()/2.0 );
     //G4LogicalVolume* worldLogicalPrim = new G4LogicalVolume(worldSolidPrim, materials["air"], "worldLogicalPrim",0,0,0);
@@ -90,7 +97,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     //G4LogicalVolume* worldLogical = new G4LogicalVolume(worldSolid, materials["air"], "worldLogical",0,0,0);
     //G4VPhysicalVolume* worldPhysical = new G4PVPlacement(0, G4ThreeVector(0, 0, 0), worldLogical, "worldPhysical", worldLogicalPrim, false, 0);
   
-    //myConf->createG4objects(worldLogical, materials, SDman);
+    myConf->createG4objects(worldLogical, materials, SDman);
  
     //DumpGeometricalTree(worldPhys, 3);
     

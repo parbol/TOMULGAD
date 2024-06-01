@@ -21,8 +21,8 @@ fi
 if [ $HOSTNAME == "galois" ]; then
 
     echo "Setting up environment in Galois"
-    export G4INSTALLDIR=/home/pablo/geant4-v11.1.2-install
-    export G4WORKDIR=/home/pablo/Documentos/TOMULGAD/
+    export G4INSTALLDIR=/home/pablo/Documentos/Pyramid/geant4-v11.2.1-install
+    export G4WORKDIR=/home/pablo/Documentos/Pyramid/TOMULGAD/
     export JSONCPPDIR=/home/pablo/jsoncpp/
     source $G4INSTALLDIR/bin/geant4.sh
 fi
