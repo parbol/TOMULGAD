@@ -1,4 +1,5 @@
 import json, sys, optparse
+import math
 
 #######################################################################
 # This is a helper class to produce configuration files for the setup #
@@ -58,22 +59,25 @@ if __name__=='__main__':
 
     
     #This must be configured for every setup 
-    detectorXPosition = [-12000, -12000]
+    angle = 30.0
+    anglerad= angle * math.pi / 180.0
+    detectorXPosition = [-12000 + 20.0 * math.cos(anglerad), -12000 - 20 * math.cos(anglerad)]
     detectorYPosition = [0, 0]
-    detectorZPosition = [200 + 70, 200 + -70]
+    detectorZPosition = [150 + 20.0 * math.sin(anglerad), 150 - 20.0 * math.sin(anglerad)]
     detectorXSize = [110, 110]
     detectorYSize = [110, 110]
-    detectorZSize = [110, 110]
+    detectorZSize = [16, 16]
+    yDirDetector = [-(90.0-angle), -(90.0-angle)]
     layerXPosition = [0, 0, 0, 0]
     layerYPosition = [0, 0, 0, 0]
-    layerZPosition = [50, 25, -25, -50]
+    layerZPosition = [7.5, 2.5, -2.5, -7.5]
     layerXSize = [110, 110, 110, 110]
     layerYSize = [110, 110, 110, 110]
     layerZSize = [1, 1, 1, 1]
     sensorSize = 2.2
     centralCorridor = 0.4
     interpad = 0.05
-    L = (8.0*sensorSize+6.0*centralCorridor)
+    L = (39*sensorSize+37*centralCorridor)
     posX = -L/2.0 + sensorSize / 2.0
     posY = -L/2.0 + sensorSize / 2.0
     sensorXPosition = []
@@ -100,6 +104,7 @@ if __name__=='__main__':
         det_['xSizeDetector'] = detectorXSize[i]
         det_['ySizeDetector'] = detectorYSize[i]
         det_['zSizeDetector'] = detectorZSize[i]
+        det_['yDirDetector'] = yDirDetector[i]
         for j, layer_ in enumerate(det_['Layers']):
             layer_['xPosLayer'] = layerXPosition[j]
             layer_['yPosLayer'] = layerYPosition[j]

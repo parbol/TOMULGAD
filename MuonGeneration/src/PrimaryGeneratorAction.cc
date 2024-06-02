@@ -169,6 +169,16 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 
     for ( unsigned j=0; j<vect->size(); j++) {
         particleName=CRYUtils::partName((*vect)[j]->id());
+        //This is just a hack
+        G4ThreeVector x0((*vect)[j]->x()*CLHEP::m, (*vect)[j]->y()*CLHEP::m, ((*vect)[j]->z()+(myGeom->getZOffsetCRY()/CLHEP::cm)/100.0)*CLHEP::m);
+        G4ThreeVector v((*vect)[j]->u(), (*vect)[j]->v(), (*vect)[j]->w());
+        G4ThreeVector p(-119.83 * CLHEP::m, 0.0, 1.6 * CLHEP::m);
+        G4ThreeVector n(0.5, 0.0, 0.866);
+        G4double prod = v.dot(n);
+        if (prod < 1e-2) continue;
+        G4double l = (p - x0).dot(n) / prod;
+        G4ThreeVector intersect = x0 + l * v;
+        if ((intersect - p).mag() > 2.0) continue;
         particleGun->SetParticleDefinition(particleTable->FindParticle((*vect)[j]->PDGid()));
         if(pt == 0) {
 		    particleGun->SetParticleEnergy((*vect)[j]->ke()*CLHEP::MeV);
