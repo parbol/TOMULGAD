@@ -61,9 +61,9 @@ if __name__=='__main__':
     #This must be configured for every setup 
     angle = 30.0
     anglerad= angle * math.pi / 180.0
-    detectorXPosition = [-12000 + 20.0 * math.cos(anglerad), -12000 - 20 * math.cos(anglerad)]
+    detectorXPosition = [-12000 + 10.0 * math.cos(anglerad), -12000 - 10 * math.cos(anglerad)]
     detectorYPosition = [0, 0]
-    detectorZPosition = [150 + 20.0 * math.sin(anglerad), 150 - 20.0 * math.sin(anglerad)]
+    detectorZPosition = [150 + 10.0 * math.sin(anglerad), 150 - 10.0 * math.sin(anglerad)]
     detectorXSize = [110, 110]
     detectorYSize = [110, 110]
     detectorZSize = [16, 16]
@@ -75,7 +75,7 @@ if __name__=='__main__':
     layerYSize = [110, 110, 110, 110]
     layerZSize = [1, 1, 1, 1]
     sensorSize = 2.2
-    centralCorridor = 0.4
+    centralCorridor = 0.05
     interpad = 0.05
     L = (39*sensorSize+37*centralCorridor)
     posX = -L/2.0 + sensorSize / 2.0
