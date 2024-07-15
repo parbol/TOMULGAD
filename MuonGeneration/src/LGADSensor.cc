@@ -12,6 +12,8 @@
 #include "CLHEP/Random/RandGaussQ.h"
 #include "CLHEP/Random/RandFlat.h"
 
+#include <tuple>
+
 //----------------------------------------------------------------------//
 // Constructor                                                          //
 //----------------------------------------------------------------------//
@@ -65,9 +67,14 @@ G4bool LGADSensor::ProcessHits(G4Step*aStep,G4TouchableHistory*  /*ROhist*/) {
     G4int detector = lgad->detId();
     G4int layer = lgad->layerId();
     G4int sensor = lgad->sensorId();
-    G4int xpad = 0;
-    G4int ypad = 0;
-    G4double energy = preStepPoint->GetTotalEnergy();
+    std::tuple<G4int, G4int, G4double> val = lgad->getPads(localPos);
+
+    G4int xpad = std::get<0>(val);
+    G4int ypad = std::get<1>(val);
+    G4double g = std::get<2>(val);
+    G4double energy = g * aStep->GetTotalEnergyDeposit();
+    G4double genEnergy = aStep->GetPreStepPoint()->GetTotalEnergy();
+    G4int genID = aStep->GetTrack()->GetParticleDefinition()->GetPDGEncoding();
 
     //Simulating resolution
     LGADSensorHit* aHit = new LGADSensorHit();
@@ -77,12 +84,16 @@ G4bool LGADSensor::ProcessHits(G4Step*aStep,G4TouchableHistory*  /*ROhist*/) {
     aHit->SetLGADID(sensor);
     aHit->SetLocalPos(localPos);
     aHit->SetGlobalPos(worldPos);
-    aHit->SetTime(preStepPoint->GetGlobalTime());
+    aHit->SetGenTOA(preStepPoint->GetGlobalTime());
+    aHit->SetGenTOT(0);
     aHit->SetTOA(0);
     aHit->SetTOT(0);
-    aHit->SetPadx(0);
-    aHit->SetPady(0);
+    aHit->SetPadx(xpad);
+    aHit->SetPady(ypad);
     aHit->SetEnergy(energy);
+    aHit->SetGenEnergy(genEnergy);
+    aHit->SetGenID(genID);
+
     
     hitsCollection->insert(aHit);
 

@@ -5,9 +5,10 @@
 #include "G4UserEventAction.hh"
 #include "globals.hh"
 #include <vector>
-
+#include "Randomize.hh"
 #include "LGADSensorHit.hh"
 #include "ConfigurationGeometry.hh"
+#include "LGADDigi.hh"
 
 #ifdef G4ANALYSIS_USE
 #include "AIDA/AIDA.h"
@@ -42,6 +43,8 @@ public:
         return verboseLevel;
     }
     typedef std::vector<LGADSensorHitsCollection* > LGADSensorHitsCollections;
+    CLHEP::HepRandomEngine* MyRndEngine;
+    CLHEP::RandGauss* myGauss;
 };
 
 

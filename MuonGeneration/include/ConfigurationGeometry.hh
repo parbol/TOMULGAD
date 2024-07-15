@@ -27,7 +27,6 @@
 #include "Layer.hh"
 #include "LGAD.hh"
 
-
 class ConfigurationGeometry {
 
 public:
@@ -40,13 +39,18 @@ public:
     G4double getSizeX();
     G4double getSizeY();
     G4double getSizeZ();
-    G4double getZOffsetCRY();
-    G4double getSizeBoxCRY();
    
-    // Detector information
+     // Detector information
     Detector *getDetector(G4int);
     G4int getNDetectors();
 
+    G4double getZCeiling();
+    G4double getSphereRadius();
+    G4double getSphereX();
+    G4double getSphereY();
+    G4double getSphereZ();
+    
+  
     //Creating the geometry
     void createG4objects(G4LogicalVolume *, 
                          std::map<G4String, G4Material*> &,
@@ -58,11 +62,12 @@ public:
     void Print();
 
 private:
+
     G4double uniSizeX, uniSizeY, uniSizeZ;
-    G4double zOffsetCRY, sizeBoxCRY;
+    G4double zCeiling, sphereRadius, sphereX, sphereY, sphereZ;
     std::vector <Detector *> detectors;
     bool goodGeometry;
-
+    LGADSignalShape *signalShape;
 };
 
 

@@ -30,15 +30,11 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
 file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 
-#----------------------------------------------------------------------------
-# Add the executable, and link it to the Geant4 libraries
-#
-set(CRY_LIB "$ENV{G4WORKDIR}/cry/cry_v1.7/lib/libCRY.a")
-find_library(CRY_LIB CRY $ENV{CRY_LIB_PATH})
-include_directories("$ENV{JSONCPPDIR}/include/")
+
+
 set(JSONCPP_LIB "$ENV{JSONCPPDIR}/lib/libjsoncpp.a")
 find_library(JSONCPP_LIB JSONCPPY $ENV{JSONCPP_LIB_PATH})
-include_directories("$ENV{G4WORKDIR}/cry/cry_v1.7/src/")
+include_directories("$ENV{JSONCPPDIR}/include/")
 
 
 ##############ADDED FOR JSONCPP#######################
@@ -46,7 +42,7 @@ include_directories("$ENV{G4WORKDIR}/cry/cry_v1.7/src/")
 add_executable(Generator Generator.cc ${sources} ${headers})
 #target_link_libraries(Generator ${Geant4_LIBRARIES} ${CRY_LIB})
 #target_link_libraries(Generator ${Geant4_LIBRARIES} jsoncpp ${CRY_LIB})
-target_link_libraries(Generator ${Geant4_LIBRARIES} ${JSONCPP_LIB} ${CRY_LIB})
+target_link_libraries(Generator ${Geant4_LIBRARIES} ${JSONCPP_LIB} ${B2G4_LOADER_LIB})
 #----------------------------------------------------------------------------
 # Copy all scripts to the build directory, i.e. the directory in which we
 # build B1. This is so that we can run the executable directly because it
@@ -62,6 +58,7 @@ foreach(_script ${TheWorldFunction_SCRIPTS})
     COPYONLY
     )
 endforeach()
+
 
 #----------------------------------------------------------------------------
 # For internal Geant4 use - but has no effect if you build this

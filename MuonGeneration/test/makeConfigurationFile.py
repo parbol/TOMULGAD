@@ -17,8 +17,8 @@ if __name__=='__main__':
         sys.exit()
     
     nDetectors = 2
-    nLayers = 3
-    nSensors = 4
+    nLayers = 4
+    nSensors = 64
  
     #We take the structure from this basic json file and adapt the dictionary
     with open('../data/confExample.json', 'r') as f:
@@ -28,6 +28,11 @@ if __name__=='__main__':
     detector = data_['Detectors'][0]
     layer = detector['Layers'][0]
     sensor = layer['Sensors'][0]
+
+    theWorld["zSizeWorld"] = 320
+    theWorld["zCeiling"] = 159
+    theWorld["sphereRadius"] = 36
+
 
     sensors = []
     for isensor in range(0, nSensors):
@@ -54,26 +59,38 @@ if __name__=='__main__':
     #This must be configured for every setup 
     detectorXPosition = [0, 0]
     detectorYPosition = [0, 0]
-    detectorZPosition = [25, -25]
-    detectorXSize = [7, 7]
-    detectorYSize = [7, 7]
-    detectorZSize = [30, 30]
-    layerXPosition = [0, 0, 0]
-    layerYPosition = [0, 0, 0]
-    layerZPosition = [10, 0, -10]
-    layerXSize = [6, 6, 6]
-    layerYSize = [6, 6, 6]
-    layerZSize = [1, 1, 1]
+    detectorZPosition = [70, -70]
+    detectorXSize = [25, 25]
+    detectorYSize = [25, 25]
+    detectorZSize = [110, 110]
+    layerXPosition = [0, 0, 0, 0]
+    layerYPosition = [0, 0, 0, 0]
+    layerZPosition = [50, 25, -25, -50]
+    layerXSize = [24, 24, 24, 24]
+    layerYSize = [24, 24, 24, 24]
+    layerZSize = [1, 1, 1, 1]
     sensorSize = 2.2
     centralCorridor = 0.4
-    posS = (sensorSize+centralCorridor)/2.0
-    sensorXPosition = [posS, -posS, posS, -posS]
-    sensorYPosition = [posS, -posS, -posS, posS]
-    sensorZPosition = [0, 0, 0, 0]
-    sensorXSize = [sensorSize, sensorSize, sensorSize, sensorSize]
-    sensorYSize = [sensorSize, sensorSize, sensorSize, sensorSize]
-    sensorSizeZ = 0.05
-    sensorZSize = [sensorSizeZ, sensorSizeZ, sensorSizeZ, sensorSizeZ]
+    interpad = 0.05
+    L = (8.0*sensorSize+6.0*centralCorridor)
+    posX = -L/2.0 + sensorSize / 2.0
+    posY = -L/2.0 + sensorSize / 2.0
+    sensorXPosition = []
+    sensorYPosition = []
+    sensorZPosition = []
+    sensorXSize = []
+    sensorYSize = []
+    sensorZSize = []
+    for ix in range(0, 8):
+        for iy in range(0, 8):
+            Xc = posX + ix * (sensorSize + centralCorridor)
+            Yc = posY + iy * (sensorSize + centralCorridor)
+            sensorXPosition.append(Xc)
+            sensorYPosition.append(Yc)
+            sensorZPosition.append(0)
+            sensorXSize.append(sensorSize)
+            sensorYSize.append(sensorSize)
+            sensorZSize.append(0.05)
 
     for i, det_ in enumerate(data['Detectors']):
         det_['xPosDetector'] = detectorXPosition[i]  
@@ -96,6 +113,9 @@ if __name__=='__main__':
                 sensor_['xSizeSensor'] = sensorXSize[k]
                 sensor_['ySizeSensor'] = sensorYSize[k]
                 sensor_['zSizeSensor'] = sensorZSize[k]
+                sensor_['interPadx'] = interpad
+                sensor_['interPady'] = interpad
+                sensor_['gain'] = 10
 
 
     # Serializing json

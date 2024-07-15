@@ -37,12 +37,15 @@ private:
     G4int detectorID;
     G4int layerID;
     G4int lgadID;
-    G4double time;
+    G4double gentoa;
+    G4double gentot;
     G4double toa;
     G4double tot;
     G4double energy;
+    G4double genEnergy;
     G4int padx;
     G4int pady;
+    G4int genID;
     G4ThreeVector localPos;
     G4ThreeVector globalPos;
     
@@ -70,13 +73,19 @@ public:
         lgadID = z;
     }
     inline G4int GetLGADID() const {
-        return layerID;
+        return lgadID;
     }
-    inline void SetTime(G4double t) {
-        time = t;
+    inline void SetGenTOA(G4double t) {
+        gentoa = t;
     }
-    inline G4double GetTime() const {
-        return time;
+    inline G4double GetGenTOA() const {
+        return gentoa;
+    }
+    inline void SetGenTOT(G4double t) {
+        gentot = t;
+    }
+    inline G4double GetGenTOT() const {
+        return gentot;
     }
     inline void SetTOA(G4double t) {
         toa = t;
@@ -107,6 +116,18 @@ public:
     }
     inline G4double GetEnergy() const {
         return energy;
+    }
+    inline void SetGenEnergy(G4double e) {
+        genEnergy = e;
+    }
+    inline G4double GetGenEnergy() const {
+        return genEnergy;
+    }
+    inline void SetGenID(G4int a) {
+        genID = a;
+    }
+    inline G4int GetGenID() {
+        return genID;
     }
     inline void SetLocalPos(G4ThreeVector xyz) {
         localPos = xyz;

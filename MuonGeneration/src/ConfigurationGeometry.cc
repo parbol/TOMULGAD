@@ -54,36 +54,23 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
 
     if( root.size() > 0 ) {
         //Definition of the Universe ----------------------------------------------
-        G4double xSize = atof(root["theWorld"]["xSizeWorld"].asString().c_str());
-        G4double ySize = atof(root["theWorld"]["ySizeWorld"].asString().c_str());
-        G4double zSize = atof(root["theWorld"]["zSizeWorld"].asString().c_str());
-        G4double zOffsetCRY_ = atof(root["theWorld"]["zOffsetCRY"].asString().c_str());
-        G4double sizeBoxCRY_ = atof(root["theWorld"]["sizeBoxCRY"].asString().c_str());
+        uniSizeX = atof(root["theWorld"]["xSizeWorld"].asString().c_str())*CLHEP::cm;
+        uniSizeY = atof(root["theWorld"]["ySizeWorld"].asString().c_str())*CLHEP::cm;
+        uniSizeZ = atof(root["theWorld"]["zSizeWorld"].asString().c_str())*CLHEP::cm;
+        zCeiling = atof(root["theWorld"]["zCeiling"].asString().c_str())*CLHEP::cm;
+        sphereRadius = atof(root["theWorld"]["zCeiling"].asString().c_str())*CLHEP::cm;
+        sphereX = atof(root["theWorld"]["sphereX"].asString().c_str())*CLHEP::cm;
+        sphereY = atof(root["theWorld"]["sphereY"].asString().c_str())*CLHEP::cm;
+        sphereZ = atof(root["theWorld"]["sphereZ"].asString().c_str())*CLHEP::cm;
 
-        if(xSize <= 0 || ySize <= 0|| zSize <= 0) {
+
+        if(uniSizeX <= 0 || uniSizeY <= 0|| uniSizeZ <= 0) {
             G4cerr << "\033[1;31m" << "The size of the Universe has been greater than 0" << "\033[0m" << G4endl;
             goodGeometry = false;
             return;
         }
 
-        if(zOffsetCRY_ < 0) {
-            G4cerr << "\033[1;31m" << "Cry should be producing muons above the surface" << "\033[0m" << G4endl;
-            goodGeometry = false;
-            return;
-        }
-
-        if(sizeBoxCRY_ <= 0) {
-            G4cerr << "\033[1;31m" << "Cry should have a positive size of production" << "\033[0m" << G4endl;
-            goodGeometry = false;
-            return;
-        }
-
-        uniSizeX = xSize * CLHEP::cm;
-        uniSizeY = ySize * CLHEP::cm;
-        uniSizeZ = zSize * CLHEP::cm;
-        zOffsetCRY = zOffsetCRY_ * CLHEP::cm;
-        sizeBoxCRY = sizeBoxCRY_ * CLHEP::cm;
-
+              
         //Definition of the Detectors ----------------------------------------------
         const Json::Value Detectors = root["Detectors"];
 
@@ -138,15 +125,16 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
                     G4double yborder = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["yborder"].asString().c_str()) * CLHEP::cm;
                     G4int nPadx = atoi(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["nPadx"].asString().c_str());
                     G4int nPady = atoi(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["nPady"].asString().c_str());
-                    G4double chargeThreshold = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["chargeThreshold"].asString().c_str()) * CLHEP::cm;
-                    G4double noise = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["noise"].asString().c_str()) * CLHEP::cm;
-                    G4double tdcSigma = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["tdcSigma"].asString().c_str()) * CLHEP::cm;
+                    G4double chargeThreshold = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["chargeThreshold"].asString().c_str());
+                    G4double noise = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["noise"].asString().c_str());
+                    G4double tdcSigma = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["tdcSigma"].asString().c_str());
+                    G4double gain = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["gain"].asString().c_str());
                     LGAD *sensor = new LGAD(xSensPos, ySensPos, zSensPos, 
                                             xSensDir, ySensDir, zSensDir,
                                             xSensSize, ySensSize, zSensSize,
                                             nPadx, nPady, interPadx, interPady,
                                             xborder, yborder, chargeThreshold,
-                                            noise, tdcSigma, idet, icoll, isens);
+                                            noise, tdcSigma, gain, idet, icoll, isens);
                     layer->AddSensor(sensor);
                     G4String label = G4String(std::to_string(idet)) + G4String("_") + 
                                      G4String(std::to_string(icoll)) + G4String("_") + 
@@ -158,7 +146,8 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
 	        }
             detectors.push_back(detector);	    
         }
-    }    
+    } 
+
     goodGeometry = true;
     Print();
     return;
@@ -210,32 +199,11 @@ G4double ConfigurationGeometry::getSizeZ() {
 //----------------------------------------------------------------------//
 // Accesor to class information                                         //
 //----------------------------------------------------------------------//
-G4double ConfigurationGeometry::getZOffsetCRY() {
-    return zOffsetCRY;
-}
-//----------------------------------------------------------------------//
-//----------------------------------------------------------------------//
-
-
-//----------------------------------------------------------------------//
-// Accesor to class information                                         //
-//----------------------------------------------------------------------//
-G4double ConfigurationGeometry::getSizeBoxCRY() {
-    return sizeBoxCRY;
-}
-//----------------------------------------------------------------------//
-//----------------------------------------------------------------------//
-
-
-//----------------------------------------------------------------------//
-// Accesor to class information                                         //
-//----------------------------------------------------------------------//
 Detector * ConfigurationGeometry::getDetector(G4int a) {
     return detectors.at(a);
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
-
 
 //----------------------------------------------------------------------//
 // Accesor to class information                                         //
@@ -245,6 +213,56 @@ G4int ConfigurationGeometry::getNDetectors() {
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
+
+
+//----------------------------------------------------------------------//
+// Accesor to class information                                         //
+//----------------------------------------------------------------------//
+G4double ConfigurationGeometry::getZCeiling() {
+    return zCeiling;
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
+
+//----------------------------------------------------------------------//
+// Accesor to class information                                         //
+//----------------------------------------------------------------------//
+G4double ConfigurationGeometry::getSphereRadius() {
+    return sphereRadius;
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
+
+//----------------------------------------------------------------------//
+// Accesor to class information                                         //
+//----------------------------------------------------------------------//
+G4double ConfigurationGeometry::getSphereX() {
+    return sphereX;
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
+//----------------------------------------------------------------------//
+// Accesor to class information                                         //
+//----------------------------------------------------------------------//
+G4double ConfigurationGeometry::getSphereY() {
+    return sphereY;
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
+
+//----------------------------------------------------------------------//
+// Accesor to class information                                         //
+//----------------------------------------------------------------------//
+G4double ConfigurationGeometry::getSphereZ() {
+    return sphereZ;
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
 
 //----------------------------------------------------------------------//
 // createG4Objects                                                      //
