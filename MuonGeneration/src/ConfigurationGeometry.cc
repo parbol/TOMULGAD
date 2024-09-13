@@ -54,35 +54,38 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
 
     if( root.size() > 0 ) {
         //Definition of the Universe ----------------------------------------------
-        G4double xSize = atof(root["theWorld"]["xSizeWorld"].asString().c_str());
-        G4double ySize = atof(root["theWorld"]["ySizeWorld"].asString().c_str());
-        G4double zSize = atof(root["theWorld"]["zSizeWorld"].asString().c_str());
-        G4double zOffsetCRY_ = atof(root["theWorld"]["zOffsetCRY"].asString().c_str());
-        G4double sizeBoxCRY_ = atof(root["theWorld"]["sizeBoxCRY"].asString().c_str());
+        uniSizeX = atof(root["theWorld"]["xSizeWorld"].asString().c_str())*CLHEP::cm;
+        uniSizeY = atof(root["theWorld"]["ySizeWorld"].asString().c_str())*CLHEP::cm;
+        uniSizeZ = atof(root["theWorld"]["zSizeWorld"].asString().c_str())*CLHEP::cm;
+        zCeiling = atof(root["theWorld"]["zCeiling"].asString().c_str())*CLHEP::cm;
+        sphereRadius = atof(root["theWorld"]["zCeiling"].asString().c_str())*CLHEP::cm;
+        sphereX = atof(root["theWorld"]["sphereX"].asString().c_str())*CLHEP::cm;
+        sphereY = atof(root["theWorld"]["sphereY"].asString().c_str())*CLHEP::cm;
+        sphereZ = atof(root["theWorld"]["sphereZ"].asString().c_str())*CLHEP::cm;
 
-        if(xSize <= 0 || ySize <= 0|| zSize <= 0) {
+        if(uniSizeX <= 0 || uniSizeY <= 0|| uniSizeZ <= 0) {
             G4cerr << "\033[1;31m" << "The size of the Universe has been greater than 0" << "\033[0m" << G4endl;
             goodGeometry = false;
             return;
         }
 
-        if(zOffsetCRY_ < 0) {
-            G4cerr << "\033[1;31m" << "Cry should be producing muons above the surface" << "\033[0m" << G4endl;
-            goodGeometry = false;
-            return;
-        }
+        //Definition of the Phantoms ----------------------------------------------
+        const Json::Value Phantoms = root["Phantoms"];
+        for(G4int iphan = 0; iphan < Phantoms.size(); ++iphan) {
+		G4String name = root["Phantoms"][iphan]["name"].asString().c_str();
+		G4String material = root["Phantoms"][iphan]["material"].asString().c_str();
+		G4double radius = atof(root["Phantoms"][iphan]["radius"].asString().c_str()) * CLHEP::cm;
+		G4double zsize = atof(root["Phantoms"][iphan]["zsize"].asString().c_str()) * CLHEP::cm;
+		G4double xPos = atof(root["Phantoms"][iphan]["xPos"].asString().c_str()) * CLHEP::cm;
+		G4double yPos = atof(root["Phantoms"][iphan]["yPos"].asString().c_str()) * CLHEP::cm;
+		G4double zPos = atof(root["Phantoms"][iphan]["zPos"].asString().c_str()) * CLHEP::cm;
+		G4double xDir = atof(root["Phantoms"][iphan]["xDir"].asString().c_str()) * CLHEP::degree;
+		G4double yDir = atof(root["Phantoms"][iphan]["yDir"].asString().c_str()) * CLHEP::degree;
+		G4double zDir = atof(root["Phantoms"][iphan]["zDir"].asString().c_str()) * CLHEP::degree;
+                Phantom *phantom = new Phantom(xPos, yPos, zPos, xDir, yDir, zDir, radius, zsize, name, material);
+		phantoms.push_back(phantom);
+	}
 
-        if(sizeBoxCRY_ <= 0) {
-            G4cerr << "\033[1;31m" << "Cry should have a positive size of production" << "\033[0m" << G4endl;
-            goodGeometry = false;
-            return;
-        }
-
-        uniSizeX = xSize * CLHEP::cm;
-        uniSizeY = ySize * CLHEP::cm;
-        uniSizeZ = zSize * CLHEP::cm;
-        zOffsetCRY = zOffsetCRY_ * CLHEP::cm;
-        sizeBoxCRY = sizeBoxCRY_ * CLHEP::cm;
 
         //Definition of the Detectors ----------------------------------------------
         const Json::Value Detectors = root["Detectors"];
@@ -138,10 +141,10 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
                     G4double yborder = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["yborder"].asString().c_str()) * CLHEP::cm;
                     G4int nPadx = atoi(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["nPadx"].asString().c_str());
                     G4int nPady = atoi(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["nPady"].asString().c_str());
-                    G4double chargeThreshold = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["chargeThreshold"].asString().c_str()) * CLHEP::cm;
-                    G4double noise = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["noise"].asString().c_str()) * CLHEP::cm;
-                    G4double tdcSigma = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["tdcSigma"].asString().c_str()) * CLHEP::cm;
-                    G4double gain = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["gain"].asString().c_str()) * CLHEP::cm;
+                    G4double chargeThreshold = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["chargeThreshold"].asString().c_str());
+                    G4double noise = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["noise"].asString().c_str());
+                    G4double tdcSigma = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["tdcSigma"].asString().c_str());
+                    G4double gain = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["gain"].asString().c_str());
                     LGAD *sensor = new LGAD(xSensPos, ySensPos, zSensPos, 
                                             xSensDir, ySensDir, zSensDir,
                                             xSensSize, ySensSize, zSensSize,
@@ -211,18 +214,8 @@ G4double ConfigurationGeometry::getSizeZ() {
 //----------------------------------------------------------------------//
 // Accesor to class information                                         //
 //----------------------------------------------------------------------//
-G4double ConfigurationGeometry::getZOffsetCRY() {
-    return zOffsetCRY;
-}
-//----------------------------------------------------------------------//
-//----------------------------------------------------------------------//
-
-
-//----------------------------------------------------------------------//
-// Accesor to class information                                         //
-//----------------------------------------------------------------------//
-G4double ConfigurationGeometry::getSizeBoxCRY() {
-    return sizeBoxCRY;
+Phantom * ConfigurationGeometry::getPhantom(G4int a) {
+    return phantoms.at(a);
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
@@ -233,6 +226,65 @@ G4double ConfigurationGeometry::getSizeBoxCRY() {
 //----------------------------------------------------------------------//
 Detector * ConfigurationGeometry::getDetector(G4int a) {
     return detectors.at(a);
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
+
+//----------------------------------------------------------------------//
+// Accesor to class information                                         //
+//----------------------------------------------------------------------//
+G4int ConfigurationGeometry::getNPhantoms() {
+    return phantoms.size();
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
+
+//----------------------------------------------------------------------//
+// Accesor to class information                                         //
+//----------------------------------------------------------------------//
+G4double ConfigurationGeometry::getZCeiling() {
+    return zCeiling;
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
+
+//----------------------------------------------------------------------//
+// Accesor to class information                                         //
+//----------------------------------------------------------------------//
+G4double ConfigurationGeometry::getSphereRadius() {
+    return sphereRadius;
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
+
+//----------------------------------------------------------------------//
+// Accesor to class information                                         //
+//----------------------------------------------------------------------//
+G4double ConfigurationGeometry::getSphereX() {
+    return sphereX;
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
+//----------------------------------------------------------------------//
+// Accesor to class information                                         //
+//----------------------------------------------------------------------//
+G4double ConfigurationGeometry::getSphereY() {
+    return sphereY;
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
+
+//----------------------------------------------------------------------//
+// Accesor to class information                                         //
+//----------------------------------------------------------------------//
+G4double ConfigurationGeometry::getSphereZ() {
+    return sphereZ;
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
@@ -257,6 +309,11 @@ void ConfigurationGeometry::createG4objects(G4LogicalVolume *mother,
     for(int i = 0; i < detectors.size(); i++) {
         detectors[i]->createG4Objects(G4String(std::to_string(detectors[i]->detId())),
                                       mother, materials, SDman);
+    }
+
+
+    for(int i = 0; i < phantoms.size(); i++) { 
+	    phantoms[i]->createG4Objects(mother, materials, SDman);
     }
 
 }

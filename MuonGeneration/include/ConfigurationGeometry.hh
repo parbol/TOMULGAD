@@ -23,6 +23,7 @@
 #include "assert.h"
 
 #include "globals.hh"
+#include "Phantom.hh"
 #include "Detector.hh"
 #include "Layer.hh"
 #include "LGAD.hh"
@@ -40,12 +41,36 @@ public:
     G4double getSizeX();
     G4double getSizeY();
     G4double getSizeZ();
-    G4double getZOffsetCRY();
-    G4double getSizeBoxCRY();
    
+    // Informatio about the BEAM
+    G4double GetXBeamPosition();
+    G4double GetXBeamSigma();
+    G4double GetYBeamPosition();
+    G4double GetYBeamSigma();
+    G4double GetZBeamPosition();
+    G4double GetMomentum();
+    G4int GetNStep();
+    G4double GetMomentumSigma();
+    G4double GetTBeamSigma();
+    G4int GetMomentumDistribution();
+    G4int GetNParticles();
+    G4int GetParticleDistribution();
+    G4double GetMaxOpenAngle();
+
+
     // Detector information
     Detector *getDetector(G4int);
     G4int getNDetectors();
+    
+    G4double getZCeiling();
+    G4double getSphereRadius();
+    G4double getSphereX();
+    G4double getSphereY();
+    G4double getSphereZ();
+    
+    // Detector information
+    Phantom *getPhantom(G4int);
+    G4int getNPhantoms();
 
     //Creating the geometry
     void createG4objects(G4LogicalVolume *, 
@@ -58,9 +83,13 @@ public:
     void Print();
 
 private:
+
+   
+
     G4double uniSizeX, uniSizeY, uniSizeZ;
-    G4double zOffsetCRY, sizeBoxCRY;
+    G4double zCeiling, sphereRadius, sphereX, sphereY, sphereZ;
     std::vector <Detector *> detectors;
+    std::vector <Phantom *> phantoms;
     bool goodGeometry;
     LGADSignalShape *signalShape;
 };
