@@ -42,28 +42,14 @@ public:
     G4double getSizeY();
     G4double getSizeZ();
    
-    // Informatio about the BEAM
-    G4double GetXBeamPosition();
-    G4double GetXBeamSigma();
-    G4double GetYBeamPosition();
-    G4double GetYBeamSigma();
-    G4double GetZBeamPosition();
-    G4double GetMomentum();
-    G4int GetNStep();
-    G4double GetMomentumSigma();
-    G4double GetTBeamSigma();
-    G4int GetMomentumDistribution();
-    G4int GetNParticles();
-    G4int GetParticleDistribution();
-    G4double GetMaxOpenAngle();
-
-
     // Detector information
     Detector *getDetector(G4int);
     G4int getNDetectors();
     
     G4double getZCeiling();
     G4double getSphereRadius();
+    G4double getThetaMin();
+    G4double getThetaMax();
     G4double getSphereX();
     G4double getSphereY();
     G4double getSphereZ();
@@ -87,7 +73,7 @@ private:
    
 
     G4double uniSizeX, uniSizeY, uniSizeZ;
-    G4double zCeiling, sphereRadius, sphereX, sphereY, sphereZ;
+    G4double zCeiling, sphereRadius, thetaMin, thetaMax, sphereX, sphereY, sphereZ;
     std::vector <Detector *> detectors;
     std::vector <Phantom *> phantoms;
     bool goodGeometry;

@@ -16,6 +16,7 @@ if __name__=='__main__':
         print('Please specify a name for the output configuration file')
         sys.exit()
     
+    nPhantoms = 4
     nDetectors = 2
     nLayers = 4
     nSensors = 64
@@ -30,9 +31,9 @@ if __name__=='__main__':
     sensor = layer['Sensors'][0]
     phantom = data_['Phantoms'][0]
 
-    theWorld["zSizeWorld"] = 320
-    theWorld["zCeiling"] = 159
-    theWorld["sphereRadius"] = 36
+    theWorld["zSizeWorld"] = 250
+    theWorld["zCeiling"] = 125
+    theWorld["sphereRadius"] = 240.5
 
 
     sensors = []
@@ -57,44 +58,46 @@ if __name__=='__main__':
         copyphantom = phantom.copy()
         phantoms.append(copyphantom)
 
-    phantoms[0]['name'] = 'lung'
-    phantoms[0]['material'] = 'lung'
+    phantoms[0]['name'] = 'iron1'
+    phantoms[0]['material'] = 'iron'
     phantoms[0]['xPos'] = 3.0
     phantoms[0]['yPos'] = 3.0
     phantoms[0]['zPos'] = 0.0
     phantoms[0]['radius'] = 2.0
     phantoms[0]['zsize'] = 0.5
 
-    phantoms[1]['name'] = 'brain'
-    phantoms[1]['material'] = 'brain'
+    phantoms[1]['name'] = 'iron2'
+    phantoms[1]['material'] = 'iron'
     phantoms[1]['xPos'] = 3.0
     phantoms[1]['yPos'] = -3.0
     phantoms[1]['zPos'] = 0.0
     phantoms[1]['radius'] = 2.0
-    phantoms[1]['zsize'] = 0.5
+    phantoms[1]['zsize'] = 0.4
 
-    phantoms[2]['name'] = 'fat'
-    phantoms[2]['material'] = 'fat'
+    phantoms[2]['name'] = 'iron3'
+    phantoms[2]['material'] = 'iron'
     phantoms[2]['xPos'] = -3.0
     phantoms[2]['yPos'] = 3.0
     phantoms[2]['zPos'] = 0.0
     phantoms[2]['radius'] = 2.0
-    phantoms[2]['zsize'] = 0.5
+    phantoms[2]['zsize'] = 0.2
 
-    phantoms[3]['name'] = 'bone'
-    phantoms[3]['material'] = 'bone'
+    phantoms[3]['name'] = 'iron4'
+    phantoms[3]['material'] = 'iron'
     phantoms[3]['xPos'] = -3.0
     phantoms[3]['yPos'] = -3.0
     phantoms[3]['zPos'] = 0.0
     phantoms[3]['radius'] = 2.0
-    phantoms[3]['zsize'] = 0.5
+    phantoms[3]['zsize'] = 0.1
 
     #phantoms = []
 
 
     data = {} 
     data['theWorld'] = theWorld
+    data['Phantoms'] = phantoms
     data['Detectors'] = detectors
+    
 
     
     #This must be configured for every setup 

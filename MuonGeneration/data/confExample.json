@@ -3,12 +3,14 @@
     {
         "xSizeWorld":100,
         "ySizeWorld":100,
-        "zSizeWorld":300,
-        "zCeiling": 149,
-        "sphereRadius": 100,
+        "zSizeWorld":250,
+        "zCeiling": 125,
+        "sphereRadius": 240.5,
+        "thetaMin": 0.0,
+        "thetaMax": 3.1416,
         "sphereX": 0,
         "sphereY": 0,
-        "sphereZ": 40
+        "sphereZ": -120.0
     },
     "Phantoms":
     [

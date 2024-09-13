@@ -24,6 +24,9 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(ConfigurationGeometry *myGeom_, G
     gen->SetHSphereCenterPosition({{myGeom->getSphereX()/CLHEP::m,
                                     myGeom->getSphereY()/CLHEP::m,
                                     myGeom->getSphereZ()/CLHEP::m}}); 
+    gen->SetMinimumTheta(myGeom->getThetaMin());
+    gen->SetMaximumTheta(myGeom->getThetaMax());
+    
     gen->SetSeed(randomSeed);
 
     particleGun = new G4ParticleGun();
@@ -75,7 +78,7 @@ std::array<G4double, 6> PrimaryGeneratorAction::getProjection(std::array<G4doubl
     v[3] = vx;
     v[4] = vy;
     v[5] = vz;
-
+    G4cout << x << " " << y << " " << z << " " << vx << " " << vy << " " << vz << G4endl;
     return v;
 }
 //----------------------------------------------------------------------//

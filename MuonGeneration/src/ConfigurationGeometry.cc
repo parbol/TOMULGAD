@@ -59,6 +59,8 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
         uniSizeZ = atof(root["theWorld"]["zSizeWorld"].asString().c_str())*CLHEP::cm;
         zCeiling = atof(root["theWorld"]["zCeiling"].asString().c_str())*CLHEP::cm;
         sphereRadius = atof(root["theWorld"]["zCeiling"].asString().c_str())*CLHEP::cm;
+        thetaMin = atof(root["theWorld"]["thetaMin"].asString().c_str());
+        thetaMax = atof(root["theWorld"]["thetaMax"].asString().c_str());
         sphereX = atof(root["theWorld"]["sphereX"].asString().c_str())*CLHEP::cm;
         sphereY = atof(root["theWorld"]["sphereY"].asString().c_str())*CLHEP::cm;
         sphereZ = atof(root["theWorld"]["sphereZ"].asString().c_str())*CLHEP::cm;
@@ -256,6 +258,26 @@ G4double ConfigurationGeometry::getZCeiling() {
 //----------------------------------------------------------------------//
 G4double ConfigurationGeometry::getSphereRadius() {
     return sphereRadius;
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
+
+//----------------------------------------------------------------------//
+// Accesor to class information                                         //
+//----------------------------------------------------------------------//
+G4double ConfigurationGeometry::getThetaMin() {
+    return thetaMin;
+}
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
+
+//----------------------------------------------------------------------//
+// Accesor to class information                                         //
+//----------------------------------------------------------------------//
+G4double ConfigurationGeometry::getThetaMax() {
+    return thetaMax;
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
