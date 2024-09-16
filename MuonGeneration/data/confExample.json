@@ -70,7 +70,7 @@
                             "nPadx":16,
                             "nPady":16,
                             "chargeThreshold":20.0,
-                            "noise":1.0,
+                            "noise":1.5,
                             "tdcSigma":0.01,
                             "gain":10.0
                         }

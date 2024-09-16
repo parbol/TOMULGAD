@@ -4,7 +4,7 @@ import ROOT as r
 from tools.Event import Event
 from tools.GeometryConversor import GeometryConversor
 from tools.EventLoader import EventLoader
-
+from tools.tdrstyle import tdrstyle
 
 
 def makePlots1D(plots, dir):
@@ -24,13 +24,15 @@ def makePlots1D(plots, dir):
         if ymin != ymax:
             h.GetXaxis().SetRangeUser(ymin, ymax)
         h.Draw(poption)
+        if name.find('timeResolution') != -1 and name.find('Raw') == -1:
+            h.Fit('gaus')
         can.SaveAs(fileName)
 
 
 def fTimeWalk(x, p):
     
-    return p[0] + p[1] * x[0]  
-    #return p[0] + p[1] * x[0] + p[2] * x[0] * x[0] + p[3] * x[0] * x[0] * x[0]
+    #return p[0] + p[1] * x[0]  
+    return p[0] + p[1] * x[0] + p[2] * x[0] * x[0] + p[3] * x[0] * x[0] * x[0]
 
     #if x[0] < 1.6:
     #    return p[0] + p[1] * x[0] + p[2] * x[0] * x[0] + p[3] * x[0] * x[0] * x[0]
@@ -54,7 +56,7 @@ def makeTimeWalk(name, tup, dir):
     if ymin != ymax:
         h.GetXaxis().SetRangeUser(ymin, ymax)
 
-    tf1 = r.TF1('tf1', fTimeWalk, 0, 3, 2)
+    tf1 = r.TF1('tf1', fTimeWalk, 0, 3, 4)
 
     h.Draw(poption)
     h.Fit(tf1)
@@ -87,38 +89,42 @@ if __name__=='__main__':
     else:
         os.mkdir(opts.outputDir)
 
+    tdr = tdrstyle()
+
     ##################################################
     ###############Definition of plots################
     ################################################## 
 
     plots1D = dict()
-    nhits = r.TH1F("nhits", "Number of hits", 40,  0, 40)
+    nhits = r.TH1F("nhits", "Number of hits", 10,  0, 10)
     plots1D['nhits'] = (nhits, 'N. Hits', 0, 0, '')
 
-    detectorN = r.TH1F("detectorN", "Detector number", 4, 0, 2)
+    detectorN = r.TH1F("detectorN", "Detector number", 2, 0, 2)
     plots1D['detectorN'] = (detectorN, 'Det. Number', 0, 0, '')
 
     layerN = r.TH1F("layerN", "Layer number", 9 , 0, 9)
     plots1D['layerN'] = (layerN, 'Layer Number', 0, 0, '')
 
-    toa = r.TH1F("toa", "Time of Arrival", 200, -20, 50)
+    toa = r.TH1F("toa", "Time of Arrival", 200, -10, 20)
     plots1D['toa'] = (toa, 'ToA [ns]', 0, 0, '')
 
     tot = r.TH1F("tot", "Time over threshold", 200, 0, 4)
     plots1D['tot'] = (tot, 'ToT [ns]', 0, 0, '')
 
-    charge = r.TH1F("charge", "Charge deposition", 200, 0, 5)
+    charge = r.TH1F("charge", "Charge deposition", 200, 0, 100)
     plots1D['charge'] = (charge, 'charge [fC]', 0, 0, '')
     
-    genEnergy = r.TH1F("genEnergy", "Energy of particle", 10000, 948, 962)
+    genEnergy = r.TH1F("genEnergy", "Energy of particle", 300, 0, 3000)
     plots1D['genEnergy'] = (genEnergy, 'energy [MeV]', 0, 0, '')
       
     #layerOccupancy = r.TH1F("layerOccupancy", "Layer occupancy", 9, 0, 9 )
     #plots1D['layerOccupancy'] = (layerOccupancy, "Layer occupancy", 0, 0, '')
     
-    timeResolution = r.TH1F("timeResolution", "Time Resolution", 200, -0.3, 0.3)
+    timeResolution = r.TH1F("timeResolution", "Time Resolution", 200, -0.1, 0.5)
     plots1D['timeResolution'] = (timeResolution, "Time Resolution [ns]", 0, 0, '')
-
+ 
+    timeResolutionRaw = r.TH1F("timeResolutionRaw", "Time Resolution", 200, -0.1, 0.5)
+    plots1D['timeResolutionRaw'] = (timeResolutionRaw, "Time Resolution [ns]", 0, 0, '')
 
     plotsProf = dict()
     bins = [x * 0.2 for x in range(0,5)]
@@ -145,7 +151,8 @@ if __name__=='__main__':
             plots1D['charge'][0].Fill(ev.charge[i]) 
             plots1D['genEnergy'][0].Fill(ev.genEnergy[i]) 
             plots1D['timeResolution'][0].Fill(ev.toa[i]-ev.gentoa[i])
-            plotsProf['timeWalk'][0].Fill(ev.tot[i], ev.toa[i]-ev.gentoa[i]) 
+            plots1D['timeResolutionRaw'][0].Fill(ev.toaraw[i]-ev.gentoa[i])
+            plotsProf['timeWalk'][0].Fill(ev.tot[i], ev.toaraw[i]-ev.gentoa[i]) 
 
     #################################################
     ##################Start plotting#################
