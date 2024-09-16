@@ -167,7 +167,7 @@ void LGAD::createG4Objects(G4String name, G4LogicalVolume *mother,
 
     G4String LGADName = G4String("LGAD_") + name;  
     solidVolume = new G4Box(LGADName, sizes[0]/2.0, sizes[1]/2.0, sizes[2]/2.0);
-    logicalVolume = new G4LogicalVolume(solidVolume, materials["air"], LGADName);
+    logicalVolume = new G4LogicalVolume(solidVolume, materials["silicon"], LGADName);
     G4String LGADPhysicalName = G4String("LGADPhys_") + name;
     physicalVolume = new G4PVPlacement(getRot(), getPos(), 
                                        logicalVolume, LGADPhysicalName,

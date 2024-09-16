@@ -78,7 +78,6 @@ std::array<G4double, 6> PrimaryGeneratorAction::getProjection(std::array<G4doubl
     v[3] = vx;
     v[4] = vy;
     v[5] = vz;
-    G4cout << x << " " << y << " " << z << " " << vx << " " << vy << " " << vz << G4endl;
     return v;
 }
 //----------------------------------------------------------------------//

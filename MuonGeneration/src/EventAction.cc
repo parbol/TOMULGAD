@@ -95,7 +95,7 @@ void EventAction::EndOfEventAction(const G4Event* evt) {
             if(i.at(0)) {
                 G4int n_hit = i.at(0)->entries();
                 for(G4int hit = 0; hit < n_hit; hit++) {
-                    LGADSensorHit* aHit = (*(i.at(0)))[hit];
+		            LGADSensorHit* aHit = (*(i.at(0)))[hit];
                     if(aHit->GetEnergy() == 0) continue;
                     auto detID = aHit->GetDetectorID();
                     auto layerID = aHit->GetLayerID();
@@ -118,8 +118,8 @@ void EventAction::EndOfEventAction(const G4Event* evt) {
     }
     
     for(auto i = digis.begin(); i != digis.end(); ++i) {
-        if(i->second->Digitize(myGauss, geom)) {     
-            man->FillNtupleIColumn(0, i->second->eventNumber);
+	if(i->second->Digitize(myGauss, geom)) {     
+	    man->FillNtupleIColumn(0, i->second->eventNumber);
             man->FillNtupleIColumn(1, i->second->GetDet());
             man->FillNtupleIColumn(2, i->second->GetLayer());
             man->FillNtupleIColumn(3, i->second->GetLGAD());

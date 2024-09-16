@@ -33,7 +33,7 @@ if __name__=='__main__':
 
     theWorld["zSizeWorld"] = 250
     theWorld["zCeiling"] = 125
-    theWorld["sphereRadius"] = 240.5
+    theWorld["sphereRadius"] = 13.0
 
 
     sensors = []
@@ -114,7 +114,7 @@ if __name__=='__main__':
     layerYSize = [24, 24, 24, 24]
     layerZSize = [1, 1, 1, 1]
     sensorSize = 2.2
-    centralCorridor = 0.4
+    centralCorridor = 0.2
     interpad = 0.05
     L = (8.0*sensorSize+6.0*centralCorridor)
     posX = -L/2.0 + sensorSize / 2.0
@@ -125,16 +125,34 @@ if __name__=='__main__':
     sensorXSize = []
     sensorYSize = []
     sensorZSize = []
-    for ix in range(0, 8):
-        for iy in range(0, 8):
-            Xc = posX + ix * (sensorSize + centralCorridor)
-            Yc = posY + iy * (sensorSize + centralCorridor)
+    for ix in range(0, 4):
+        for iy in range(0, 4):
+            Xc = centralCorridor/2.0 + sensorSize/2.0 + ix * (sensorSize + centralCorridor)
+            Yc = centralCorridor/2.0 + sensorSize/2.0 + iy * (sensorSize + centralCorridor)
             sensorXPosition.append(Xc)
             sensorYPosition.append(Yc)
             sensorZPosition.append(0)
             sensorXSize.append(sensorSize)
             sensorYSize.append(sensorSize)
-            sensorZSize.append(0.05)
+            sensorZSize.append(0.03)
+            sensorXPosition.append(-Xc)
+            sensorYPosition.append(Yc)
+            sensorZPosition.append(0)
+            sensorXSize.append(sensorSize)
+            sensorYSize.append(sensorSize)
+            sensorZSize.append(0.03 )
+            sensorXPosition.append(Xc)
+            sensorYPosition.append(-Yc)
+            sensorZPosition.append(0)
+            sensorXSize.append(sensorSize)
+            sensorYSize.append(sensorSize)
+            sensorZSize.append(0.03)
+            sensorXPosition.append(-Xc)
+            sensorYPosition.append(-Yc)
+            sensorZPosition.append(0)
+            sensorXSize.append(sensorSize)
+            sensorYSize.append(sensorSize)
+            sensorZSize.append(0.03)
 
     for i, det_ in enumerate(data['Detectors']):
         det_['xPosDetector'] = detectorXPosition[i]  

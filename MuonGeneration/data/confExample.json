@@ -1,16 +1,16 @@
 {
     "theWorld":
     {
-        "xSizeWorld":100,
-        "ySizeWorld":100,
-        "zSizeWorld":250,
+        "xSizeWorld": 100,
+        "ySizeWorld": 100,
+        "zSizeWorld": 250,
         "zCeiling": 125,
-        "sphereRadius": 240.5,
+        "sphereRadius": 13,
         "thetaMin": 0.0,
-        "thetaMax": 3.1416,
+        "thetaMax": 0.15,
         "sphereX": 0,
         "sphereY": 0,
-        "sphereZ": -120.0
+        "sphereZ": 120.0
     },
     "Phantoms":
     [
@@ -69,9 +69,9 @@
                             "yborder":0.005,
                             "nPadx":16,
                             "nPady":16,
-                            "chargeThreshold":5,
-                            "noise":0.1,
-                            "tdcSigma":0.1,
+                            "chargeThreshold":20.0,
+                            "noise":1.0,
+                            "tdcSigma":0.01,
                             "gain":10.0
                         }
                     ]

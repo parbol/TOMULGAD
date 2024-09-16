@@ -5,7 +5,7 @@
 //----------------------------------------------------------------------//
 LGADDigi::LGADDigi(LGADSensorHit *h, LGADSignalShape *shape) {
 
-    debug = 1;
+    debug = 0;
     aHit = h;
 
     G4int det = h->GetDetectorID();
@@ -102,7 +102,6 @@ G4int LGADDigi::GetPady() {
 G4bool LGADDigi::Digitize(CLHEP::RandGauss *myGauss, ConfigurationGeometry *geom) {
     
     G4double chThres = geom->getDetector(aHit->GetDetectorID())->GetLayer(aHit->GetLayerID())->GetSensor(aHit->GetLGADID())->chargethreshold();
-    
     if(charge * signalShape->maximum() < chThres) return false;
     G4double noise = geom->getDetector(aHit->GetDetectorID())->GetLayer(aHit->GetLayerID())->GetSensor(aHit->GetLGADID())->noiselevel();
     G4double tdcsigma = geom->getDetector(aHit->GetDetectorID())->GetLayer(aHit->GetLayerID())->GetSensor(aHit->GetLGADID())->tdcsigma();
@@ -125,7 +124,7 @@ G4bool LGADDigi::Digitize(CLHEP::RandGauss *myGauss, ConfigurationGeometry *geom
                            sigmaLN * sigmaLN);
     G4double sigmaToC = sqrt(sigmaJitter2 * sigmaJitter2 + sigmaDistorsion * sigmaDistorsion + tdcsigma * tdcsigma +
                             sigmaLN * sigmaLN);
-    
+    //G4cout << "Sigma: " << sigmaJitter1 << " " << sigmaToA << G4endl;
     G4double smearing1 = myGauss->fire(0., sigmaToA);
     G4double smearing2 = myGauss->fire(0., sigmaToC);   
     TOA = genTOA + (a.first + smearing1) * CLHEP::ns; 

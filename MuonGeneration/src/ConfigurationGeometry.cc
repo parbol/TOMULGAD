@@ -58,7 +58,7 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
         uniSizeY = atof(root["theWorld"]["ySizeWorld"].asString().c_str())*CLHEP::cm;
         uniSizeZ = atof(root["theWorld"]["zSizeWorld"].asString().c_str())*CLHEP::cm;
         zCeiling = atof(root["theWorld"]["zCeiling"].asString().c_str())*CLHEP::cm;
-        sphereRadius = atof(root["theWorld"]["zCeiling"].asString().c_str())*CLHEP::cm;
+        sphereRadius = atof(root["theWorld"]["sphereRadius"].asString().c_str())*CLHEP::cm;
         thetaMin = atof(root["theWorld"]["thetaMin"].asString().c_str());
         thetaMax = atof(root["theWorld"]["thetaMax"].asString().c_str());
         sphereX = atof(root["theWorld"]["sphereX"].asString().c_str())*CLHEP::cm;

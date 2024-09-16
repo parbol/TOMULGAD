@@ -20,7 +20,6 @@ LGADSignalShape::LGADSignalShape(G4double thres) {
     }
     maxValue = signalShape[maxN];
     timeMax = maxN * qNSecPerBin;
-
     //Estimate the falling time
     for(G4int i = 1; i < sizeof(signalShape)/sizeof(G4double); i++) { 
         if(signalShape[i] == 0 && signalShape[i-1] != 0) {
