@@ -5,12 +5,12 @@
         "ySizeWorld": 100,
         "zSizeWorld": 250,
         "zCeiling": 125,
-        "sphereRadius": 13,
+        "SkySize": 13,
         "thetaMin": 0.0,
         "thetaMax": 0.15,
-        "sphereX": 0,
-        "sphereY": 0,
-        "sphereZ": 120.0
+        "SkyX": 0,
+        "SkyY": 0,
+        "SkyZ": 120.0
     },
     "Phantoms":
     [
@@ -72,6 +72,7 @@
                             "chargeThreshold":20.0,
                             "noise":1.5,
                             "tdcSigma":0.01,
+                            "lnSigma":0.025,
                             "gain":10.0
                         }
                     ]

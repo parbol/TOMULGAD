@@ -113,8 +113,8 @@ class POCAEstimator:
 
         self.thetax.Fill(thetax)
         self.thetay.Fill(thetay)
-        b1 = k1 / math.sqrt(k1**2 + 938.2**2)
-        b2 = k2 / math.sqrt(k2**2 + 938.2**2)
+        b1 = k1 / math.sqrt(k1**2 + 105.66**2)
+        b2 = k2 / math.sqrt(k2**2 + 105.66**2)
         momentum = (k1+k2)/2.0
         beta = (b1+b2)/2.0
         betap = momentum * beta
@@ -137,9 +137,12 @@ class POCAEstimator:
         self.hxy.Fill(v[0], v[1])
         binxy = self.hxy.FindBin(v[0], v[1])
         valxy = self.hxy_theta.GetBinContent(binxy)
-        self.hxy_theta.SetBinContent(binxy, valxy + (thetax + thetay)*betap)
+        #self.hxy_theta.SetBinContent(binxy, valxy + (thetax + thetay)*betap)
+        print('Inserting:', valxy, thetax, thetay)
+        self.hxy_theta.SetBinContent(binxy, valxy + (thetax + thetay))
         valxy2 = self.hxy_theta2.GetBinContent(binxy)
-        self.hxy_theta2.SetBinContent(binxy, valxy2 + (thetax*betap)**2 + (thetay*betap)**2)
+        #self.hxy_theta2.SetBinContent(binxy, valxy2 + (thetax*betap)**2 + (thetay*betap)**2)
+        self.hxy_theta2.SetBinContent(binxy, valxy2 + (thetax)**2 + (thetay)**2)
         self.hxz.Fill(v[0], v[2])
         binxz = self.hxz.FindBin(v[0], v[2])
         valxz = self.hxz_theta.GetBinContent(binxz)
@@ -156,12 +159,14 @@ class POCAEstimator:
 
 
     def makeVar(self):
-       for ix in range(0, self.hxy.GetNbinsX()):
-            for iy in range(0, self.hxy.GetNbinsY()):
+       for ix in range(1, self.hxy.GetNbinsX()-1):
+            for iy in range(1, self.hxy.GetNbinsY()-1):
                 n = 2.0 * self.hxy.GetBinContent(ix, iy)
                 theta = self.hxy_theta.GetBinContent(ix, iy)
                 theta2 = self.hxy_theta2.GetBinContent(ix, iy)
-                if n > 2:
+                print('n:', n)
+                var = math.sqrt(theta2/n - (theta/n)**2)
+                if n > 4 and var < 0.05:
                     self.var_xy.SetBinContent(ix, iy, math.sqrt(theta2/n - (theta/n)**2))
        for ix in range(0, self.hxz.GetNbinsX()):
             for iy in range(0, self.hxz.GetNbinsY()):
@@ -202,6 +207,7 @@ class POCAEstimator:
         self.hyz.Draw('COLZ')
         cyz.SaveAs('hyz.png')
         varcxy = r.TCanvas('varcxy', 'varcxy')
+        varcxy.SetLogz(True)
         self.var_xy.Draw('COLZ')
         varcxy.SaveAs('varhxy.png')
         varcxz = r.TCanvas('varcxz', 'varcxz')

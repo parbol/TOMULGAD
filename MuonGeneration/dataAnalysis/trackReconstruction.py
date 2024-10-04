@@ -44,7 +44,7 @@ if __name__ == '__main__':
     (opts, args) = parser.parse_args()
     
     c = 29.9792458 #cm/ns 
-    mp = 938.27208943 #MeV
+    mmu = 105.6583755 #MeV
 
     try:
         input = r.TFile(opts.inputFile)
@@ -113,8 +113,6 @@ if __name__ == '__main__':
         vz1[0] = tf.track1.bz
         v1 = math.sqrt(vx1[0]*vx1[0]+vy1[0]*vy1[0]+vz1[0]*vz1[0])
         beta1 = v1/c
-        gamma1 = 1.0/math.sqrt(1.0 - beta1**2)
-        p1[0] = mp * beta1 * gamma1
         x2[0] = tf.track2.x0
         y2[0] = tf.track2.y0
         z2[0] = tf.track2.z0
@@ -123,8 +121,6 @@ if __name__ == '__main__':
         vz2[0] = tf.track2.bz
         v2 = math.sqrt(vx2[0]*vx2[0]+vy2[0]*vy2[0]+vz2[0]*vz2[0])
         beta2 = v2/c
-        gamma2 = 1.0/math.sqrt(1.0 - beta2**2)
-        p2[0] = mp * beta2 * gamma2
         anglex1 = correctAngle(vx1[0], vz1[0])
         anglex2 = correctAngle(vx2[0], vz2[0])
         angley1 = correctAngle(vy1[0], vz1[0])
@@ -136,17 +132,22 @@ if __name__ == '__main__':
         e13 = tf.track1.hits[2][4]
         e14 = tf.track1.hits[3][4]
         t.Fill()
-        if e11 < mp or e12 < mp or e13 < mp or e14 < mp:
+        if e11 < mmu or e12 < mmu or e13 < mmu or e14 < mmu:
             continue
-        p11 = math.sqrt(e11**2-mp**2)
-        p12 = math.sqrt(e12**2-mp**2)
-        p13 = math.sqrt(e13**2-mp**2)
-        p14 = math.sqrt(e14**2-mp**2)
-        resp.Fill(p1[0]-(p11+p12+p13+p14)/4.0)
+        p11 = math.sqrt(e11**2-mmu**2)
+        p12 = math.sqrt(e12**2-mmu**2)
+        p13 = math.sqrt(e13**2-mmu**2)
+        p14 = math.sqrt(e14**2-mmu**2)
+        if beta1 <= 1.0 and beta2 <= 1.0:
+            gamma1 = 1.0/math.sqrt(1.0 - beta1**2)
+            gamma2 = 1.0/math.sqrt(1.0 - beta2**2)
+            p1[0] = mmu * beta1 * gamma1
+            p2[0] = mmu * beta2 * gamma2
+
+            resp.Fill(p1[0]-(p11+p12+p13+p14)/4.0)
 
         
 
-    print('caca')
     c = r.TCanvas('cresp', 'cresp')
     resp.GetXaxis().SetTitle('p_{reco}-p_{gen} [MeV]')
     resp.Draw()

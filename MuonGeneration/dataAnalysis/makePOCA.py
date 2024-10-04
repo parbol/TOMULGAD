@@ -26,9 +26,9 @@ if __name__=='__main__':
     tdrStyle.SetPadRightMargin(0.2)
     tdrStyle.cd()
     data = dict()
-    data['hxy'] = [80, -12, 12, 80, -12, 12]
-    data['hxz'] = [80, -12, 12, 20, -2, 2]
-    data['hyz'] = [80, -12, 12, 20, -2, 2]
+    data['hxy'] = [40, -12, 12, 40, -12, 12]
+    data['hxz'] = [40, -12, 12, 20, -2, 2]
+    data['hyz'] = [40, -12, 12, 20, -2, 2]
     pEstimator = POCAEstimator(input.events, data, -0.01)
     pEstimator.loop()
     pEstimator.MakePlot()

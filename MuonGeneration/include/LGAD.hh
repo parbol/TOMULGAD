@@ -14,7 +14,7 @@ public:
          G4double, G4double, G4double, 
          G4double, G4double, G4double,
          G4int, G4int, G4double, G4double,
-         G4double, G4double, G4double, G4double,
+         G4double, G4double, G4double, G4double, G4double,
          G4double, G4double, G4int, G4int, G4int);
 
     G4int detId();
@@ -49,6 +49,8 @@ public:
     G4double noiselevel();
     
     G4double tdcsigma();
+
+    G4double lnsigma();
     
     G4double gain();
 
@@ -58,7 +60,7 @@ private:
     G4int ndetId, nlayerId, nsensorId;
     G4int nPadx, nPady;
     G4double interPadx, interPady, borderPadx, borderPady;
-    G4double chargeThreshold, noiseLevel, tdcSigma, Gain;
+    G4double chargeThreshold, noiseLevel, tdcSigma, lnSigma, Gain;
 
     LGADSignalShape *signalShape_;    
 

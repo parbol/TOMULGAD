@@ -47,12 +47,12 @@ public:
     G4int getNDetectors();
     
     G4double getZCeiling();
-    G4double getSphereRadius();
+    G4double getSkySize();
     G4double getThetaMin();
     G4double getThetaMax();
-    G4double getSphereX();
-    G4double getSphereY();
-    G4double getSphereZ();
+    G4double getSkyX();
+    G4double getSkyY();
+    G4double getSkyZ();
     
     // Detector information
     Phantom *getPhantom(G4int);
@@ -73,7 +73,7 @@ private:
    
 
     G4double uniSizeX, uniSizeY, uniSizeZ;
-    G4double zCeiling, sphereRadius, thetaMin, thetaMax, sphereX, sphereY, sphereZ;
+    G4double zCeiling, SkySize, thetaMin, thetaMax, SkyX, SkyY, SkyZ;
     std::vector <Detector *> detectors;
     std::vector <Phantom *> phantoms;
     bool goodGeometry;

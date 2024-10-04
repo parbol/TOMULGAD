@@ -58,12 +58,12 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
         uniSizeY = atof(root["theWorld"]["ySizeWorld"].asString().c_str())*CLHEP::cm;
         uniSizeZ = atof(root["theWorld"]["zSizeWorld"].asString().c_str())*CLHEP::cm;
         zCeiling = atof(root["theWorld"]["zCeiling"].asString().c_str())*CLHEP::cm;
-        sphereRadius = atof(root["theWorld"]["sphereRadius"].asString().c_str())*CLHEP::cm;
+        SkySize = atof(root["theWorld"]["SkySize"].asString().c_str())*CLHEP::cm;
         thetaMin = atof(root["theWorld"]["thetaMin"].asString().c_str());
         thetaMax = atof(root["theWorld"]["thetaMax"].asString().c_str());
-        sphereX = atof(root["theWorld"]["sphereX"].asString().c_str())*CLHEP::cm;
-        sphereY = atof(root["theWorld"]["sphereY"].asString().c_str())*CLHEP::cm;
-        sphereZ = atof(root["theWorld"]["sphereZ"].asString().c_str())*CLHEP::cm;
+        SkyX = atof(root["theWorld"]["SkyX"].asString().c_str())*CLHEP::cm;
+        SkyY = atof(root["theWorld"]["SkyY"].asString().c_str())*CLHEP::cm;
+        SkyZ = atof(root["theWorld"]["SkyZ"].asString().c_str())*CLHEP::cm;
 
         if(uniSizeX <= 0 || uniSizeY <= 0|| uniSizeZ <= 0) {
             G4cerr << "\033[1;31m" << "The size of the Universe has been greater than 0" << "\033[0m" << G4endl;
@@ -84,7 +84,7 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
 		G4double xDir = atof(root["Phantoms"][iphan]["xDir"].asString().c_str()) * CLHEP::degree;
 		G4double yDir = atof(root["Phantoms"][iphan]["yDir"].asString().c_str()) * CLHEP::degree;
 		G4double zDir = atof(root["Phantoms"][iphan]["zDir"].asString().c_str()) * CLHEP::degree;
-                Phantom *phantom = new Phantom(xPos, yPos, zPos, xDir, yDir, zDir, radius, zsize, name, material);
+        Phantom *phantom = new Phantom(xPos, yPos, zPos, xDir, yDir, zDir, radius, zsize, name, material);
 		phantoms.push_back(phantom);
 	}
 
@@ -146,13 +146,14 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
                     G4double chargeThreshold = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["chargeThreshold"].asString().c_str());
                     G4double noise = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["noise"].asString().c_str());
                     G4double tdcSigma = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["tdcSigma"].asString().c_str());
+                    G4double lnSigma = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["lnSigma"].asString().c_str());
                     G4double gain = atof(root["Detectors"][idet]["Layers"][icoll]["Sensors"][isens]["gain"].asString().c_str());
                     LGAD *sensor = new LGAD(xSensPos, ySensPos, zSensPos, 
                                             xSensDir, ySensDir, zSensDir,
                                             xSensSize, ySensSize, zSensSize,
                                             nPadx, nPady, interPadx, interPady,
                                             xborder, yborder, chargeThreshold,
-                                            noise, tdcSigma, gain, idet, icoll, isens);
+                                            noise, tdcSigma, lnSigma, gain, idet, icoll, isens);
                     layer->AddSensor(sensor);
                     G4String label = G4String(std::to_string(idet)) + G4String("_") + 
                                      G4String(std::to_string(icoll)) + G4String("_") + 
@@ -256,8 +257,8 @@ G4double ConfigurationGeometry::getZCeiling() {
 //----------------------------------------------------------------------//
 // Accesor to class information                                         //
 //----------------------------------------------------------------------//
-G4double ConfigurationGeometry::getSphereRadius() {
-    return sphereRadius;
+G4double ConfigurationGeometry::getSkySize() {
+    return SkySize;
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
@@ -286,8 +287,8 @@ G4double ConfigurationGeometry::getThetaMax() {
 //----------------------------------------------------------------------//
 // Accesor to class information                                         //
 //----------------------------------------------------------------------//
-G4double ConfigurationGeometry::getSphereX() {
-    return sphereX;
+G4double ConfigurationGeometry::getSkyX() {
+    return SkyX;
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
@@ -295,8 +296,8 @@ G4double ConfigurationGeometry::getSphereX() {
 //----------------------------------------------------------------------//
 // Accesor to class information                                         //
 //----------------------------------------------------------------------//
-G4double ConfigurationGeometry::getSphereY() {
-    return sphereY;
+G4double ConfigurationGeometry::getSkyY() {
+    return SkyY;
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
@@ -305,8 +306,8 @@ G4double ConfigurationGeometry::getSphereY() {
 //----------------------------------------------------------------------//
 // Accesor to class information                                         //
 //----------------------------------------------------------------------//
-G4double ConfigurationGeometry::getSphereZ() {
-    return sphereZ;
+G4double ConfigurationGeometry::getSkyZ() {
+    return SkyZ;
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//

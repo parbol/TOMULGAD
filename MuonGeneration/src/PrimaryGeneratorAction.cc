@@ -18,12 +18,11 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(ConfigurationGeometry *myGeom_, G
     pt = pt_;
     zceiling = myGeom->getZCeiling()/CLHEP::m;
     gen = new EcoMug();
-    gen->SetUseHSphere(); 
-    // The radious will be a fraction k of 1/4 * sqrt(Lx^2 +Lz^2)
-    gen->SetHSphereRadius(myGeom->getSphereRadius()/CLHEP::m); //This is in meters
-    gen->SetHSphereCenterPosition({{myGeom->getSphereX()/CLHEP::m,
-                                    myGeom->getSphereY()/CLHEP::m,
-                                    myGeom->getSphereZ()/CLHEP::m}}); 
+    gen->SetUseSky(); 
+    gen->SetSkySize({{myGeom->getSkySize()/CLHEP::m, myGeom->getSkySize()/CLHEP::m}}); //This is in meters
+    gen->SetSkyCenterPosition({{myGeom->getSkyX()/CLHEP::m,
+                                    myGeom->getSkyY()/CLHEP::m,
+                                    myGeom->getSkyZ()/CLHEP::m}}); 
     gen->SetMinimumTheta(myGeom->getThetaMin());
     gen->SetMaximumTheta(myGeom->getThetaMax());
     
