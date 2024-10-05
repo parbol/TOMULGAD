@@ -11,6 +11,8 @@ public:
 
     Phantom(G4double, G4double, G4double, G4double, G4double, G4double, G4double, G4double, G4String, G4String);   
     
+    Phantom(G4double, G4double, G4double, G4double, G4double, G4double, G4double, G4double, G4double, G4String, G4String);   
+    
     G4String getName();
 
     G4String getMaterial();
@@ -24,9 +26,10 @@ private:
    
     G4double radius;
     G4double zsize; 
+    G4double sideX, sideY, sideZ;
     G4String name;
     G4String material;
-
+    G4int type;
 };
 
 

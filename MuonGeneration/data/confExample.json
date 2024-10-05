@@ -23,8 +23,12 @@
             "xDir":0,
             "yDir":0,
             "zDir":0,
-            "radius":1,
-            "zsize":1
+            "type":0,
+	    "radius":1,
+            "zsize":1,
+	    "sideX":0,
+	    "sideY":0,
+	    "sideZ":0
         }
     ],
     "Detectors":

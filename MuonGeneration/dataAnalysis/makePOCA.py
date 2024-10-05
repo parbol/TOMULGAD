@@ -29,7 +29,7 @@ if __name__=='__main__':
     data['hxy'] = [40, -12, 12, 40, -12, 12]
     data['hxz'] = [40, -12, 12, 20, -2, 2]
     data['hyz'] = [40, -12, 12, 20, -2, 2]
-    pEstimator = POCAEstimator(input.events, data, -0.01)
+    pEstimator = POCAEstimator(input.events, data, 0.01)
     pEstimator.loop()
     pEstimator.MakePlot()
     input.Close()

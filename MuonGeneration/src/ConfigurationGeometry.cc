@@ -77,14 +77,23 @@ ConfigurationGeometry::ConfigurationGeometry(G4String file) {
 		G4String name = root["Phantoms"][iphan]["name"].asString().c_str();
 		G4String material = root["Phantoms"][iphan]["material"].asString().c_str();
 		G4double radius = atof(root["Phantoms"][iphan]["radius"].asString().c_str()) * CLHEP::cm;
+		G4int type = atoi(root["Phantoms"][iphan]["zsize"].asString().c_str());
 		G4double zsize = atof(root["Phantoms"][iphan]["zsize"].asString().c_str()) * CLHEP::cm;
+		G4double sideX = atof(root["Phantoms"][iphan]["sideX"].asString().c_str()) * CLHEP::cm;
+		G4double sideY = atof(root["Phantoms"][iphan]["sideY"].asString().c_str()) * CLHEP::cm;
+		G4double sideZ = atof(root["Phantoms"][iphan]["sideZ"].asString().c_str()) * CLHEP::cm;
 		G4double xPos = atof(root["Phantoms"][iphan]["xPos"].asString().c_str()) * CLHEP::cm;
 		G4double yPos = atof(root["Phantoms"][iphan]["yPos"].asString().c_str()) * CLHEP::cm;
 		G4double zPos = atof(root["Phantoms"][iphan]["zPos"].asString().c_str()) * CLHEP::cm;
 		G4double xDir = atof(root["Phantoms"][iphan]["xDir"].asString().c_str()) * CLHEP::degree;
 		G4double yDir = atof(root["Phantoms"][iphan]["yDir"].asString().c_str()) * CLHEP::degree;
 		G4double zDir = atof(root["Phantoms"][iphan]["zDir"].asString().c_str()) * CLHEP::degree;
-        Phantom *phantom = new Phantom(xPos, yPos, zPos, xDir, yDir, zDir, radius, zsize, name, material);
+                Phantom *phantom;
+		if(type == 0) {
+		    phantom = new Phantom(xPos, yPos, zPos, xDir, yDir, zDir, radius, zsize, name, material);
+		} else if(type == 1) {
+		    phantom = new Phantom(xPos, yPos, zPos, xDir, yDir, zDir, sideX, sideY, sideZ, name, material);
+                }
 		phantoms.push_back(phantom);
 	}
 

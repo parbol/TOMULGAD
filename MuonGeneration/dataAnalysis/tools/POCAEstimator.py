@@ -138,7 +138,6 @@ class POCAEstimator:
         binxy = self.hxy.FindBin(v[0], v[1])
         valxy = self.hxy_theta.GetBinContent(binxy)
         #self.hxy_theta.SetBinContent(binxy, valxy + (thetax + thetay)*betap)
-        print('Inserting:', valxy, thetax, thetay)
         self.hxy_theta.SetBinContent(binxy, valxy + (thetax + thetay))
         valxy2 = self.hxy_theta2.GetBinContent(binxy)
         #self.hxy_theta2.SetBinContent(binxy, valxy2 + (thetax*betap)**2 + (thetay*betap)**2)
@@ -164,9 +163,9 @@ class POCAEstimator:
                 n = 2.0 * self.hxy.GetBinContent(ix, iy)
                 theta = self.hxy_theta.GetBinContent(ix, iy)
                 theta2 = self.hxy_theta2.GetBinContent(ix, iy)
-                print('n:', n)
-                var = math.sqrt(theta2/n - (theta/n)**2)
-                if n > 4 and var < 0.05:
+                #print('n:', n)
+                #var = math.sqrt(theta2/n - (theta/n)**2)
+                if n > 4:
                     self.var_xy.SetBinContent(ix, iy, math.sqrt(theta2/n - (theta/n)**2))
        for ix in range(0, self.hxz.GetNbinsX()):
             for iy in range(0, self.hxz.GetNbinsY()):

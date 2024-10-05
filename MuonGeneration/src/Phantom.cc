@@ -1,4 +1,7 @@
 #include "Phantom.hh"
+#define DISK 0
+#define PRISM 1
+
 
 
 
@@ -12,9 +15,28 @@ Phantom::Phantom(G4double xPos, G4double yPos, G4double zPos, G4double xRot,
 		    zsize = zsize_;
 	 	    name = name_;
 		    material = material_;
+		    type = DISK; //
                    };
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
+
+
+//----------------------------------------------------------------------//
+// Constructor                                                          //
+//----------------------------------------------------------------------//
+Phantom::Phantom(G4double xPos, G4double yPos, G4double zPos, G4double xRot,
+                   G4double yRot, G4double zRot, G4double sideX_, G4double sideY_, G4double sideZ_, G4String name_, G4String material_) : GeomObject(xPos, yPos, zPos, xRot, yRot,
+                   zRot, 0.0, 0.0, 0.0) {
+                    sideX = sideX_;
+                    sideY = sideY_;
+		    sideZ = sideZ_;
+                    name = name_;
+                    material = material_;
+                    type = PRISM; //
+                   };
+//----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
+
 
 //----------------------------------------------------------------------//
 // Return detId                                                         //
@@ -44,7 +66,11 @@ void Phantom::createG4Objects(G4LogicalVolume *mother,
                                G4SDManager *SDman) {
 
     G4String phantomName = G4String("phantom_") + name;  
-    solidVolume = new G4Tubs(phantomName, 0, radius, zsize/2.0, 0.0, CLHEP::twopi);
+    if(type == DISK) {
+        solidVolume = new G4Tubs(phantomName, 0, radius, zsize/2.0, 0.0, CLHEP::twopi);
+    } else if(type == PRISM) {
+        solidVolume = new G4Box(phantomName, sideX/2.0, sideY/2.0, sideZ/2.0);
+    }    
     logicalVolume = new G4LogicalVolume(solidVolume, materials[material], phantomName);
     G4String phantomPhysicalName = G4String("phantomPhys_") + name;
     physicalVolume = new G4PVPlacement(getRot(), getPos(), logicalVolume, phantomPhysicalName,
@@ -52,6 +78,7 @@ void Phantom::createG4Objects(G4LogicalVolume *mother,
 }
 //----------------------------------------------------------------------//
 //----------------------------------------------------------------------//
+
 
 //----------------------------------------------------------------------//
 // Print                                                                //

@@ -139,32 +139,48 @@ if __name__=='__main__':
     phantoms[0]['xPos'] = 5.0
     phantoms[0]['yPos'] = 5.0
     phantoms[0]['zPos'] = 0.0
+    phantoms[0]['type'] = 0
     phantoms[0]['radius'] = 2.0
     phantoms[0]['zsize'] = 1.5
+    phantoms[0]['sideX'] = 0
+    phantoms[0]['sideY'] = 0
+    phantoms[0]['sideZ'] = 0
 
     phantoms[1]['name'] = 'iron2'
     phantoms[1]['material'] = 'iron'
     phantoms[1]['xPos'] = 5.0
     phantoms[1]['yPos'] = -5.0
     phantoms[1]['zPos'] = 0.0
+    phantoms[1]['type'] = 0
     phantoms[1]['radius'] = 2.0
     phantoms[1]['zsize'] = 1.0
+    phantoms[1]['sideX'] = 0
+    phantoms[1]['sideY'] = 0
+    phantoms[1]['sideZ'] = 0
 
     phantoms[2]['name'] = 'iron3'
     phantoms[2]['material'] = 'iron'
     phantoms[2]['xPos'] = -5.0
     phantoms[2]['yPos'] = 5.0
     phantoms[2]['zPos'] = 0.0
+    phantoms[2]['type'] = 0
     phantoms[2]['radius'] = 2.0
     phantoms[2]['zsize'] = 3.0
+    phantoms[2]['sideX'] = 0
+    phantoms[2]['sideY'] = 0
+    phantoms[2]['sideZ'] = 0
 
     phantoms[3]['name'] = 'iron4'
     phantoms[3]['material'] = 'iron'
     phantoms[3]['xPos'] = -5.0
     phantoms[3]['yPos'] = -5.0
     phantoms[3]['zPos'] = 0.0
+    phantoms[3]['type'] = 0
     phantoms[3]['radius'] = 2.0
     phantoms[3]['zsize'] = 0.1
+    phantoms[3]['sideX'] = 0
+    phantoms[3]['sideY'] = 0
+    phantoms[3]['sideZ'] = 0
 
     #phantoms = []
 
