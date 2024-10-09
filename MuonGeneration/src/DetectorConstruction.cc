@@ -27,7 +27,7 @@
 
 
 #include "G4PVReplica.hh"
-
+#include "G4VisAttributes.hh"
 #include "G4SubtractionSolid.hh"
 
 
@@ -78,6 +78,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     G4LogicalVolume* worldLogical = new G4LogicalVolume(worldSolid, materials["air"], "worldLogical",0,0,0);
     G4VPhysicalVolume* worldPhysical = new G4PVPlacement(0, G4ThreeVector(0, 0, 0), worldLogical, "worldPhysical", worldLogicalPrim, false, 0);
   
+    G4VisAttributes *attlog = new G4VisAttributes(false);
+    attlog->SetVisibility(false);
+    worldLogical->SetVisAttributes(attlog);
+    worldLogicalPrim->SetVisAttributes(attlog);
+
     myConf->createG4objects(worldLogical, materials, SDman);
  
     DumpGeometricalTree(worldPhysicalPrim, 3);
@@ -103,6 +108,7 @@ void DetectorConstruction::ConstructMaterials() {
     materials.insert(std::pair<G4String, G4Material *>("argon", man->FindOrBuildMaterial("G4_Ar")));
     materials.insert(std::pair<G4String, G4Material *>("lead", man->FindOrBuildMaterial("G4_Pb")));
     materials.insert(std::pair<G4String, G4Material *>("silicon", man->FindOrBuildMaterial("G4_Si")));
+    materials.insert(std::pair<G4String, G4Material *>("cupper", man->FindOrBuildMaterial("G4_Cu")));
     materials.insert(std::pair<G4String, G4Material *>("steel", man->FindOrBuildMaterial("G4_STAINLESS-STEEL")));
 
 

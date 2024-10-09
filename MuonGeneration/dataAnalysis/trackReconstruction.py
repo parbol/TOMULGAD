@@ -121,6 +121,21 @@ if __name__ == '__main__':
         vz2[0] = tf.track2.bz
         v2 = math.sqrt(vx2[0]*vx2[0]+vy2[0]*vy2[0]+vz2[0]*vz2[0])
         beta2 = v2/c
+        #velocity estimation
+        nux1 = vx1[0]/v1
+        nuy1 = vy1[0]/v1
+        nuz1 = vz1[0]/v1
+        nux2 = vx2[0]/v2
+        nuy2 = vy2[0]/v2
+        nuz2 = vz2[0]/v2
+        denominator = tf.track1.t2 + tf.track2.t2
+        num1 = nux1 * tf.track1.xt + nuy1 * tf.track1.yt + nuz1 * tf.track1.zt
+        num2 = nux2 * tf.track2.xt + nuy2 * tf.track2.yt + nuz2 * tf.track2.zt
+        num3 = (nux1 * tf.track1.x0 + nuy1 * tf.track1.y0 + nuz1 * tf.track1.z0)* tf.track1.t
+        num4 = (nux2 * tf.track2.x0 + nuy2 * tf.track2.y0 + nuz2 * tf.track2.z0)* tf.track2.t
+        v = (num1 + num2 - num3 + num4)/denominator
+        beta = v/c
+
         anglex1 = correctAngle(vx1[0], vz1[0])
         anglex2 = correctAngle(vx2[0], vz2[0])
         angley1 = correctAngle(vy1[0], vz1[0])

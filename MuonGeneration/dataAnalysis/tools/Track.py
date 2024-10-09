@@ -1,8 +1,3 @@
-
-
-
-
-
 class Track:
 
     def __init__(self):
@@ -15,6 +10,11 @@ class Track:
         self.bz = 0
         self.chi2 = 0
         self.hits = []
+        self.xt = 0
+        self.yt = 0
+        self.zt = 0
+        self.t = 0
+        self.t2 = 0
 
     def insertHit(self, x, y, z, t, energy):
 
@@ -23,10 +23,9 @@ class Track:
 
     def build(self):
 
-        t = x = y = z = 0.
-        t2 = x2 = y2 = z2 = 0.
-        xt = yt = zt = 0.
-
+        x = y = z = 0.
+        x2 = y2 = z2 = 0.
+        
         for h in self.hits:
             x = x + h[0]
             x2 = x2 + h[0]**2
@@ -34,22 +33,22 @@ class Track:
             y2 = y2 + h[1]**2
             z = z + h[2]
             z2 = z2 + h[2]**2
-            t = t + h[3]
-            t2 = t2 + h[3]**2
-            xt = xt + h[0]*h[3]
-            yt = yt + h[1]*h[3]
-            zt = zt + h[2]*h[3]
+            self.t = self.t + h[3]
+            self.t2 = self.t2 + h[3]**2
+            self.xt = self.xt + h[0]*h[3]
+            self.yt = self.yt + h[1]*h[3]
+            self.zt = self.zt + h[2]*h[3]
         x = x/len(self.hits)
         x2 = x2/len(self.hits)
         y = y/len(self.hits)
         y2 = y2/len(self.hits)
         z = z/len(self.hits)
         z2 = z2/len(self.hits)
-        t = t/len(self.hits)
-        t2 = t2/len(self.hits)
-        xt = xt/len(self.hits)
-        yt = yt/len(self.hits)
-        zt = zt/len(self.hits)
+        self.t = self.t/len(self.hits)
+        self.t2 = self.t2/len(self.hits)
+        self.xt = self.xt/len(self.hits)
+        self.yt = self.yt/len(self.hits)
+        self.zt = zt/len(self.hits)
 
         self.bx = (xt - x * t)/(t2-t*t)
         self.by = (yt - y * t)/(t2-t*t)

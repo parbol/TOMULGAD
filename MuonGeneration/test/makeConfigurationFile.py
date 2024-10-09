@@ -1,5 +1,9 @@
 import json, sys, optparse
 import math
+from matplotlib.collections import PatchCollection
+from matplotlib.patches import Rectangle
+
+
 
 #######################################################################
 # This is a helper class to produce configuration files for the setup #
@@ -58,7 +62,7 @@ if __name__=='__main__':
     layerYPosition_ = 0
     layerXSize_ = L + 1
     layerYSize_ = L + 1
-    layerZSize_ = 1
+    layerZSize_ = 1.2
     layerDistance = 1.0/6.0*(Delta-delta)
     detectorZSize_ = 3.0 * layerDistance + 4
     layer1Position = (detectorZSize_ - 4.0) / 2.0
@@ -82,8 +86,6 @@ if __name__=='__main__':
     SkyY = 0
     SkyZ = detectorPositionZ_ + layer1Position + layerZSize_ /2.0 + 0.1
     
-    #Phantom Number
-    nPhantoms = 4
     
 
     #We take the structure from this basic json file and adapt the dictionary
@@ -127,62 +129,162 @@ if __name__=='__main__':
         copydetector = detector.copy()
         detectors.append(copydetector)
 
-    phantoms = []
-    for iphantom in range(0, nPhantoms):
-        copyphantom = phantom.copy()
-        phantoms.append(copyphantom)
+    scenario = 2
+   
+    if scenario == 1:
+        #Phantom Number
+        nPhantoms = 4
+        phantoms = []
+        for iphantom in range(0, nPhantoms):
+            copyphantom = phantom.copy()
+            phantoms.append(copyphantom)
+        phantoms[0]['name'] = 'iron1'
+        phantoms[0]['material'] = 'iron'
+        phantoms[0]['xPos'] = 5.0
+        phantoms[0]['yPos'] = 5.0
+        phantoms[0]['zPos'] = 0.0
+        phantoms[0]['type'] = 0
+        phantoms[0]['radius'] = 2.0
+        phantoms[0]['zsize'] = 1.5
+        phantoms[0]['sideX'] = 0
+        phantoms[0]['sideY'] = 0
+        phantoms[0]['sideZ'] = 0
 
+        phantoms[1]['name'] = 'iron2'
+        phantoms[1]['material'] = 'iron'
+        phantoms[1]['xPos'] = 5.0
+        phantoms[1]['yPos'] = -5.0
+        phantoms[1]['zPos'] = 0.0
+        phantoms[1]['type'] = 0
+        phantoms[1]['radius'] = 2.0
+        phantoms[1]['zsize'] = 1.0
+        phantoms[1]['sideX'] = 0
+        phantoms[1]['sideY'] = 0
+        phantoms[1]['sideZ'] = 0
 
-    #Phantoms configuration
-    phantoms[0]['name'] = 'iron1'
-    phantoms[0]['material'] = 'iron'
-    phantoms[0]['xPos'] = 5.0
-    phantoms[0]['yPos'] = 5.0
-    phantoms[0]['zPos'] = 0.0
-    phantoms[0]['type'] = 0
-    phantoms[0]['radius'] = 2.0
-    phantoms[0]['zsize'] = 1.5
-    phantoms[0]['sideX'] = 0
-    phantoms[0]['sideY'] = 0
-    phantoms[0]['sideZ'] = 0
+        phantoms[2]['name'] = 'iron3'
+        phantoms[2]['material'] = 'iron'
+        phantoms[2]['xPos'] = -5.0
+        phantoms[2]['yPos'] = 5.0
+        phantoms[2]['zPos'] = 0.0
+        phantoms[2]['type'] = 0
+        phantoms[2]['radius'] = 2.0
+        phantoms[2]['zsize'] = 3.0
+        phantoms[2]['sideX'] = 0
+        phantoms[2]['sideY'] = 0
+        phantoms[2]['sideZ'] = 0
 
-    phantoms[1]['name'] = 'iron2'
-    phantoms[1]['material'] = 'iron'
-    phantoms[1]['xPos'] = 5.0
-    phantoms[1]['yPos'] = -5.0
-    phantoms[1]['zPos'] = 0.0
-    phantoms[1]['type'] = 0
-    phantoms[1]['radius'] = 2.0
-    phantoms[1]['zsize'] = 1.0
-    phantoms[1]['sideX'] = 0
-    phantoms[1]['sideY'] = 0
-    phantoms[1]['sideZ'] = 0
+        phantoms[3]['name'] = 'iron4'
+        phantoms[3]['material'] = 'iron'
+        phantoms[3]['xPos'] = -5.0
+        phantoms[3]['yPos'] = -5.0
+        phantoms[3]['zPos'] = 0.0
+        phantoms[3]['type'] = 0
+        phantoms[3]['radius'] = 2.0
+        phantoms[3]['zsize'] = 0.1
+        phantoms[3]['sideX'] = 0
+        phantoms[3]['sideY'] = 0
+        phantoms[3]['sideZ'] = 0
+    elif scenario == 2:
+        #Phantom Number
+        nPhantoms = 14
+        phantoms = []
+        offset = -2.5
+        scale = 0.8
+        name = []
+        Lx = []
+        Ly = []
+        LW = []
+        LH = []
+        name.append('L1')
+        Lx.append((-7 * scale + offset)+2.0*scale/2.0)
+        Ly.append(-4 * scale+7.0*scale/2.0)
+        LW.append(2.0 * scale)
+        LH.append(7.0 * scale)
+        name.append('L2')
+        Lx.append(-5 * scale + offset+2.0*scale/2.0)
+        Ly.append(-4 * scale+2.0*scale/2.0)
+        LW.append(2 * scale)
+        LH.append(2 * scale)
+        name.append('G1')
+        Lx.append(-2 * scale + offset+2.0*scale/2.0)
+        Ly.append(-4 * scale + 7.0*scale/2.0)
+        LW.append(2 * scale)
+        LH.append(7 * scale)
+        name.append('G2')
+        Lx.append(0 * scale + offset + 2.0*scale/2.0)
+        Ly.append(1 * scale + 2.0 * scale/2.0)
+        LW.append(2 * scale)
+        LH.append(2 * scale)
+        name.append('G3')
+        Lx.append(0 * scale + offset + 2.0*scale/2.0)
+        Ly.append(-4 * scale + 2.0*scale/2.0)
+        LW.append(2 * scale)
+        LH.append(2 * scale)
+        name.append('G4')
+        Lx.append(1 * scale + offset + 1.0*scale/2.0)
+        Ly.append(-2 * scale + 1.0*scale/2.0)
+        LW.append(1 * scale)
+        LH.append(1 * scale)
+        name.append('A1')
+        Lx.append(3 * scale + offset + 2.0*scale/2.0)
+        Ly.append(-4 * scale + 7.0*scale/2.0)
+        LW.append(2 * scale)
+        LH.append(7 * scale)
+        name.append('A2')
+        Lx.append(6 * scale + offset+2.0*scale/2.0)
+        Ly.append(-4 * scale + 7.0*scale/2.0)
+        LW.append(2 * scale)
+        LH.append(7 * scale)
+        name.append('A3')
+        Lx.append(5 * scale + offset +1.0*scale/2.0)
+        Ly.append(2 * scale + 1.0*scale/2.0)
+        LW.append(1 * scale)
+        LH.append(1 * scale)
+        name.append('A4')
+        Lx.append(5 * scale + offset + 1.0*scale/2.0)
+        Ly.append(-1 * scale + 1.0*scale/2.0)
+        LW.append(1 * scale)
+        LH.append(1 * scale)
+        name.append('D1')
+        Lx.append(9 * scale + offset + 2.0*scale/2.0)
+        Ly.append(-4 * scale + 7.0*scale/2.0)
+        LW.append(2 * scale)
+        LH.append(7 * scale)
+        name.append('D2')
+        Lx.append(12 * scale + offset + 2.0*scale/2.0)
+        Ly.append(-2.0 * scale + 3.0*scale/2.0)
+        LW.append(2 * scale)
+        LH.append(3 * scale)
+        name.append('D3')
+        Lx.append(11 * scale + offset + 2.0*scale/2.0)
+        Ly.append(-4.0 * scale + 2.0*scale/2.0)
+        LW.append(2 * scale)
+        LH.append(2 * scale)
+        name.append('D4')
+        Lx.append(11 * scale + offset + 2.0*scale/2.0)
+        Ly.append(1.0 * scale + 2.0*scale/2.0)
+        LW.append(2 * scale)
+        LH.append(2 * scale)
 
-    phantoms[2]['name'] = 'iron3'
-    phantoms[2]['material'] = 'iron'
-    phantoms[2]['xPos'] = -5.0
-    phantoms[2]['yPos'] = 5.0
-    phantoms[2]['zPos'] = 0.0
-    phantoms[2]['type'] = 0
-    phantoms[2]['radius'] = 2.0
-    phantoms[2]['zsize'] = 3.0
-    phantoms[2]['sideX'] = 0
-    phantoms[2]['sideY'] = 0
-    phantoms[2]['sideZ'] = 0
-
-    phantoms[3]['name'] = 'iron4'
-    phantoms[3]['material'] = 'iron'
-    phantoms[3]['xPos'] = -5.0
-    phantoms[3]['yPos'] = -5.0
-    phantoms[3]['zPos'] = 0.0
-    phantoms[3]['type'] = 0
-    phantoms[3]['radius'] = 2.0
-    phantoms[3]['zsize'] = 0.1
-    phantoms[3]['sideX'] = 0
-    phantoms[3]['sideY'] = 0
-    phantoms[3]['sideZ'] = 0
-
-    #phantoms = []
+        for iphantom in range(0, nPhantoms):
+            copyphantom = phantom.copy()
+            phantoms.append(copyphantom)
+            phantoms[iphantom]['name'] = name[iphantom]
+            phantoms[iphantom]['material'] = 'iron'
+            phantoms[iphantom]['xPos'] = Lx[iphantom]
+            phantoms[iphantom]['yPos'] = Ly[iphantom]
+            phantoms[iphantom]['zPos'] = 0.0
+            phantoms[iphantom]['type'] = 1
+            phantoms[iphantom]['radius'] = 0.0
+            phantoms[iphantom]['zsize'] = 0.0
+            phantoms[iphantom]['sideX'] = LW[iphantom]
+            phantoms[iphantom]['sideY'] = LH[iphantom]
+            phantoms[iphantom]['sideZ'] = 3.0
+            
+ 
+    else:
+        phantoms = []
 
 
     data = {} 
@@ -219,25 +321,25 @@ if __name__=='__main__':
             Yc = centralCorridor/2.0 + sensorSize/2.0 + iy * (sensorSize + centralCorridor)
             sensorXPosition.append(Xc)
             sensorYPosition.append(Yc)
-            sensorZPosition.append(0)
+            sensorZPosition.append(0.1 + sensorZSize_/2.0)
             sensorXSize.append(sensorSize)
             sensorYSize.append(sensorSize)
             sensorZSize.append(sensorZSize_)
             sensorXPosition.append(-Xc)
             sensorYPosition.append(Yc)
-            sensorZPosition.append(0)
+            sensorZPosition.append(0.1 + sensorZSize_/2.0)
             sensorXSize.append(sensorSize)
             sensorYSize.append(sensorSize)
             sensorZSize.append(sensorZSize_)
             sensorXPosition.append(Xc)
             sensorYPosition.append(-Yc)
-            sensorZPosition.append(0)
+            sensorZPosition.append(0.1 + sensorZSize_/2.0)
             sensorXSize.append(sensorSize)
             sensorYSize.append(sensorSize)
             sensorZSize.append(sensorZSize_)
             sensorXPosition.append(-Xc)
             sensorYPosition.append(-Yc)
-            sensorZPosition.append(0)
+            sensorZPosition.append(0.1 + sensorZSize_/2.0)
             sensorXSize.append(sensorSize)
             sensorYSize.append(sensorSize)
             sensorZSize.append(sensorZSize_)

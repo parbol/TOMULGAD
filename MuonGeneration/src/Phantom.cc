@@ -64,7 +64,6 @@ G4String Phantom::getMaterial() {
 void Phantom::createG4Objects(G4LogicalVolume *mother,
                                std::map<G4String, G4Material*> & materials,
                                G4SDManager *SDman) {
-
     G4String phantomName = G4String("phantom_") + name;  
     if(type == DISK) {
         solidVolume = new G4Tubs(phantomName, 0, radius, zsize/2.0, 0.0, CLHEP::twopi);
