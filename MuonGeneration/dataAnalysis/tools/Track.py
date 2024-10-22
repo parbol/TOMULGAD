@@ -48,14 +48,14 @@ class Track:
         self.t2 = self.t2/len(self.hits)
         self.xt = self.xt/len(self.hits)
         self.yt = self.yt/len(self.hits)
-        self.zt = zt/len(self.hits)
+        self.zt = self.zt/len(self.hits)
 
-        self.bx = (xt - x * t)/(t2-t*t)
-        self.by = (yt - y * t)/(t2-t*t)
-        self.bz = (zt - z * t)/(t2-t*t)
-        self.x0 = x - self.bx*t
-        self.y0 = y - self.by*t
-        self.z0 = z - self.bz*t
+        self.bx = (self.xt - x * self.t)/(self.t2-self.t*self.t)
+        self.by = (self.yt - y * self.t)/(self.t2-self.t*self.t)
+        self.bz = (self.zt - z * self.t)/(self.t2-self.t*self.t)
+        self.x0 = x - self.bx*self.t
+        self.y0 = y - self.by*self.t
+        self.z0 = z - self.bz*self.t
 
         xplus = yplus = zplus = 0.0
         for h in self.hits:

@@ -129,62 +129,49 @@ if __name__=='__main__':
         copydetector = detector.copy()
         detectors.append(copydetector)
 
-    scenario = 2
-   
+    scenario = 0
+  
     if scenario == 1:
         #Phantom Number
-        nPhantoms = 4
+        nPhantoms = 1
         phantoms = []
         for iphantom in range(0, nPhantoms):
             copyphantom = phantom.copy()
             phantoms.append(copyphantom)
         phantoms[0]['name'] = 'iron1'
         phantoms[0]['material'] = 'iron'
-        phantoms[0]['xPos'] = 5.0
-        phantoms[0]['yPos'] = 5.0
+        phantoms[0]['xPos'] = 0.0
+        phantoms[0]['yPos'] = 0.0
         phantoms[0]['zPos'] = 0.0
-        phantoms[0]['type'] = 0
-        phantoms[0]['radius'] = 2.0
-        phantoms[0]['zsize'] = 1.5
-        phantoms[0]['sideX'] = 0
-        phantoms[0]['sideY'] = 0
-        phantoms[0]['sideZ'] = 0
+        phantoms[0]['type'] = 1
+        phantoms[0]['radius'] = 0.0
+        phantoms[0]['zsize'] = 0.0
+        phantoms[0]['sideX'] = 5.0
+        phantoms[0]['sideY'] = 5.0
+        phantoms[0]['sideZ'] = 3.0
+        #phantoms[2]['name'] = 'iron3'
+        #phantoms[2]['material'] = 'aluminium'
+        #phantoms[2]['xPos'] = -2.0
+        #phantoms[2]['yPos'] = 2.0
+        #phantoms[2]['zPos'] = 0.0
+        #phantoms[2]['type'] = 0
+        #phantoms[2]['radius'] = 1.0
+        #phantoms[2]['zsize'] = 3.0
+        #phantoms[2]['sideX'] = 0
+        #phantoms[2]['sideY'] = 0
+        #phantoms[2]['sideZ'] = 0
 
-        phantoms[1]['name'] = 'iron2'
-        phantoms[1]['material'] = 'iron'
-        phantoms[1]['xPos'] = 5.0
-        phantoms[1]['yPos'] = -5.0
-        phantoms[1]['zPos'] = 0.0
-        phantoms[1]['type'] = 0
-        phantoms[1]['radius'] = 2.0
-        phantoms[1]['zsize'] = 1.0
-        phantoms[1]['sideX'] = 0
-        phantoms[1]['sideY'] = 0
-        phantoms[1]['sideZ'] = 0
-
-        phantoms[2]['name'] = 'iron3'
-        phantoms[2]['material'] = 'iron'
-        phantoms[2]['xPos'] = -5.0
-        phantoms[2]['yPos'] = 5.0
-        phantoms[2]['zPos'] = 0.0
-        phantoms[2]['type'] = 0
-        phantoms[2]['radius'] = 2.0
-        phantoms[2]['zsize'] = 3.0
-        phantoms[2]['sideX'] = 0
-        phantoms[2]['sideY'] = 0
-        phantoms[2]['sideZ'] = 0
-
-        phantoms[3]['name'] = 'iron4'
-        phantoms[3]['material'] = 'iron'
-        phantoms[3]['xPos'] = -5.0
-        phantoms[3]['yPos'] = -5.0
-        phantoms[3]['zPos'] = 0.0
-        phantoms[3]['type'] = 0
-        phantoms[3]['radius'] = 2.0
-        phantoms[3]['zsize'] = 0.1
-        phantoms[3]['sideX'] = 0
-        phantoms[3]['sideY'] = 0
-        phantoms[3]['sideZ'] = 0
+        #phantoms[3]['name'] = 'iron4'
+        #phantoms[3]['material'] = 'lead'
+        #phantoms[3]['xPos'] = -2.0
+        #phantoms[3]['yPos'] = -2.0
+        #phantoms[3]['zPos'] = 0.0
+        #phantoms[3]['type'] = 0
+        #phantoms[3]['radius'] = 1.0
+        #phantoms[3]['zsize'] = 3.0
+        #phantoms[3]['sideX'] = 0
+        #phantoms[3]['sideY'] = 0
+        #phantoms[3]['sideZ'] = 0
     elif scenario == 2:
         #Phantom Number
         nPhantoms = 14
